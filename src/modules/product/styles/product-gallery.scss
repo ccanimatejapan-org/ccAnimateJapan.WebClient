@@ -1,0 +1,11 @@
+.product-gallery {
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.product-gallery img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}

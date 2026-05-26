@@ -1,0 +1,21 @@
+@use '@/styles/variables' as *;
+
+.product-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.product-filter button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid $color-border;
+  border-radius: 999px;
+  background: #fff;
+  color: $color-muted;
+}
+
+.product-filter button.active {
+  border-color: $color-primary;
+  color: $color-primary;
+}

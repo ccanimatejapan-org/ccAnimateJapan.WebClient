@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "products": "Products",
+    "orders": "Orders",
+    "member": "Member",
+    "cart": "Cart"
+  },
+  "footer": {
+    "copy": "Japan animation goods shop"
+  },
+  "common": {
+    "viewAll": "View all",
+    "remove": "Remove",
+    "next": "Next",
+    "save": "Save",
+    "loading": "Loading"
+  },
+  "home": {
+    "eyebrow": "Japan Animation Goods",
+    "title": "Japan animation goods",
+    "subtitle": "Figures, acrylic stands, art books, and limited goods in one shopping flow.",
+    "cta": "Shop now",
+    "featuredEyebrow": "Featured",
+    "featuredTitle": "Featured products"
+  },
+  "product": {
+    "eyebrow": "Catalog",
+    "title": "Products",
+    "addToCart": "Add to cart",
+    "notFound": "Product not found",
+    "category": {
+      "all": "All",
+      "figure": "Figures",
+      "goods": "Goods",
+      "book": "Books"
+    }
+  },
+  "cart": {
+    "eyebrow": "Cart",
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "goShopping": "Go shopping",
+    "summary": "Summary",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout"
+  },
+  "checkout": {
+    "steps": {
+      "info": "Receiver",
+      "payment": "Payment",
+      "complete": "Complete"
+    },
+    "infoEyebrow": "Checkout",
+    "infoTitle": "Receiver info",
+    "paymentEyebrow": "Payment",
+    "paymentTitle": "Payment method",
+    "completeEyebrow": "Complete",
+    "completeTitle": "Order created",
+    "completeMessage": "Your order has been received. You can track delivery status in orders.",
+    "viewOrders": "View orders",
+    "placeOrder": "Place order",
+    "receiver": {
+      "name": "Receiver",
+      "phone": "Phone",
+      "address": "Address"
+    },
+    "payment": {
+      "creditCard": "Credit card",
+      "linePay": "LINE Pay",
+      "bankTransfer": "Bank transfer"
+    }
+  },
+  "order": {
+    "eyebrow": "Orders",
+    "title": "Orders",
+    "detail": "Order detail",
+    "createdAt": "Created at",
+    "total": "Total",
+    "notFound": "Order not found",
+    "status": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "shipped": "Shipped",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "unknown": "Unknown"
+    }
+  },
+  "auth": {
+    "eyebrow": "Account",
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "lineLogin": "Login with LINE",
+    "processingLine": "Processing LINE login"
+  },
+  "member": {
+    "eyebrow": "Member",
+    "profile": "Profile",
+    "addressBook": "Address book",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "addressName": "Address name",
+    "receiver": "Receiver",
+    "address": "Address",
+    "addAddress": "Add address"
+  }
+}

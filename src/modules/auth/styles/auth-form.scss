@@ -1,0 +1,19 @@
+.auth-form {
+  display: grid;
+  gap: 18px;
+}
+
+.auth-form h1 {
+  margin: 0;
+  line-height: 1.05;
+}
+
+.line-login-button {
+  min-height: 44px;
+  border: 1px solid #06c755;
+  border-radius: 8px;
+  background: #06c755;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 800;
+}

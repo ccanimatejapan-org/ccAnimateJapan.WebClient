@@ -1,0 +1,31 @@
+@use '@/styles/variables' as *;
+
+.product-card {
+  overflow: hidden;
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.product-card img {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  object-fit: cover;
+}
+
+.product-card__body {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+}
+
+.product-card__body p {
+  margin: 0;
+  color: $color-muted;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.product-card__body h3 {
+  margin: 0;
+}

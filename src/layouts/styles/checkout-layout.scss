@@ -1,0 +1,40 @@
+@use '@/styles/variables' as *;
+
+.checkout-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.checkout-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 18px clamp(20px, 5vw, 72px);
+  border-bottom: 1px solid $color-border;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+}
+
+.site-header__brand {
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.checkout-main {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  flex: 1;
+  padding: 32px 0 56px;
+}
+
+@media (max-width: 760px) {
+  .checkout-header {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+}

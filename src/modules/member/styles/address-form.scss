@@ -1,0 +1,8 @@
+@use '@/styles/variables' as *;
+
+.address-form {
+  padding: 20px;
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  background: #fff;
+}

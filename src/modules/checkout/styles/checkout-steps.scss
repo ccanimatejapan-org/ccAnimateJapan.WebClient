@@ -1,0 +1,21 @@
+@use '@/styles/variables' as *;
+
+.checkout-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.checkout-steps a {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid $color-border;
+  border-radius: 999px;
+  background: #fff;
+  color: $color-muted;
+}
+
+.checkout-steps a.active {
+  border-color: $color-primary;
+  color: $color-primary;
+}

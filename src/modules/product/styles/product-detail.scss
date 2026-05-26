@@ -1,0 +1,22 @@
+.product-detail {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(280px, 0.8fr);
+  gap: clamp(24px, 5vw, 56px);
+  align-items: start;
+}
+
+.product-detail__content {
+  display: grid;
+  gap: 18px;
+}
+
+.product-detail h1 {
+  margin: 0;
+  line-height: 1.05;
+}
+
+@media (max-width: 760px) {
+  .product-detail {
+    grid-template-columns: 1fr;
+  }
+}

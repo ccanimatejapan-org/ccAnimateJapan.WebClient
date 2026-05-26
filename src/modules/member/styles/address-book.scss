@@ -1,0 +1,13 @@
+@use '@/styles/variables' as *;
+
+.address-list {
+  display: grid;
+  gap: 12px;
+}
+
+.address-card {
+  padding: 16px;
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  background: #fff;
+}

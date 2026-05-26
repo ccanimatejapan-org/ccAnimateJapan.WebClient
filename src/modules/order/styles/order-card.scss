@@ -1,0 +1,24 @@
+@use '@/styles/variables' as *;
+
+.order-card {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  background: #fff;
+}
+
+@media (max-width: 760px) {
+  .order-card {
+    grid-template-columns: 72px 1fr;
+  }
+
+  .order-card .app-price,
+  .order-card .status-badge {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
