@@ -1,10 +1,19 @@
 @use '@/styles/variables' as *;
 
 .cart-summary {
+  position: sticky;
+  top: 112px;
   display: grid;
   gap: 18px;
-  padding: 20px;
-  border: 1px solid $color-border;
-  border-radius: 8px;
-  background: #fff;
+  padding: 22px;
+  border: 1px solid rgba(234, 216, 204, 0.86);
+  border-radius: 26px;
+  background: #fffdf9;
+  box-shadow: 0 16px 34px rgba(106, 73, 61, 0.08);
+}
+
+@media (max-width: 760px) {
+  .cart-summary {
+    position: static;
+  }
 }

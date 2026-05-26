@@ -4,9 +4,12 @@
       <p class="eyebrow">{{ t('home.eyebrow') }}</p>
       <h1>{{ t('home.title') }}</h1>
       <p>{{ t('home.subtitle') }}</p>
-      <RouterLink class="app-button app-button--primary" :to="{ name: ROUTE_NAMES.PRODUCT_LIST }">
-        {{ t('home.cta') }}
-      </RouterLink>
+      <div class="hero-banner__actions">
+        <RouterLink class="app-button app-button--primary" :to="{ name: ROUTE_NAMES.PRODUCT_LIST }">
+          {{ t('home.cta') }}
+        </RouterLink>
+        <span>{{ t('home.note') }}</span>
+      </div>
     </div>
   </section>
 </template>

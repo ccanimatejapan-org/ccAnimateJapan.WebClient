@@ -1,27 +1,72 @@
+@use '@/styles/variables' as *;
+
 .hero-banner {
+  position: relative;
   min-height: 420px;
   display: grid;
-  align-items: end;
+  align-items: center;
   padding: clamp(28px, 6vw, 64px);
-  border-radius: 8px;
+  border: 1px solid rgba(234, 216, 204, 0.72);
+  border-radius: 34px;
   overflow: hidden;
   background:
-    linear-gradient(90deg, rgba(18, 24, 38, 0.86), rgba(18, 24, 38, 0.28)),
-    url('https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?auto=format&fit=crop&w=1600&q=80') center/cover;
-  color: #fff;
+    radial-gradient(circle at 82% 24%, rgba(255, 223, 174, 0.92), transparent 10rem),
+    radial-gradient(circle at 76% 68%, rgba(143, 183, 143, 0.28), transparent 14rem),
+    linear-gradient(135deg, #fffaf3 0%, #ffe9dc 100%);
+  box-shadow: 0 24px 60px rgba(106, 73, 61, 0.12);
+  color: $color-ink;
+}
+
+.hero-banner::before,
+.hero-banner::after {
+  position: absolute;
+  content: '';
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.hero-banner::before {
+  width: 220px;
+  height: 220px;
+  right: clamp(24px, 8vw, 96px);
+  bottom: 34px;
+}
+
+.hero-banner::after {
+  width: 84px;
+  height: 84px;
+  right: clamp(180px, 22vw, 280px);
+  top: 48px;
 }
 
 .hero-banner__content {
-  max-width: 640px;
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
 }
 
 .hero-banner h1 {
   margin: 0;
-  font-size: clamp(2.4rem, 6vw, 5rem);
-  line-height: 1.05;
+  font-size: clamp(2.3rem, 6vw, 4.7rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
 }
 
 .hero-banner p {
-  max-width: 560px;
-  color: rgba(255, 255, 255, 0.82);
+  max-width: 540px;
+  color: $color-muted;
+  font-size: 1.05rem;
+}
+
+.hero-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.hero-banner__actions span {
+  color: $color-muted;
+  font-size: 0.92rem;
 }

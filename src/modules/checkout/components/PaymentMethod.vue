@@ -1,6 +1,11 @@
 <template>
   <div class="payment-methods">
-    <label v-for="method in PAYMENT_METHODS" :key="method.value" class="payment-option">
+    <label
+      v-for="method in PAYMENT_METHODS"
+      :key="method.value"
+      class="payment-option"
+      :class="{ 'payment-option--active': modelValue === method.value }"
+    >
       <input
         type="radio"
         name="paymentMethod"

@@ -9,3 +9,27 @@
   font-size: 0.82rem;
   font-weight: 800;
 }
+
+.status-badge--pending,
+.status-badge--info {
+  background: #eef5ff;
+  color: #2563eb;
+}
+
+.status-badge--paid,
+.status-badge--completed {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.status-badge--processing,
+.status-badge--shipped {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.status-badge--canceled,
+.status-badge--unknown {
+  background: #f3f4f6;
+  color: #4b5563;
+}

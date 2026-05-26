@@ -1,10 +1,10 @@
 <template>
   <RouterLink class="order-card" :to="{ name: ROUTE_NAMES.ORDER_DETAIL, params: { id: order.id } }">
     <div>
-      <p>{{ order.orderNo }}</p>
+      <p>#{{ order.id }}</p>
       <span>{{ formatDate(order.createdAt) }}</span>
     </div>
-    <OrderStatusBadge :status="order.status" />
+    <OrderStatusBadge :order-status="order.orderStatus" />
     <AppPrice :value="order.total" />
   </RouterLink>
 </template>

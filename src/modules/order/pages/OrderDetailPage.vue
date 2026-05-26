@@ -1,8 +1,8 @@
 <template>
   <section v-if="order" class="section narrow-section">
     <p class="eyebrow">{{ t('order.detail') }}</p>
-    <h1>{{ order.orderNo }}</h1>
-    <OrderStatusBadge :status="order.status" />
+    <h1>#{{ order.id }}</h1>
+    <OrderStatusBadge :order-status="order.orderStatus" />
     <div class="summary-row">
       <span>{{ t('order.createdAt') }}</span>
       <span>{{ formatDate(order.createdAt) }}</span>

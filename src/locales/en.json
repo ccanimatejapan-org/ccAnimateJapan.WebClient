@@ -13,20 +13,23 @@
     "remove": "Remove",
     "next": "Next",
     "save": "Save",
-    "loading": "Loading"
+    "loading": "Loading",
+    "close": "Close notification"
   },
   "home": {
-    "eyebrow": "Japan Animation Goods",
-    "title": "Japan animation goods",
-    "subtitle": "Figures, acrylic stands, art books, and limited goods in one shopping flow.",
-    "cta": "Shop now",
-    "featuredEyebrow": "Featured",
+    "eyebrow": "What would you like to collect today?",
+    "title": "Bring your favorite characters home",
+    "subtitle": "Figures, acrylic stands, art books, and limited goods in a relaxed shopping flow.",
+    "cta": "Browse goods",
+    "note": "Cart updates will let you know right away",
+    "featuredEyebrow": "Shop picks",
     "featuredTitle": "Featured products"
   },
   "product": {
-    "eyebrow": "Catalog",
+    "eyebrow": "Take your time",
     "title": "Products",
     "addToCart": "Add to cart",
+    "addedToCart": "Added",
     "notFound": "Product not found",
     "category": {
       "all": "All",
@@ -36,13 +39,18 @@
     }
   },
   "cart": {
-    "eyebrow": "Cart",
+    "eyebrow": "Ready to checkout",
     "title": "Cart",
     "empty": "Your cart is empty",
     "goShopping": "Go shopping",
     "summary": "Summary",
     "subtotal": "Subtotal",
-    "checkout": "Checkout"
+    "checkout": "Checkout",
+    "viewCart": "View cart",
+    "toast": {
+      "addedTitle": "Added to cart",
+      "addedMessage": "“{name}” is now in your cart"
+    }
   },
   "checkout": {
     "steps": {
@@ -78,11 +86,14 @@
     "total": "Total",
     "notFound": "Order not found",
     "status": {
-      "pending": "Pending",
-      "paid": "Paid",
-      "shipped": "Shipped",
+      "customerOrdered": "Customer ordered",
+      "confirmationSent": "Confirmation sent",
+      "customerPaid": "Customer paid",
+      "preOrderCompleted": "Pre-order completed",
+      "stocked": "Stocked",
+      "shippedToCustomer": "Shipped to customer",
       "completed": "Completed",
-      "cancelled": "Cancelled",
+      "canceled": "Canceled",
       "unknown": "Unknown"
     }
   },

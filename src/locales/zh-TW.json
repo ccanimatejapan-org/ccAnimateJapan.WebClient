@@ -13,20 +13,23 @@
     "remove": "移除",
     "next": "下一步",
     "save": "儲存",
-    "loading": "載入中"
+    "loading": "載入中",
+    "close": "關閉提示"
   },
   "home": {
-    "eyebrow": "Japan Animation Goods",
-    "title": "日本動畫周邊選物",
-    "subtitle": "收藏模型、壓克力立牌、畫冊與限定商品，一站整理你的購物流程。",
-    "cta": "開始選購",
-    "featuredEyebrow": "Featured",
+    "eyebrow": "今日想收藏什麼？",
+    "title": "把喜歡的角色帶回家",
+    "subtitle": "模型、壓克力立牌、畫冊與限定周邊都在這裡，輕鬆挑選、安心下單。",
+    "cta": "去逛逛商品",
+    "note": "加入購物車會即時提醒你",
+    "featuredEyebrow": "小店推薦",
     "featuredTitle": "精選商品"
   },
   "product": {
-    "eyebrow": "Catalog",
+    "eyebrow": "慢慢挑選",
     "title": "商品瀏覽",
     "addToCart": "加入購物車",
+    "addedToCart": "已加入",
     "notFound": "找不到商品",
     "category": {
       "all": "全部",
@@ -36,13 +39,18 @@
     }
   },
   "cart": {
-    "eyebrow": "Cart",
+    "eyebrow": "準備結帳",
     "title": "購物車",
     "empty": "購物車目前沒有商品",
     "goShopping": "前往選購",
     "summary": "訂單摘要",
     "subtotal": "小計",
-    "checkout": "前往結帳"
+    "checkout": "前往結帳",
+    "viewCart": "查看購物車",
+    "toast": {
+      "addedTitle": "已加入購物車",
+      "addedMessage": "「{name}」已放進購物車"
+    }
   },
   "checkout": {
     "steps": {
@@ -50,11 +58,11 @@
       "payment": "付款方式",
       "complete": "完成"
     },
-    "infoEyebrow": "Checkout",
+    "infoEyebrow": "寄到哪裡呢",
     "infoTitle": "收件資料",
-    "paymentEyebrow": "Payment",
+    "paymentEyebrow": "選擇付款",
     "paymentTitle": "付款方式",
-    "completeEyebrow": "Complete",
+    "completeEyebrow": "完成下單",
     "completeTitle": "訂單已建立",
     "completeMessage": "我們已收到你的訂單，後續可在會員訂單查詢配送狀態。",
     "viewOrders": "查看訂單",
@@ -71,23 +79,26 @@
     }
   },
   "order": {
-    "eyebrow": "Orders",
+    "eyebrow": "訂單紀錄",
     "title": "訂單查詢",
     "detail": "訂單明細",
     "createdAt": "建立時間",
     "total": "總計",
     "notFound": "找不到訂單",
     "status": {
-      "pending": "待付款",
-      "paid": "已付款",
-      "shipped": "已出貨",
-      "completed": "已完成",
-      "cancelled": "已取消",
+      "customerOrdered": "顧客已下單",
+      "confirmationSent": "確認信已寄送",
+      "customerPaid": "顧客已付款",
+      "preOrderCompleted": "預購已完成",
+      "stocked": "商品已入庫",
+      "shippedToCustomer": "已出貨給顧客",
+      "completed": "訂單已完成",
+      "canceled": "訂單已取消",
       "unknown": "未知"
     }
   },
   "auth": {
-    "eyebrow": "Account",
+    "eyebrow": "會員小屋",
     "title": "會員登入",
     "email": "Email",
     "password": "密碼",
@@ -96,7 +107,7 @@
     "processingLine": "正在處理 LINE 登入"
   },
   "member": {
-    "eyebrow": "Member",
+    "eyebrow": "我的資料",
     "profile": "會員資料",
     "addressBook": "常用地址",
     "name": "姓名",

@@ -4,15 +4,17 @@ import { httpClient } from '@/shared/api/httpClient';
 const mockOrders = [
   {
     id: 101,
-    orderNo: 'CJ20260525001',
-    status: ORDER_STATUS.PAID,
+    orderStatus: ORDER_STATUS.CUSTOMER_PAID,
+    paymentStatus: 2,
+    deliveryStatus: 1,
     total: 2200,
     createdAt: '2026-05-25T08:30:00+08:00'
   },
   {
     id: 102,
-    orderNo: 'CJ20260524003',
-    status: ORDER_STATUS.SHIPPED,
+    orderStatus: ORDER_STATUS.SHIPPED_TO_CUSTOMER,
+    paymentStatus: 2,
+    deliveryStatus: 3,
     total: 980,
     createdAt: '2026-05-24T14:10:00+08:00'
   }

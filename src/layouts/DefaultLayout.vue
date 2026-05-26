@@ -2,7 +2,8 @@
   <div class="site-shell">
     <header class="site-header">
       <RouterLink class="site-header__brand" :to="{ name: ROUTE_NAMES.HOME }">
-        ccAnimateJapan
+        <span>ccAnimateJapan</span>
+        <small>角色周邊小舖</small>
       </RouterLink>
       <nav class="site-header__nav" aria-label="Main">
         <RouterLink :to="{ name: ROUTE_NAMES.PRODUCT_LIST }">
@@ -15,8 +16,13 @@
           {{ t('nav.member') }}
         </RouterLink>
       </nav>
-      <RouterLink class="site-header__cart" :to="{ name: ROUTE_NAMES.CART }">
-        {{ t('nav.cart') }} ({{ cart.totalQuantity }})
+      <RouterLink
+        class="site-header__cart"
+        :class="{ 'site-header__cart--bump': cartBumped }"
+        :to="{ name: ROUTE_NAMES.CART }"
+      >
+        {{ t('nav.cart') }}
+        <span>{{ cart.totalQuantity }}</span>
       </RouterLink>
     </header>
 
@@ -32,6 +38,7 @@
 </template>
 
 <script setup>
+import { onBeforeUnmount, ref, watch } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
@@ -39,6 +46,30 @@ import { useCartStore } from '@/modules/cart/stores/cartStore';
 
 const { t } = useI18n();
 const cart = useCartStore();
+const cartBumped = ref(false);
+let cartBumpFrame;
+let cartBumpTimer;
+
+watch(
+  () => cart.totalQuantity,
+  (quantity, previousQuantity) => {
+    if (quantity <= previousQuantity) return;
+    cartBumped.value = false;
+    window.cancelAnimationFrame(cartBumpFrame);
+    window.clearTimeout(cartBumpTimer);
+    cartBumpFrame = window.requestAnimationFrame(() => {
+      cartBumped.value = true;
+      cartBumpTimer = window.setTimeout(() => {
+        cartBumped.value = false;
+      }, 420);
+    });
+  }
+);
+
+onBeforeUnmount(() => {
+  window.cancelAnimationFrame(cartBumpFrame);
+  window.clearTimeout(cartBumpTimer);
+});
 </script>
 
 <style scoped lang="scss">

@@ -4,14 +4,22 @@
   display: inline-grid;
   grid-template-columns: 36px 54px 36px;
   border: 1px solid $color-border;
-  border-radius: 8px;
+  border-radius: 999px;
   overflow: hidden;
+  background: #fffaf4;
 }
 
 .quantity-control button,
 .quantity-control input {
   height: 36px;
   border: 0;
-  background: #fff;
+  background: transparent;
+  color: $color-ink;
   text-align: center;
+}
+
+.quantity-control button {
+  color: $color-primary;
+  cursor: pointer;
+  font-weight: 900;
 }
