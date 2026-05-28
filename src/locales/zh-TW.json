@@ -22,8 +22,15 @@
     "subtitle": "模型、壓克力立牌、畫冊與限定周邊都在這裡，輕鬆挑選、安心下單。",
     "cta": "去逛逛商品",
     "note": "加入購物車會即時提醒你",
-    "featuredEyebrow": "小店推薦",
-    "featuredTitle": "精選商品"
+    "featuredEyebrow": "活動推薦",
+    "featuredTitle": "精選活動"
+  },
+  "activity": {
+    "datePending": "活動時間未定",
+    "empty": "目前沒有可顯示的活動",
+    "loadFailed": "活動資料讀取失敗",
+    "preOrder": "可預購",
+    "unnamed": "未命名活動"
   },
   "product": {
     "eyebrow": "慢慢挑選",

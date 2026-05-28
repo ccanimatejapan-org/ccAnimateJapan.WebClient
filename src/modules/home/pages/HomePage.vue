@@ -1,13 +1,13 @@
 <template>
   <div class="page-stack">
     <HeroBanner />
-    <ProductSection />
+    <ActivitySection />
   </div>
 </template>
 
 <script setup>
+import ActivitySection from '../components/ActivitySection.vue';
 import HeroBanner from '../components/HeroBanner.vue';
-import ProductSection from '../components/ProductSection.vue';
 </script>
 
 <style scoped lang="scss">
