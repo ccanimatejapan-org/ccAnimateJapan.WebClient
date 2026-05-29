@@ -32,6 +32,60 @@
     "preOrder": "可預購",
     "unnamed": "未命名活動"
   },
+  "orderForm": {
+    "eyebrow": "活動訂購表單",
+    "title": "填寫訂單",
+    "loading": "正在載入活動表單",
+    "loadFailed": "活動表單讀取失敗",
+    "noProducts": "這個活動目前沒有可訂購商品",
+    "stepsLabel": "訂購表單步驟",
+    "steps": {
+      "agreement": "同意事項",
+      "basicInfo": "基本資料",
+      "products": "選擇商品",
+      "preview": "預覽訂單"
+    },
+    "agreement": {
+      "title": "訂購須知",
+      "ruleContact": "請確認姓名與 Gmail 正確，後續會以此聯繫訂單確認。",
+      "ruleConfirmation": "送出表單後不代表訂單立即成立，商品數量與價格仍以工作人員確認為準。",
+      "ruleZeroQuantity": "數量填 0 的商品不會建立訂單明細。",
+      "checkbox": "我已閱讀並同意以上事項"
+    },
+    "basicInfo": {
+      "name": "姓名",
+      "email": "Gmail",
+      "phone": "電話（非必填）"
+    },
+    "products": {
+      "quantity": "數量",
+      "totalQuantity": "總數量",
+      "total": "總金額"
+    },
+    "preview": {
+      "contact": "基本資料",
+      "items": "訂購商品",
+      "submit": "送出訂單",
+      "edit": "返回修改"
+    },
+    "success": {
+      "title": "表單已送出",
+      "message": "這是前端假資料產生的訂單，後端 API 尚未串接。",
+      "orderId": "模擬訂單編號"
+    },
+    "actions": {
+      "previous": "上一步",
+      "next": "下一步"
+    },
+    "errors": {
+      "agreeRequired": "請先同意以上事項",
+      "nameRequired": "請填寫姓名",
+      "gmailRequired": "請填寫有效的 Gmail",
+      "productsRequired": "請至少選擇一項商品",
+      "formNotFound": "找不到活動表單",
+      "submitFailed": "送出失敗，請稍後再試"
+    }
+  },
   "product": {
     "eyebrow": "慢慢挑選",
     "title": "商品瀏覽",

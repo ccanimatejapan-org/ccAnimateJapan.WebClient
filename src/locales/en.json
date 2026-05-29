@@ -32,6 +32,60 @@
     "preOrder": "Pre-order",
     "unnamed": "Untitled activity"
   },
+  "orderForm": {
+    "eyebrow": "Activity order form",
+    "title": "Create order",
+    "loading": "Loading order form",
+    "loadFailed": "Failed to load order form",
+    "noProducts": "No products are available for this activity",
+    "stepsLabel": "Order form steps",
+    "steps": {
+      "agreement": "Agreement",
+      "basicInfo": "Basic info",
+      "products": "Products",
+      "preview": "Preview"
+    },
+    "agreement": {
+      "title": "Order notes",
+      "ruleContact": "Please confirm your name and Gmail. We will use them to contact you about this order.",
+      "ruleConfirmation": "Submitting this form does not mean the order is confirmed. Staff will confirm quantities and prices later.",
+      "ruleZeroQuantity": "Products with quantity 0 will not be included in the order items.",
+      "checkbox": "I have read and agree to the terms above"
+    },
+    "basicInfo": {
+      "name": "Name",
+      "email": "Gmail",
+      "phone": "Phone (optional)"
+    },
+    "products": {
+      "quantity": "Quantity",
+      "totalQuantity": "Total quantity",
+      "total": "Total"
+    },
+    "preview": {
+      "contact": "Basic info",
+      "items": "Order items",
+      "submit": "Submit order",
+      "edit": "Edit"
+    },
+    "success": {
+      "title": "Form submitted",
+      "message": "This order was generated with frontend mock data. Backend API is not connected yet.",
+      "orderId": "Mock order ID"
+    },
+    "actions": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "errors": {
+      "agreeRequired": "Please agree to the terms above first",
+      "nameRequired": "Please enter your name",
+      "gmailRequired": "Please enter a valid Gmail address",
+      "productsRequired": "Please select at least one product",
+      "formNotFound": "Activity form not found",
+      "submitFailed": "Unable to submit. Please try again later"
+    }
+  },
   "product": {
     "eyebrow": "Take your time",
     "title": "Products",

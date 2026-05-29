@@ -40,6 +40,16 @@
   background: #fffaf4;
 }
 
+.app-button--ghost {
+  color: #6f5a2d;
+  border-color: rgba(244, 214, 155, 0.9);
+  background: rgba(255, 253, 249, 0.72);
+}
+
+.app-button--ghost:hover:not(:disabled) {
+  background: #fff5cf;
+}
+
 .app-price {
   color: $color-primary;
   font-size: 1.08rem;

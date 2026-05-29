@@ -3,6 +3,7 @@ export const ROUTE_NAMES = {
   PRODUCT_LIST: 'product-list',
   PRODUCT_DETAIL: 'product-detail',
   CART: 'cart',
+  ORDER_FORM: 'order-form',
   CHECKOUT_INFO: 'checkout-info',
   CHECKOUT_PAYMENT: 'checkout-payment',
   CHECKOUT_COMPLETE: 'checkout-complete',
