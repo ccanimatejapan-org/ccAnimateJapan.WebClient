@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { computed, reactive, ref } from 'vue';
 import { isEmail, isRequired } from '@/shared/utils/validation';
-import { getOrderForm, submitMockOrder } from '../api/orderFormApi';
+import { getOrderForm, submitOrder as submitOrderApi } from '../api/orderFormApi';
+import { normalizeQuantity } from '../utils/quantityPolicy';
 
 const INITIAL_FORM = {
   subscriberName: '',
@@ -106,9 +107,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
 
   function setQuantity(productId, amount) {
     const product = products.value.find((entry) => entry.id === Number(productId));
-    const maxAmount = Number.isFinite(Number(product?.amount)) ? Number(product.amount) : Infinity;
-    const nextAmount = Math.min(maxAmount, Math.max(0, Math.floor(Number(amount) || 0)));
-    quantities[productId] = nextAmount;
+    quantities[productId] = normalizeQuantity(activity.value, product, amount);
   }
 
   function validateAgreement() {
@@ -192,7 +191,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
     submitError.value = null;
 
     try {
-      const result = await submitMockOrder(buildSubmitPayload());
+      const result = await submitOrderApi(buildSubmitPayload());
       submitResult.value = result;
       return result;
     } catch (err) {

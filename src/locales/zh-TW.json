@@ -59,6 +59,7 @@
     },
     "products": {
       "quantity": "數量",
+      "previewImage": "放大查看 {name}",
       "totalQuantity": "總數量",
       "total": "總金額"
     },
@@ -70,7 +71,7 @@
     },
     "success": {
       "title": "表單已送出",
-      "message": "這是前端假資料產生的訂單，後端 API 尚未串接。",
+      "message": "我們已收到你的表單，後續會依序確認訂單內容。",
       "orderId": "模擬訂單編號"
     },
     "actions": {
