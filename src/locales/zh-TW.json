@@ -59,6 +59,7 @@
     },
     "products": {
       "quantity": "數量",
+      "note": "商品備註",
       "previewImage": "放大查看 {name}",
       "totalQuantity": "總數量",
       "total": "總金額"

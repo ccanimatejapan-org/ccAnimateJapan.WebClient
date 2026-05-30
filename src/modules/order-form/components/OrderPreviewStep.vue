@@ -17,7 +17,10 @@
       <section class="order-preview-section">
         <h2>{{ t('orderForm.preview.items') }}</h2>
         <article v-for="item in store.selectedItems" :key="item.productId" class="order-preview-item">
-          <span>{{ item.name }} × {{ item.amount }}</span>
+          <div class="order-preview-item__main">
+            <span>{{ item.name }} × {{ item.amount }}</span>
+            <small v-if="item.info">{{ t('orderForm.products.note') }}：{{ item.info }}</small>
+          </div>
           <strong>{{ formatMoney(item.subTotal) }}</strong>
         </article>
         <div class="order-form-total">

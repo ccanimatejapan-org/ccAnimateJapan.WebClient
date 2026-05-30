@@ -14,7 +14,12 @@
           @click="openImagePreview(product)"
         >
           <img :src="product.imageUrl" :alt="product.name" />
-          <span class="order-product-image__zoom" aria-hidden="true">🔍</span>
+          <span class="order-product-image__zoom" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <circle cx="11" cy="11" r="6" />
+              <path d="m16 16 4 4" />
+            </svg>
+          </span>
         </button>
         <div v-else class="order-product-image order-product-image--empty" aria-hidden="true">
           <span>?</span>
@@ -25,7 +30,17 @@
           <p>{{ product.info }}</p>
           <strong>{{ formatMoney(product.price) }}</strong>
         </div>
-        <label>
+        <label class="order-product-note">
+          <span>{{ t('orderForm.products.note') }}</span>
+          <input
+            type="text"
+            maxlength="10"
+            :value="store.productNotes[product.id]"
+            @input="store.setProductNote(product.id, $event.target.value)"
+          />
+        </label>
+
+        <label class="order-product-quantity">
           <span>{{ t('orderForm.products.quantity') }}</span>
           <input
             type="number"

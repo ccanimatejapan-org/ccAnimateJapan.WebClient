@@ -266,7 +266,7 @@ $order-line: rgba(244, 214, 155, 0.72);
 
 .order-product-row {
   display: grid;
-  grid-template-columns: 120px 1fr 120px;
+  grid-template-columns: 120px minmax(0, 1fr) minmax(160px, 220px) 120px;
   gap: 1rem;
   align-items: center;
   padding: 1rem;
@@ -302,10 +302,16 @@ $order-line: rgba(244, 214, 155, 0.72);
     font-size: 1.05rem;
   }
 
-  input {
+  .order-product-quantity input {
     width: 100%;
     text-align: center;
     font-weight: 900;
+  }
+
+  .order-product-note input {
+    width: 100%;
+    text-align: left;
+    font-weight: 800;
   }
 }
 
@@ -361,7 +367,16 @@ $order-line: rgba(244, 214, 155, 0.72);
   background: rgba(59, 43, 22, 0.72);
   box-shadow: 0 8px 18px rgba(59, 43, 22, 0.22);
   color: #fff;
-  font-size: 0.95rem;
+
+  svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.4;
+  }
 }
 
 .order-image-lightbox {
@@ -468,6 +483,16 @@ $order-line: rgba(244, 214, 155, 0.72);
 .order-preview-item {
   padding: 0.6rem 0;
   border-bottom: 1px dashed $order-line;
+}
+
+.order-preview-item__main {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.order-preview-item__main small {
+  color: $order-muted;
+  font-weight: 800;
 }
 
 .order-form-success {

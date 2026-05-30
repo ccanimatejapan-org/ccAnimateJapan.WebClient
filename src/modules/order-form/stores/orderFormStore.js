@@ -21,6 +21,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
   const agreement = ref(null);
   const products = ref([]);
   const quantities = reactive({});
+  const productNotes = reactive({});
   const form = reactive({ ...INITIAL_FORM });
   const currentStep = ref(1);
   const isLoading = ref(false);
@@ -35,6 +36,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
     products.value
       .map((product) => {
         const amount = Number(quantities[product.id] || 0);
+        const info = String(productNotes[product.id] || '').trim().slice(0, 10) || null;
         return {
           productId: product.id,
           name: product.name,
@@ -42,7 +44,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
           amount,
           subTotal: product.price * amount,
           imageUrl: product.imageUrl,
-          info: product.info
+          info
         };
       })
       .filter((item) => item.amount > 0)
@@ -67,6 +69,9 @@ export const useOrderFormStore = defineStore('orderForm', () => {
     Object.keys(quantities).forEach((key) => {
       delete quantities[key];
     });
+    Object.keys(productNotes).forEach((key) => {
+      delete productNotes[key];
+    });
     currentStep.value = 1;
     submitResult.value = null;
     submitError.value = null;
@@ -90,6 +95,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
       products.value = result.products;
       result.products.forEach((product) => {
         quantities[product.id] = 0;
+        productNotes[product.id] = '';
       });
     } catch (err) {
       if (runId !== initializeRun) return;
@@ -108,6 +114,10 @@ export const useOrderFormStore = defineStore('orderForm', () => {
   function setQuantity(productId, amount) {
     const product = products.value.find((entry) => entry.id === Number(productId));
     quantities[productId] = normalizeQuantity(activity.value, product, amount);
+  }
+
+  function setProductNote(productId, note) {
+    productNotes[productId] = String(note || '').slice(0, 10);
   }
 
   function validateAgreement() {
@@ -208,6 +218,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
     agreement,
     products,
     quantities,
+    productNotes,
     form,
     currentStep,
     isLoading,
@@ -221,6 +232,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
     totalQuantity,
     initialize,
     setQuantity,
+    setProductNote,
     validateCurrentStep,
     nextStep,
     previousStep,

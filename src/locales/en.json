@@ -59,6 +59,7 @@
     },
     "products": {
       "quantity": "Quantity",
+      "note": "Product note",
       "totalQuantity": "Total quantity",
       "total": "Total"
     },
