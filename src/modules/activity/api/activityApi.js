@@ -1,21 +1,25 @@
 import { httpClient } from '@/shared/api/httpClient';
+import { unwrapApiResponse } from '@/shared/api/apiResponse';
+import { shouldUseMockApi } from '@/shared/api/mockMode';
 
 export async function getActivities(params = {}) {
-  if (import.meta.env.DEV) {
+  if (shouldUseMockApi()) {
     return Promise.resolve(createMockActivities(params));
   }
 
-  return httpClient.get('/activities', { params });
+  const response = await httpClient.get('/activities', { params });
+  return unwrapApiResponse(response, 'activity.loadFailed');
 }
 
 export async function getActivityById(id) {
-  if (import.meta.env.DEV) {
+  if (shouldUseMockApi()) {
     return Promise.resolve(
       createMockActivities().find((activity) => activity.id === Number(id)) || null
     );
   }
 
-  return httpClient.get(`/activities/${id}`);
+  const response = await httpClient.get(`/activities/${id}/order-form`);
+  return unwrapApiResponse(response, 'activity.notFound')?.activity || null;
 }
 
 export function createMockActivities(params = {}) {

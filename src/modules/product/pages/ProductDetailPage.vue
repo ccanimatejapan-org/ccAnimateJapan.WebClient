@@ -41,7 +41,7 @@ const justAdded = ref(false);
 let addedTimer;
 
 const product = computed(() =>
-  productStore.products.find((item) => item.id === Number(props.id))
+  productStore.products.find((item) => item?.id === Number(props.id))
 );
 
 function handleAddToCart() {

@@ -1,7 +1,12 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
-import { getActivityById } from '@/modules/activity/api/activityApi';
-import { getProducts, getProductsByActivity } from '../api/productApi';
+import { getActivityProductCatalog, getProducts } from '../api/productApi';
+
+function normalizeProducts(value) {
+  if (!Array.isArray(value)) return [];
+
+  return value.filter((product) => product?.id != null);
+}
 
 export const useProductStore = defineStore('product', () => {
   const products = ref([]);
@@ -12,13 +17,15 @@ export const useProductStore = defineStore('product', () => {
   const error = ref(null);
   const selectedCategory = ref('all');
 
+  const availableProducts = computed(() => normalizeProducts(products.value));
+
   const filteredProducts = computed(() => {
-    if (selectedCategory.value === 'all') return products.value;
-    return products.value.filter((product) => product.category === selectedCategory.value);
+    if (selectedCategory.value === 'all') return availableProducts.value;
+    return availableProducts.value.filter((product) => product.category === selectedCategory.value);
   });
 
   const featuredProducts = computed(() =>
-    products.value.filter((product) => product.featured).slice(0, 3)
+    availableProducts.value.filter((product) => product.featured).slice(0, 3)
   );
 
   async function fetchProducts(params = {}) {
@@ -26,7 +33,7 @@ export const useProductStore = defineStore('product', () => {
     error.value = null;
 
     try {
-      products.value = await getProducts(params);
+      products.value = normalizeProducts(await getProducts(params));
       isLoaded.value = true;
     } catch (err) {
       error.value = err;
@@ -38,7 +45,20 @@ export const useProductStore = defineStore('product', () => {
 
   async function fetchProductsByActivity(activityId) {
     const normalizedActivityId = Number(activityId);
-    if (activeActivityId.value === normalizedActivityId && isLoaded.value) return;
+    if (!Number.isFinite(normalizedActivityId) || normalizedActivityId <= 0) {
+      activeActivityId.value = null;
+      activity.value = null;
+      products.value = [];
+      selectedCategory.value = 'all';
+      isLoaded.value = true;
+      isLoading.value = false;
+      error.value = null;
+      return { ok: false, reason: 'missingActivity' };
+    }
+
+    if (activeActivityId.value === normalizedActivityId && isLoaded.value && activity.value) {
+      return { ok: true, activity: activity.value, products: products.value };
+    }
 
     activeActivityId.value = normalizedActivityId;
     activity.value = null;
@@ -48,18 +68,23 @@ export const useProductStore = defineStore('product', () => {
     error.value = null;
 
     try {
-      const [nextActivity, nextProducts] = await Promise.all([
-        getActivityById(normalizedActivityId),
-        getProductsByActivity(normalizedActivityId)
-      ]);
+      const result = await getActivityProductCatalog(normalizedActivityId);
+      const nextActivity = result?.activity || null;
+
+      if (!nextActivity?.id) {
+        isLoaded.value = true;
+        return { ok: false, reason: 'activityNotFound' };
+      }
 
       activity.value = nextActivity;
-      products.value = nextProducts;
+      products.value = normalizeProducts(result?.products);
       isLoaded.value = true;
+      return { ok: true, activity: activity.value, products: products.value };
     } catch (err) {
       error.value = err;
       activity.value = null;
       products.value = [];
+      return { ok: false, reason: 'error', error: err };
     } finally {
       isLoading.value = false;
     }

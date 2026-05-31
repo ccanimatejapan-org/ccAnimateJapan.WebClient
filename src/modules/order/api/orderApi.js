@@ -1,5 +1,6 @@
 import { ORDER_STATUS } from '@/shared/constants/orderStatus';
 import { httpClient } from '@/shared/api/httpClient';
+import { shouldUseMockApi } from '@/shared/api/mockMode';
 import { getStorageItem, setStorageItem } from '@/shared/utils/storage';
 
 const MOCK_ORDER_STORAGE_KEY = 'ccAnimateJapan.mockOrders';
@@ -74,7 +75,7 @@ function getMockOrders() {
 }
 
 export async function getOrders() {
-  if (import.meta.env.DEV) {
+  if (shouldUseMockApi()) {
     return Promise.resolve(getMockOrders());
   }
 
@@ -82,7 +83,7 @@ export async function getOrders() {
 }
 
 export async function getOrderById(id) {
-  if (import.meta.env.DEV) {
+  if (shouldUseMockApi()) {
     return Promise.resolve(getMockOrders().find((order) => Number(order.id) === Number(id)) || null);
   }
 
@@ -99,7 +100,7 @@ export async function createOrderFromCartItems(items) {
     throw new Error('cart.toast.mixedActivityMessage');
   }
 
-  if (!import.meta.env.DEV) {
+  if (!shouldUseMockApi()) {
     return httpClient.post('/orders', { items });
   }
 

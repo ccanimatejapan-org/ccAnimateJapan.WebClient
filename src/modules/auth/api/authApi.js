@@ -1,7 +1,8 @@
 import { httpClient } from '@/shared/api/httpClient';
+import { shouldUseMockApi } from '@/shared/api/mockMode';
 
 export async function login(payload) {
-  if (import.meta.env.DEV) {
+  if (shouldUseMockApi()) {
     return Promise.resolve({
       accessToken: 'dev-token',
       user: {
@@ -16,7 +17,7 @@ export async function login(payload) {
 }
 
 export async function loginWithLine(code) {
-  if (import.meta.env.DEV) {
+  if (shouldUseMockApi()) {
     return Promise.resolve({
       accessToken: 'dev-line-token',
       user: {

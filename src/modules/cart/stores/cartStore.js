@@ -62,12 +62,19 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   function addItem(payload) {
+    if (!payload || typeof payload !== 'object') {
+      return { ok: false, reason: 'invalidItem' };
+    }
+
     const activity = payload.activity || {};
     const product = payload.product || payload;
-    const nextActivityId = Number(payload.activityId ?? activity.id ?? product.activityId);
-    const nextProductId = Number(payload.productId ?? product.id);
+    const nextActivityId = Number(payload.activityId ?? activity?.id ?? product?.activityId);
+    const nextProductId = Number(payload.productId ?? product?.id);
     const note = normalizeNote(payload.note ?? payload.info);
     const quantity = Math.max(1, Number(payload.quantity) || 1);
+    if (!Number.isFinite(nextActivityId) || !Number.isFinite(nextProductId)) {
+      return { ok: false, reason: 'invalidItem' };
+    }
 
     if (!canAddActivity(nextActivityId)) {
       return { ok: false, reason: 'mixedActivity' };
@@ -83,11 +90,11 @@ export const useCartStore = defineStore('cart', () => {
     const item = {
       id,
       activityId: nextActivityId,
-      activityName: payload.activityName || activity.name || '',
+      activityName: payload.activityName || activity?.name || '',
       productId: nextProductId,
-      productName: payload.productName || product.name || '',
-      imageUrl: payload.imageUrl || product.imageUrl || '',
-      price: Number(payload.price ?? product.price) || 0,
+      productName: payload.productName || product?.name || '',
+      imageUrl: payload.imageUrl || product?.imageUrl || '',
+      price: Number(payload.price ?? product?.price) || 0,
       quantity,
       note,
       info: note

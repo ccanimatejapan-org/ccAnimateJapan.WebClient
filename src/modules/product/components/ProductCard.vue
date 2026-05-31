@@ -1,5 +1,5 @@
 <template>
-  <article class="product-card">
+  <article v-if="product" class="product-card">
     <img :src="product.imageUrl" :alt="product.name" loading="lazy" />
     <div class="product-card__body">
       <p>{{ product.category }}</p>
@@ -21,7 +21,7 @@ import AppPrice from '@/shared/components/AppPrice.vue';
 defineProps({
   product: {
     type: Object,
-    required: true
+    default: null
   }
 });
 

@@ -14,13 +14,13 @@
     <AppEmpty v-else-if="productStore.error" :message="t('product.loadFailed')" />
     <AppEmpty v-else-if="!productStore.activity" :message="t('activity.notFound')" />
     <AppEmpty
-      v-else-if="productStore.products.length === 0"
+      v-else-if="visibleProducts.length === 0"
       :message="t('product.emptyForActivity')"
     />
 
     <div v-else class="product-grid">
       <ProductCard
-        v-for="product in productStore.products"
+        v-for="product in visibleProducts"
         :key="product.id"
         :product="product"
         @add="openAddDialog"
@@ -67,6 +67,10 @@ const isAddDialogOpen = computed({
   }
 });
 
+const visibleProducts = computed(() =>
+  productStore.products.filter((product) => product?.id != null)
+);
+
 onMounted(() => {
   productStore.fetchProductsByActivity(props.activityId);
 });
@@ -80,30 +84,35 @@ watch(
 );
 
 function openAddDialog(product) {
+  if (!product?.id) return;
   selectedProduct.value = product;
 }
 
 function addToCart(payload) {
-  if (!selectedProduct.value || !productStore.activity) return;
+  const product = selectedProduct.value;
+  const activity = productStore.activity;
+  if (!product?.id || !activity?.id) return;
 
   const result = cart.addItem({
-    activity: productStore.activity,
-    product: selectedProduct.value,
+    activity,
+    product,
     quantity: payload.quantity,
     note: payload.note
   });
 
   if (!result.ok) {
-    ui.showToast({
-      title: t('cart.toast.mixedActivityTitle'),
-      message: t('cart.toast.mixedActivityMessage')
-    });
+    if (result.reason === 'mixedActivity') {
+      ui.showToast({
+        title: t('cart.toast.mixedActivityTitle'),
+        message: t('cart.toast.mixedActivityMessage')
+      });
+    }
     return;
   }
 
   ui.showToast({
     title: t('cart.toast.addedTitle'),
-    message: t('cart.toast.addedMessage', { name: selectedProduct.value.name }),
+    message: t('cart.toast.addedMessage', { name: product.name }),
     actionLabel: t('cart.viewCart'),
     actionTo: { name: ROUTE_NAMES.CART }
   });

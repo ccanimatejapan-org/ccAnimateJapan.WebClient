@@ -1,27 +1,69 @@
 import { httpClient } from '@/shared/api/httpClient';
+import { unwrapApiResponse } from '@/shared/api/apiResponse';
+import { shouldUseMockApi } from '@/shared/api/mockMode';
+import { createMockActivities } from '@/modules/activity/api/activityApi';
+
+function normalizeActivityProducts(products, activityId) {
+  if (!Array.isArray(products)) return [];
+
+  return products
+    .filter((product) => product?.id != null)
+    .map((product) => {
+      const stock = Number(product.stock ?? product.amount);
+      const info = product.info ?? product.note ?? '';
+
+      return {
+        ...product,
+        activityId: Number(product.activityId ?? activityId),
+        category: product.category || '',
+        stock: Number.isFinite(stock) ? stock : null,
+        note: product.note ?? info,
+        description: product.description ?? info
+      };
+    });
+}
 
 export async function getProducts(params = {}) {
-  if (import.meta.env.DEV) {
+  if (shouldUseMockApi()) {
     return Promise.resolve(createMockProducts(params));
   }
 
-  return httpClient.get('/products', { params });
+  const response = await httpClient.get('/products', { params });
+  return unwrapApiResponse(response, 'product.loadFailed');
 }
 
 export async function getProductsByActivity(activityId) {
-  if (import.meta.env.DEV) {
-    return Promise.resolve(createMockProducts({ activityId }));
+  const result = await getActivityProductCatalog(activityId);
+  return result.products;
+}
+
+export async function getActivityProductCatalog(activityId) {
+  const normalizedActivityId = Number(activityId);
+
+  if (shouldUseMockApi()) {
+    return Promise.resolve({
+      activity:
+        createMockActivities().find((activity) => activity.id === normalizedActivityId) || null,
+      products: createMockProducts({ activityId: normalizedActivityId })
+    });
   }
 
-  return httpClient.get(`/activities/${activityId}/products`);
+  const response = await httpClient.get(`/activities/${normalizedActivityId}/order-form`);
+  const data = unwrapApiResponse(response, 'product.loadFailed');
+
+  return {
+    activity: data?.activity || null,
+    products: normalizeActivityProducts(data?.products, normalizedActivityId)
+  };
 }
 
 export async function getProductById(id) {
-  if (import.meta.env.DEV) {
+  if (shouldUseMockApi()) {
     return Promise.resolve(createMockProducts().find((product) => product.id === Number(id)) || null);
   }
 
-  return httpClient.get(`/products/${id}`);
+  const response = await httpClient.get(`/products/${id}`);
+  return unwrapApiResponse(response, 'product.notFound');
 }
 
 export function createMockProducts(params = {}) {

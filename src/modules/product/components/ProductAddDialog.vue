@@ -8,7 +8,7 @@
       <div class="product-add-dialog__product">
         <img :src="product.imageUrl" :alt="product.name" />
         <div>
-          <p v-if="activity">{{ activity.name }}</p>
+          <p v-if="activity?.name">{{ activity.name }}</p>
           <h3>{{ product.name }}</h3>
           <AppPrice :value="product.price" />
         </div>
@@ -106,6 +106,10 @@ function setQuantity(value) {
 
 function confirm() {
   setQuantity(quantity.value);
+  if (!props.product?.id) {
+    emit('update:modelValue', false);
+    return;
+  }
   emit('confirm', {
     quantity: quantity.value,
     note: note.value.trim()

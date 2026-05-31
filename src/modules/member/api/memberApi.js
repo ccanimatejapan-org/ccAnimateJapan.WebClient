@@ -1,7 +1,8 @@
 import { httpClient } from '@/shared/api/httpClient';
+import { shouldUseMockApi } from '@/shared/api/mockMode';
 
 export async function getProfile() {
-  if (import.meta.env.DEV) {
+  if (shouldUseMockApi()) {
     return Promise.resolve({
       name: 'Demo Member',
       email: 'member@example.com',
@@ -13,7 +14,7 @@ export async function getProfile() {
 }
 
 export async function updateProfile(payload) {
-  if (import.meta.env.DEV) {
+  if (shouldUseMockApi()) {
     return Promise.resolve(payload);
   }
 
@@ -21,7 +22,7 @@ export async function updateProfile(payload) {
 }
 
 export async function getAddresses() {
-  if (import.meta.env.DEV) {
+  if (shouldUseMockApi()) {
     return Promise.resolve([
       {
         id: 1,
