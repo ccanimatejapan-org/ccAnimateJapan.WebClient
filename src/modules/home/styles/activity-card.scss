@@ -1,0 +1,88 @@
+@use '@/styles/variables' as *;
+
+.activity-card {
+  overflow: hidden;
+  display: grid;
+  border: 1px solid rgba($color-border, 0.86);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 14px 34px rgba(43, 55, 84, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.activity-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 42px rgba(43, 55, 84, 0.12);
+}
+
+.activity-card img,
+.activity-card__placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.activity-card__placeholder {
+  background:
+    linear-gradient(135deg, rgba($color-accent, 0.22), rgba($color-primary, 0.16)),
+    #f7fafc;
+}
+
+.activity-card__body {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.activity-card__topline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.activity-card__topline p,
+.activity-card__topline span {
+  width: fit-content;
+  margin: 0;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.activity-card__topline p {
+  background: rgba($color-accent, 0.14);
+  color: #31746b;
+}
+
+.activity-card__topline span {
+  background: rgba($color-primary, 0.12);
+  color: $color-primary;
+}
+
+.activity-card__body h3 {
+  margin: 0;
+  line-height: 1.35;
+}
+
+.activity-card__address,
+.activity-card__info {
+  margin: 0;
+  color: $color-muted;
+  line-height: 1.65;
+}
+
+.activity-card__info {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.activity-card__action {
+  width: fit-content;
+  color: $color-primary;
+  font-size: 0.92rem;
+  font-weight: 900;
+}

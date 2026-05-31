@@ -1,6 +1,6 @@
 {
   "nav": {
-    "products": "Products",
+    "products": "Activities",
     "orders": "Orders",
     "member": "Member",
     "cart": "Cart"
@@ -13,6 +13,7 @@
     "remove": "Remove",
     "next": "Next",
     "save": "Save",
+    "cancel": "Cancel",
     "loading": "Loading",
     "close": "Close notification"
   },
@@ -29,8 +30,10 @@
     "datePending": "Date pending",
     "empty": "No activities to show",
     "loadFailed": "Unable to load activities",
+    "notFound": "Activity not found",
     "preOrder": "Pre-order",
-    "unnamed": "Untitled activity"
+    "unnamed": "Untitled activity",
+    "viewProducts": "View products"
   },
   "orderForm": {
     "eyebrow": "Activity order form",
@@ -90,9 +93,21 @@
   "product": {
     "eyebrow": "Take your time",
     "title": "Products",
+    "activityEyebrow": "Activity products",
+    "activityTitleFallback": "Activity products",
+    "loadFailed": "Unable to load products",
+    "emptyForActivity": "No products are available for this activity",
     "addToCart": "Add to cart",
     "addedToCart": "Added",
     "notFound": "Product not found",
+    "addDialog": {
+      "title": "Add to cart",
+      "quantity": "Quantity",
+      "note": "Note",
+      "notePlaceholder": "Character, option, or other request",
+      "subtotal": "Subtotal",
+      "confirm": "Add to cart"
+    },
     "category": {
       "all": "All",
       "figure": "Figures",
@@ -101,52 +116,45 @@
     }
   },
   "cart": {
-    "eyebrow": "Ready to checkout",
+    "eyebrow": "Ready to order",
     "title": "Cart",
     "empty": "Your cart is empty",
     "goShopping": "Go shopping",
     "summary": "Summary",
+    "activity": "Activity",
+    "unitPrice": "Unit price",
+    "lineSubtotal": "Subtotal",
+    "totalQuantity": "Total quantity",
     "subtotal": "Subtotal",
-    "checkout": "Checkout",
+    "submitOrder": "Submit order",
+    "submitting": "Submitting",
     "viewCart": "View cart",
     "toast": {
       "addedTitle": "Added to cart",
-      "addedMessage": "“{name}” is now in your cart"
-    }
-  },
-  "checkout": {
-    "steps": {
-      "info": "Receiver",
-      "payment": "Payment",
-      "complete": "Complete"
-    },
-    "infoEyebrow": "Checkout",
-    "infoTitle": "Receiver info",
-    "paymentEyebrow": "Payment",
-    "paymentTitle": "Payment method",
-    "completeEyebrow": "Complete",
-    "completeTitle": "Order created",
-    "completeMessage": "Your order has been received. You can track delivery status in orders.",
-    "viewOrders": "View orders",
-    "placeOrder": "Place order",
-    "receiver": {
-      "name": "Receiver",
-      "phone": "Phone",
-      "address": "Address"
-    },
-    "payment": {
-      "creditCard": "Credit card",
-      "linePay": "LINE Pay",
-      "bankTransfer": "Bank transfer"
+      "addedMessage": "“{name}” is now in your cart",
+      "mixedActivityTitle": "Cart has another activity",
+      "mixedActivityMessage": "The first MVP supports one activity per order. Please finish or clear the current cart first.",
+      "orderCreatedTitle": "Order created",
+      "orderCreatedMessage": "Mock order {orderNo} has been created",
+      "submitFailedTitle": "Submit failed",
+      "submitFailedMessage": "Unable to create the order. Please try again later."
     }
   },
   "order": {
     "eyebrow": "Orders",
     "title": "Orders",
     "detail": "Order detail",
+    "empty": "No orders yet",
+    "viewOrders": "View orders",
     "createdAt": "Created at",
     "total": "Total",
+    "paymentStatusLabel": "Payment",
+    "processStatusLabel": "Status",
     "notFound": "Order not found",
+    "paymentStatus": {
+      "paid": "Paid",
+      "unpaid": "Unpaid"
+    },
     "status": {
       "customerOrdered": "Customer ordered",
       "confirmationSent": "Confirmation sent",
@@ -160,12 +168,14 @@
     }
   },
   "auth": {
-    "eyebrow": "Account",
-    "title": "Login",
+    "eyebrow": "LINE member",
+    "title": "Continue with LINE",
+    "description": "The first MVP uses a mock LINE session. The official LINE Login API can be connected later.",
     "email": "Email",
     "password": "Password",
     "login": "Login",
-    "lineLogin": "Login with LINE",
+    "lineLogin": "Mock LINE login",
+    "signingIn": "Signing in",
     "processingLine": "Processing LINE login"
   },
   "member": {

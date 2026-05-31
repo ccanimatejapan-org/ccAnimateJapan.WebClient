@@ -18,10 +18,8 @@ const { t } = useI18n();
 const auth = useAuthStore();
 
 onMounted(async () => {
-  if (route.query.code) {
-    await auth.signInWithLine(route.query.code);
-  }
-  router.replace({ name: ROUTE_NAMES.MEMBER_PROFILE });
+  await auth.signInWithLine(route.query.code || 'mock-line-callback');
+  router.replace({ name: ROUTE_NAMES.HOME });
 });
 </script>
 

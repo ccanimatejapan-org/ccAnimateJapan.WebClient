@@ -1,7 +1,7 @@
 .cart-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 24px;
+  grid-template-columns: 1fr;
+  gap: 16px;
   align-items: start;
 }
 
@@ -10,12 +10,13 @@
   gap: 12px;
   padding: 8px;
   border: 1px solid rgba(234, 216, 204, 0.74);
-  border-radius: 26px;
+  border-radius: 8px;
   background: rgba(255, 253, 249, 0.72);
 }
 
-@media (max-width: 760px) {
+@media (min-width: 860px) {
   .cart-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 24px;
   }
 }

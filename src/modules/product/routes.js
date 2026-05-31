@@ -1,17 +1,16 @@
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import ProductListPage from './pages/ProductListPage.vue';
-import ProductDetailPage from './pages/ProductDetailPage.vue';
 
 export default [
   {
-    path: 'products',
-    name: ROUTE_NAMES.PRODUCT_LIST,
-    component: ProductListPage
+    path: 'activities/:activityId/products',
+    name: ROUTE_NAMES.ACTIVITY_PRODUCTS,
+    component: ProductListPage,
+    props: true
   },
   {
-    path: 'products/:id',
-    name: ROUTE_NAMES.PRODUCT_DETAIL,
-    component: ProductDetailPage,
-    props: true
+    path: 'products',
+    name: ROUTE_NAMES.PRODUCT_LIST,
+    redirect: { name: ROUTE_NAMES.HOME }
   }
 ];

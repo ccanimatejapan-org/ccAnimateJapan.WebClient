@@ -1,12 +1,10 @@
 export const ROUTE_NAMES = {
   HOME: 'home',
   PRODUCT_LIST: 'product-list',
+  ACTIVITY_PRODUCTS: 'activity-products',
   PRODUCT_DETAIL: 'product-detail',
   CART: 'cart',
   ORDER_FORM: 'order-form',
-  CHECKOUT_INFO: 'checkout-info',
-  CHECKOUT_PAYMENT: 'checkout-payment',
-  CHECKOUT_COMPLETE: 'checkout-complete',
   ORDER_LIST: 'order-list',
   ORDER_DETAIL: 'order-detail',
   LOGIN: 'login',

@@ -1,6 +1,6 @@
 {
   "nav": {
-    "products": "商品",
+    "products": "活動",
     "orders": "訂單",
     "member": "會員中心",
     "cart": "購物車"
@@ -13,6 +13,7 @@
     "remove": "移除",
     "next": "下一步",
     "save": "儲存",
+    "cancel": "取消",
     "loading": "載入中",
     "close": "關閉提示"
   },
@@ -29,8 +30,10 @@
     "datePending": "活動時間未定",
     "empty": "目前沒有可顯示的活動",
     "loadFailed": "活動資料讀取失敗",
+    "notFound": "找不到活動",
     "preOrder": "可預購",
-    "unnamed": "未命名活動"
+    "unnamed": "未命名活動",
+    "viewProducts": "查看活動商品"
   },
   "orderForm": {
     "eyebrow": "活動訂購表單",
@@ -91,9 +94,21 @@
   "product": {
     "eyebrow": "慢慢挑選",
     "title": "商品瀏覽",
+    "activityEyebrow": "活動商品",
+    "activityTitleFallback": "活動商品列表",
+    "loadFailed": "商品資料讀取失敗",
+    "emptyForActivity": "這個活動目前沒有可購買商品",
     "addToCart": "加入購物車",
     "addedToCart": "已加入",
     "notFound": "找不到商品",
+    "addDialog": {
+      "title": "加入購物車",
+      "quantity": "數量",
+      "note": "備註",
+      "notePlaceholder": "可填角色、款式或其他需求",
+      "subtotal": "小計",
+      "confirm": "加入購物車"
+    },
     "category": {
       "all": "全部",
       "figure": "模型",
@@ -102,52 +117,45 @@
     }
   },
   "cart": {
-    "eyebrow": "準備結帳",
+    "eyebrow": "準備送出",
     "title": "購物車",
     "empty": "購物車目前沒有商品",
     "goShopping": "前往選購",
     "summary": "訂單摘要",
+    "activity": "活動",
+    "unitPrice": "單價",
+    "lineSubtotal": "小計",
+    "totalQuantity": "總數量",
     "subtotal": "小計",
-    "checkout": "前往結帳",
+    "submitOrder": "送出訂單",
+    "submitting": "送出中",
     "viewCart": "查看購物車",
     "toast": {
       "addedTitle": "已加入購物車",
-      "addedMessage": "「{name}」已放進購物車"
-    }
-  },
-  "checkout": {
-    "steps": {
-      "info": "收件資料",
-      "payment": "付款方式",
-      "complete": "完成"
-    },
-    "infoEyebrow": "寄到哪裡呢",
-    "infoTitle": "收件資料",
-    "paymentEyebrow": "選擇付款",
-    "paymentTitle": "付款方式",
-    "completeEyebrow": "完成下單",
-    "completeTitle": "訂單已建立",
-    "completeMessage": "我們已收到你的訂單，後續可在會員訂單查詢配送狀態。",
-    "viewOrders": "查看訂單",
-    "placeOrder": "送出訂單",
-    "receiver": {
-      "name": "收件人",
-      "phone": "手機",
-      "address": "地址"
-    },
-    "payment": {
-      "creditCard": "信用卡",
-      "linePay": "LINE Pay",
-      "bankTransfer": "銀行轉帳"
+      "addedMessage": "「{name}」已放進購物車",
+      "mixedActivityTitle": "購物車已有其他活動",
+      "mixedActivityMessage": "第一版一次只能送出同一個活動的商品，請先完成或清空目前購物車。",
+      "orderCreatedTitle": "訂單已建立",
+      "orderCreatedMessage": "模擬訂單 {orderNo} 已建立",
+      "submitFailedTitle": "送出失敗",
+      "submitFailedMessage": "目前無法建立訂單，請稍後再試"
     }
   },
   "order": {
     "eyebrow": "訂單紀錄",
     "title": "訂單查詢",
     "detail": "訂單明細",
+    "empty": "目前沒有訂單",
+    "viewOrders": "查看訂單",
     "createdAt": "建立時間",
     "total": "總計",
+    "paymentStatusLabel": "付款狀態",
+    "processStatusLabel": "處理狀態",
     "notFound": "找不到訂單",
+    "paymentStatus": {
+      "paid": "已付款",
+      "unpaid": "待付款"
+    },
     "status": {
       "customerOrdered": "顧客已下單",
       "confirmationSent": "確認信已寄送",
@@ -161,12 +169,14 @@
     }
   },
   "auth": {
-    "eyebrow": "會員小屋",
-    "title": "會員登入",
+    "eyebrow": "LINE 會員",
+    "title": "使用 LINE 繼續",
+    "description": "第一版前台先使用 mock LINE session，之後再接正式 LINE Login API。",
     "email": "Email",
     "password": "密碼",
     "login": "登入",
-    "lineLogin": "使用 LINE 登入",
+    "lineLogin": "使用 LINE 模擬登入",
+    "signingIn": "登入中",
     "processingLine": "正在處理 LINE 登入"
   },
   "member": {

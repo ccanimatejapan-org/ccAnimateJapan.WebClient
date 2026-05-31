@@ -7,7 +7,9 @@
       </div>
     </div>
 
-    <div class="order-list">
+    <AppLoading v-if="isLoading" :label="t('common.loading')" />
+    <AppEmpty v-else-if="orders.length === 0" :message="t('order.empty')" />
+    <div v-else class="order-list">
       <OrderCard v-for="order in orders" :key="order.id" :order="order" />
     </div>
   </section>
@@ -16,14 +18,21 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import AppEmpty from '@/shared/components/AppEmpty.vue';
+import AppLoading from '@/shared/components/AppLoading.vue';
 import OrderCard from '../components/OrderCard.vue';
 import { getOrders } from '../api/orderApi';
 
 const { t } = useI18n();
 const orders = ref([]);
+const isLoading = ref(true);
 
 onMounted(async () => {
-  orders.value = await getOrders();
+  try {
+    orders.value = await getOrders();
+  } finally {
+    isLoading.value = false;
+  }
 });
 </script>
 

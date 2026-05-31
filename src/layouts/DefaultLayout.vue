@@ -6,14 +6,11 @@
         <small>角色周邊小舖</small>
       </RouterLink>
       <nav class="site-header__nav" aria-label="Main">
-        <RouterLink :to="{ name: ROUTE_NAMES.PRODUCT_LIST }">
+        <RouterLink :to="{ name: ROUTE_NAMES.HOME, hash: '#activities' }">
           {{ t('nav.products') }}
         </RouterLink>
         <RouterLink :to="{ name: ROUTE_NAMES.ORDER_LIST }">
           {{ t('nav.orders') }}
-        </RouterLink>
-        <RouterLink :to="{ name: ROUTE_NAMES.MEMBER_PROFILE }">
-          {{ t('nav.member') }}
         </RouterLink>
       </nav>
       <RouterLink

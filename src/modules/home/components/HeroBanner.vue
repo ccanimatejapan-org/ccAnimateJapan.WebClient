@@ -5,9 +5,9 @@
       <h1>{{ t('home.title') }}</h1>
       <p>{{ t('home.subtitle') }}</p>
       <div class="hero-banner__actions">
-        <RouterLink class="app-button app-button--primary" :to="{ name: ROUTE_NAMES.PRODUCT_LIST }">
+        <a class="app-button app-button--primary" href="#activities">
           {{ t('home.cta') }}
-        </RouterLink>
+        </a>
         <span>{{ t('home.note') }}</span>
       </div>
     </div>
@@ -15,9 +15,7 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { ROUTE_NAMES } from '@/shared/constants/routes';
 
 const { t } = useI18n();
 </script>

@@ -1,9 +1,18 @@
 <template>
   <article class="cart-item">
-    <img :src="item.imageUrl" :alt="item.name" />
-    <div>
-      <h3>{{ item.name }}</h3>
-      <AppPrice :value="item.price" />
+    <img :src="item.imageUrl" :alt="item.productName" />
+    <div class="cart-item__body">
+      <p>{{ item.activityName }}</p>
+      <h3>{{ item.productName }}</h3>
+      <span v-if="item.note">{{ item.note }}</span>
+      <div class="cart-item__price-row">
+        <span>{{ t('cart.unitPrice') }}</span>
+        <AppPrice :value="item.price" />
+      </div>
+      <div class="cart-item__price-row">
+        <span>{{ t('cart.lineSubtotal') }}</span>
+        <AppPrice :value="item.price * item.quantity" />
+      </div>
     </div>
     <QuantityControl :model-value="item.quantity" @update:model-value="cart.updateQuantity(item.id, $event)" />
     <button type="button" class="text-button" @click="cart.removeItem(item.id)">

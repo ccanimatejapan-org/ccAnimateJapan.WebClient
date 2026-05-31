@@ -2,23 +2,52 @@
 
 .order-card {
   display: grid;
-  grid-template-columns: 1fr auto auto;
-  align-items: center;
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 14px;
   padding: 16px;
   border: 1px solid $color-border;
   border-radius: 8px;
   background: #fff;
 }
 
-@media (max-width: 760px) {
-  .order-card {
-    grid-template-columns: 72px 1fr;
-  }
+.order-card__main {
+  display: grid;
+  gap: 4px;
+}
 
-  .order-card .app-price,
-  .order-card .status-badge {
-    grid-column: 2;
-    justify-self: start;
+.order-card__main p,
+.order-card__main h3,
+.order-card__main span,
+.order-card__meta span,
+.order-card__total span {
+  margin: 0;
+}
+
+.order-card__main p {
+  color: $color-primary;
+  font-weight: 900;
+}
+
+.order-card__main h3 {
+  line-height: 1.35;
+}
+
+.order-card__main span,
+.order-card__meta span,
+.order-card__total span {
+  color: $color-muted;
+  font-size: 0.88rem;
+}
+
+.order-card__meta,
+.order-card__total {
+  display: grid;
+  gap: 6px;
+}
+
+@media (min-width: 760px) {
+  .order-card {
+    grid-template-columns: minmax(0, 1.5fr) 120px 150px auto;
+    align-items: center;
   }
 }
