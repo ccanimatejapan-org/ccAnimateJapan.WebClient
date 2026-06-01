@@ -270,6 +270,7 @@ $order-line: rgba(244, 214, 155, 0.72);
 }
 
 .form-grid input,
+.form-grid select,
 .order-product-row input {
   min-height: 46px;
   border: 1px solid $order-line;
@@ -281,6 +282,7 @@ $order-line: rgba(244, 214, 155, 0.72);
 }
 
 .form-grid input:focus,
+.form-grid select:focus,
 .order-product-row input:focus {
   border-color: $order-honey;
   background: #fffaf4;

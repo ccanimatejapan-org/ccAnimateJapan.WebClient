@@ -7,7 +7,8 @@ import { normalizeQuantity } from '../utils/quantityPolicy';
 const INITIAL_FORM = {
   subscriberName: '',
   subscriberEmail: '',
-  subscriberPhone: '',
+  subscriberBank: '',
+  deliveryTypeId: null,
   agreedToTerms: false
 };
 
@@ -20,6 +21,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
   const activity = ref(null);
   const agreement = ref(null);
   const products = ref([]);
+  const deliveryTypes = ref([]);
   const quantities = reactive({});
   const productNotes = reactive({});
   const form = reactive({ ...INITIAL_FORM });
@@ -58,6 +60,10 @@ export const useOrderFormStore = defineStore('orderForm', () => {
     selectedItems.value.reduce((sum, item) => sum + item.amount, 0)
   );
 
+  const selectedDeliveryType = computed(() =>
+    deliveryTypes.value.find((deliveryType) => deliveryType.id === Number(form.deliveryTypeId)) || null
+  );
+
   function resetFieldErrors() {
     Object.keys(fieldErrors).forEach((key) => {
       delete fieldErrors[key];
@@ -93,6 +99,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
       activity.value = result.activity;
       agreement.value = result.agreement;
       products.value = result.products;
+      deliveryTypes.value = result.deliveryTypes || [];
       result.products.forEach((product) => {
         quantities[product.id] = 0;
         productNotes[product.id] = '';
@@ -104,6 +111,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
       activity.value = null;
       agreement.value = null;
       products.value = [];
+      deliveryTypes.value = [];
     } finally {
       if (runId === initializeRun) {
         isLoading.value = false;
@@ -136,6 +144,12 @@ export const useOrderFormStore = defineStore('orderForm', () => {
     }
     if (!isGmail(form.subscriberEmail)) {
       fieldErrors.subscriberEmail = 'orderForm.errors.gmailRequired';
+    }
+    if (!/^\d{5}$/.test(String(form.subscriberBank || '').trim())) {
+      fieldErrors.subscriberBank = 'orderForm.errors.bankRequired';
+    }
+    if (!selectedDeliveryType.value) {
+      fieldErrors.deliveryTypeId = 'orderForm.errors.deliveryTypeRequired';
     }
     return Object.keys(fieldErrors).length === 0;
   }
@@ -180,7 +194,8 @@ export const useOrderFormStore = defineStore('orderForm', () => {
       activityId: activityId.value,
       subscriberName: form.subscriberName.trim(),
       subscriberEmail: form.subscriberEmail.trim(),
-      subscriberPhone: form.subscriberPhone.trim(),
+      subscriberBank: form.subscriberBank.trim(),
+      deliveryTypeId: Number(form.deliveryTypeId),
       total: total.value,
       items: selectedItems.value.map((item) => ({
         productId: item.productId,
@@ -217,6 +232,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
     activity,
     agreement,
     products,
+    deliveryTypes,
     quantities,
     productNotes,
     form,
@@ -230,6 +246,7 @@ export const useOrderFormStore = defineStore('orderForm', () => {
     selectedItems,
     total,
     totalQuantity,
+    selectedDeliveryType,
     initialize,
     setQuantity,
     setProductNote,

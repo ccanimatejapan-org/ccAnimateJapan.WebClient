@@ -26,7 +26,12 @@ function createMockOrderForm(activityId) {
     products: createMockProducts({ activityId: normalizedActivityId }).map((product) => ({
       ...product,
       info: product.info ?? product.note ?? ''
-    }))
+    })),
+    deliveryTypes: [
+      { id: 1, name: '賣貨便' },
+      { id: 2, name: '宅配' },
+      { id: 3, name: '台中面交' }
+    ]
   };
 }
 
@@ -34,8 +39,33 @@ function createMockSubmitResult(payload) {
   const id = Date.now();
   return {
     id,
-    orderNo: `MOCK${String(id).slice(-8)}`,
-    ...payload
+    subscriberName: payload.subscriberName,
+    subscriberEmail: payload.subscriberEmail,
+    subscriberBank: payload.subscriberBank,
+    createdAt: new Date().toISOString(),
+    createdAdminId: null,
+    updateAt: null,
+    updateAdminId: null,
+    deliveryTypeId: payload.deliveryTypeId,
+    activityId: payload.activityId,
+    total: payload.total,
+    orderStatus: 1,
+    paymentStatus: 1,
+    deliveryStatus: 1,
+    orderProducts: payload.items.map((item, index) => ({
+      id: id + index + 1,
+      orderId: id,
+      productId: item.productId,
+      amount: item.amount,
+      createdAt: new Date().toISOString(),
+      createdAdminId: null,
+      updateAt: null,
+      updateAdminId: null,
+      subTotal: item.subTotal,
+      price: item.price,
+      info: item.info,
+      orderProductStatus: 1
+    }))
   };
 }
 

@@ -85,7 +85,9 @@
     "basicInfo": {
       "name": "姓名",
       "email": "Gmail",
-      "phone": "電話（非必填）"
+      "bank": "銀行末五碼",
+      "deliveryType": "取貨方式",
+      "deliveryTypePlaceholder": "請選擇取貨方式"
     },
     "products": {
       "quantity": "數量",
@@ -96,6 +98,8 @@
     },
     "preview": {
       "contact": "基本資料",
+      "bank": "銀行末五碼",
+      "deliveryType": "取貨方式",
       "items": "訂購商品",
       "submit": "送出訂單",
       "edit": "返回修改"
@@ -113,6 +117,8 @@
       "agreeRequired": "請先同意以上事項",
       "nameRequired": "請填寫姓名",
       "gmailRequired": "請填寫有效的 Gmail",
+      "bankRequired": "請填寫銀行末五碼",
+      "deliveryTypeRequired": "請選擇取貨方式",
       "productsRequired": "請至少選擇一項商品",
       "formNotFound": "找不到活動表單",
       "submitFailed": "送出失敗，請稍後再試"

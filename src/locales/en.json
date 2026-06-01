@@ -85,7 +85,9 @@
     "basicInfo": {
       "name": "Name",
       "email": "Gmail",
-      "phone": "Phone (optional)"
+      "bank": "Last 5 digits of account",
+      "deliveryType": "Delivery method",
+      "deliveryTypePlaceholder": "Select delivery method"
     },
     "products": {
       "quantity": "Quantity",
@@ -96,6 +98,8 @@
     "preview": {
       "contact": "Basic info",
       "items": "Order items",
+      "bank": "Last 5 digits of account",
+      "deliveryType": "Delivery method",
       "submit": "Submit order",
       "edit": "Edit"
     },
@@ -112,6 +116,8 @@
       "agreeRequired": "Please agree to the terms above first",
       "nameRequired": "Please enter your name",
       "gmailRequired": "Please enter a valid Gmail address",
+      "bankRequired": "Please enter the last 5 digits of the account (5 digits)",
+      "deliveryTypeRequired": "Please select a delivery method",
       "productsRequired": "Please select at least one product",
       "formNotFound": "Activity form not found",
       "submitFailed": "Unable to submit. Please try again later"

@@ -15,9 +15,34 @@
           {{ t(store.fieldErrors.subscriberEmail) }}
         </small>
       </label>
-      <label class="form-grid__full">
-        <span>{{ t('orderForm.basicInfo.phone') }}</span>
-        <input v-model="store.form.subscriberPhone" type="tel" />
+      <label>
+        <span>{{ t('orderForm.basicInfo.bank') }}</span>
+        <input
+          v-model="store.form.subscriberBank"
+          type="text"
+          inputmode="numeric"
+          maxlength="5"
+          autocomplete="off"
+        />
+        <small v-if="store.fieldErrors.subscriberBank" class="form-error">
+          {{ t(store.fieldErrors.subscriberBank) }}
+        </small>
+      </label>
+      <label>
+        <span>{{ t('orderForm.basicInfo.deliveryType') }}</span>
+        <select v-model.number="store.form.deliveryTypeId">
+          <option :value="null">{{ t('orderForm.basicInfo.deliveryTypePlaceholder') }}</option>
+          <option
+            v-for="deliveryType in store.deliveryTypes"
+            :key="deliveryType.id"
+            :value="deliveryType.id"
+          >
+            {{ deliveryType.name }}
+          </option>
+        </select>
+        <small v-if="store.fieldErrors.deliveryTypeId" class="form-error">
+          {{ t(store.fieldErrors.deliveryTypeId) }}
+        </small>
       </label>
     </div>
     <div class="order-form-actions">

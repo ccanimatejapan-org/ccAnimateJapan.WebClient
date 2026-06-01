@@ -11,7 +11,10 @@
         <h2>{{ t('orderForm.preview.contact') }}</h2>
         <p>{{ store.form.subscriberName }}</p>
         <p>{{ store.form.subscriberEmail }}</p>
-        <p v-if="store.form.subscriberPhone">{{ store.form.subscriberPhone }}</p>
+        <p>{{ t('orderForm.preview.bank') }}：{{ store.form.subscriberBank }}</p>
+        <p v-if="store.selectedDeliveryType">
+          {{ t('orderForm.preview.deliveryType') }}：{{ store.selectedDeliveryType.name }}
+        </p>
       </section>
 
       <section class="order-preview-section">
