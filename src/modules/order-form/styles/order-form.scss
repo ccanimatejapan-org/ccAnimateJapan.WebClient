@@ -82,9 +82,41 @@ $order-line: rgba(244, 214, 155, 0.72);
   letter-spacing: -0.03em;
 }
 
-.order-form-header p:last-child {
+.order-form-header__info {
   max-width: 640px;
   color: $order-muted;
+  line-height: 1.6;
+  word-break: break-word;
+
+  p,
+  div {
+    margin: 0;
+  }
+
+  p + p,
+  p + div,
+  div + p,
+  div + div,
+  ul,
+  ol {
+    margin-top: 0.75rem;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.25rem;
+  }
+
+  li + li {
+    margin-top: 0.35rem;
+  }
+
+  a {
+    color: inherit;
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 0.14em;
+  }
 }
 
 .order-form-card::before {
@@ -166,9 +198,31 @@ $order-line: rgba(244, 214, 155, 0.72);
   }
 }
 
+.order-form-agreement__sections {
+  display: grid;
+  gap: 1rem;
+}
+
+.order-form-agreement__section {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid rgba(244, 214, 155, 0.56);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 253, 249, 0.96) 0%, rgba(255, 248, 232, 0.92) 100%);
+
+  h3 {
+    margin: 0;
+    color: $order-ink;
+    font-size: 1rem;
+    font-weight: 900;
+  }
+}
+
 .order-form-list {
   display: grid;
   gap: 0.65rem;
+  margin: 0;
   padding-left: 1.25rem;
   color: $color-muted;
 }

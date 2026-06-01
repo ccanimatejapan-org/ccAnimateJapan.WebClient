@@ -53,7 +53,34 @@
       "ruleContact": "Please confirm your name and Gmail. We will use them to contact you about this order.",
       "ruleConfirmation": "Submitting this form does not mean the order is confirmed. Staff will confirm quantities and prices later.",
       "ruleZeroQuantity": "Products with quantity 0 will not be included in the order items.",
-      "checkbox": "I have read and agree to the terms above"
+      "checkbox": "I have read and agree to the terms above",
+      "sections": {
+        "orderPayment": {
+          "title": "Order and payment rules",
+          "items": {
+            "fullPayment": "Full payment by bank transfer is required.",
+            "minorConsent": "For minors: please obtain consent from your legal guardian. Once payment is made, it will be treated as confirmation that parental or guardian consent has been obtained, and the order cannot later be canceled or refunded for lack of permission.",
+            "paymentDeadline": "Payment deadline: after the group order is confirmed, an order confirmation email will be sent. Please complete payment within 3 days after receiving it, or your slot will be released automatically."
+          }
+        },
+        "shippingRefund": {
+          "title": "Shipping and out-of-stock refund policy",
+          "items": {
+            "transparentQuote": "Transparent pricing: a second payment plus domestic shipping is required.",
+            "refundFormula": "Refund estimate: total amount received - total amount of successfully purchased items = refund amount.",
+            "deliveryMethods": "Delivery methods: Ship711, home delivery, and Taichung meetup are available."
+          }
+        },
+        "notes": {
+          "title": "Important notes",
+          "items": {
+            "internationalShipping": "International shipping may involve minor bumps or box damage. Please order carefully if box condition is very important to you.",
+            "afterSales": "After-sales policy: proxy purchases are customized transactions. Except for major defects, returns or exchanges for personal reasons such as color differences or ordering mistakes are not accepted.",
+            "arrivalTime": "Arrival time: based on the official announced schedule.",
+            "customerService": "If you have any questions, please message our official Line customer service: ＠680javyx"
+          }
+        }
+      }
     },
     "basicInfo": {
       "name": "Name",

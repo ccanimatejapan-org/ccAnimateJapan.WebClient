@@ -12,7 +12,11 @@
         <header class="order-form-header">
           <p class="eyebrow">{{ t('orderForm.eyebrow') }}</p>
           <h1>{{ store.activity.name }}</h1>
-          <p>{{ store.activity.info }}</p>
+          <div
+            v-if="store.activity?.info"
+            class="order-form-header__info"
+            v-html="activityInfoHtml"
+          />
         </header>
 
         <img
@@ -34,7 +38,7 @@
 </template>
 
 <script setup>
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppLoading from '@/shared/components/AppLoading.vue';
 import { useOrderFormStore } from '../stores/orderFormStore';
@@ -43,6 +47,7 @@ import AgreementStep from '../components/AgreementStep.vue';
 import BasicInfoStep from '../components/BasicInfoStep.vue';
 import ProductSelectionStep from '../components/ProductSelectionStep.vue';
 import OrderPreviewStep from '../components/OrderPreviewStep.vue';
+import { formatActivityInfoHtml } from '../utils/activityInfoHtml';
 import '../styles/order-form.scss';
 
 const props = defineProps({
@@ -54,6 +59,7 @@ const props = defineProps({
 
 const { t } = useI18n();
 const store = useOrderFormStore();
+const activityInfoHtml = computed(() => formatActivityInfoHtml(store.activity?.info));
 
 onMounted(() => store.initialize(props.activityId));
 

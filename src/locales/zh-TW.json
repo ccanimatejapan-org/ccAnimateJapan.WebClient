@@ -53,7 +53,34 @@
       "ruleContact": "請確認姓名與 Gmail 正確，後續會以此聯繫訂單確認。",
       "ruleConfirmation": "送出表單後不代表訂單立即成立，商品數量與價格仍以工作人員確認為準。",
       "ruleZeroQuantity": "數量填 0 的商品不會建立訂單明細。",
-      "checkbox": "我已閱讀並同意以上事項"
+      "checkbox": "我已閱讀並同意以上事項",
+      "sections": {
+        "orderPayment": {
+          "title": "📝 訂購與付款規則",
+          "items": {
+            "fullPayment": "採「全額匯款」。",
+            "minorConsent": "未成年規範：未成年者請徵得法定代理人同意。一旦進行匯款，即視同已取得父母或監護人同意，後續不得以「未經家長許可」為由要求取消訂單或退款。",
+            "paymentDeadline": "匯款時限：確認開團後會寄送訂單確認信，收到後請於 3 日內完成匯款，逾期名額將自動釋出。"
+          }
+        },
+        "shippingRefund": {
+          "title": "📦 物流與「缺貨保障」退款說明",
+          "items": {
+            "transparentQuote": "報價透明：需二補＋國內運費。",
+            "refundFormula": "退款試算：已收總額 - 實際買到商品總額 = 退還金額。",
+            "deliveryMethods": "取貨方式：提供「賣貨便」寄送、「宅配」、「台中面交」。"
+          }
+        },
+        "notes": {
+          "title": "⚠️ 注意事項",
+          "items": {
+            "internationalShipping": "國際運輸：海外運輸難免有微小碰撞，盒損魔人請斟酌下單。",
+            "afterSales": "售後規範：代購屬客製化給付，除重大瑕疵外，恕不接受個人因素（色差、買錯）退換貨。",
+            "arrivalTime": "到貨時間：依官方公布到貨時間。",
+            "customerService": "若有任何問題歡迎私訊 Line 官方客服：＠680javyx"
+          }
+        }
+      }
     },
     "basicInfo": {
       "name": "姓名",
