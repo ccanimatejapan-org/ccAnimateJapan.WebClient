@@ -1,7 +1,7 @@
 import { httpClient } from '@/shared/api/httpClient';
 import { unwrapApiResponse } from '@/shared/api/apiResponse';
 import { shouldUseMockApi } from '@/shared/api/mockMode';
-import { createMockActivities } from '@/modules/activity/api/activityApi';
+import { createMockActivities, getActivities } from '@/modules/activity/api/activityApi';
 
 function normalizeActivityProducts(products, activityId) {
   if (!Array.isArray(products)) return [];
@@ -48,12 +48,16 @@ export async function getActivityProductCatalog(activityId) {
     });
   }
 
-  const response = await httpClient.get(`/activities/${normalizedActivityId}/order-form`);
-  const data = unwrapApiResponse(response, 'product.loadFailed');
+  const [productsResponse, activities] = await Promise.all([
+    httpClient.get(`/activities/${normalizedActivityId}/products`),
+    getActivities()
+  ]);
+  const products = unwrapApiResponse(productsResponse, 'product.loadFailed');
+  const activityList = Array.isArray(activities) ? activities : [];
 
   return {
-    activity: data?.activity || null,
-    products: normalizeActivityProducts(data?.products, normalizedActivityId)
+    activity: activityList.find((activity) => activity.id === normalizedActivityId) || null,
+    products: normalizeActivityProducts(products, normalizedActivityId)
   };
 }
 

@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ccAnimateJapan 的前台商城，技術棧為 **Vue 3（Composition API）+ Vite + Pinia**，主要使用情境是手機瀏覽器、LINE 官方帳號與 LIFF WebView。
 
-目前為**純前端 MVP**：大部分資料來自各 API 檔案內的 mock data，尚未串接正式後端。
+資料來源由 `VITE_USE_MOCK_API` 切換：**預設 `true`（mock data，展示用）**；設 `false`（本機 `.env.local`）時改打正式後端 `ccAnimateJapan.WebAPI`（活動/商品/購物車/訂單）。**LINE 登入已實裝**（real 模式下需登入＋加官方好友才能進商城）。
 
 `ARCHITECTURE.md`（繁體中文）是專案最完整、最權威的說明，涵蓋資料夾責任、資料流、頁面路由與所有規範。**做任何結構性調整前請先閱讀它。** 本文件只補充那些「光看 `ARCHITECTURE.md` 或檔案結構不容易看出來」的重點。
 
@@ -53,14 +53,16 @@ node --test src/modules/order-form/utils/quantityPolicy.test.js   # 執行單一
 
 編輯 API 檔時請保留 mock 分支，app 與展示用部署都依賴它。
 
+- real 模式（`VITE_USE_MOCK_API=false`）下，購物車由 `cartStore` 透過新的 `src/modules/cart/api/cartApi.js` 與後端同步（**伺服器為準**，覆蓋本地）；訂單 `orderApi` 真實分支已補 `unwrapApiResponse`。登入後 `httpClient` request interceptor 會自動帶 `Authorization: Bearer`（見下方 LINE 登入）。
+
 ## MVP 範圍注意事項（依 ARCHITECTURE.md）
 
-- 沒有獨立結帳流程：`CartPage` 直接呼叫 `createOrderFromCartItems()`（寫入 localStorage 的 mock order）後導向 `/orders`。沒有 `/checkout` route，也沒有 `modules/checkout`。
+- 沒有獨立結帳流程：`CartPage` 直接呼叫 `createOrderFromCartItems()` 後導向 `/orders`（mock 模式寫 localStorage；real 模式打 `POST /orders` 建真實訂單並由後端清空伺服器購物車）。沒有 `/checkout` route，也沒有 `modules/checkout`。
 - 購物車一次只允許同一個活動的商品。
 - 沒有商品詳情 route；`/products` 會 redirect 回首頁。`ProductDetailPage.vue`、`ProductFilter.vue`、`ProductImageGallery.vue` 是保留但未使用的檔案。
 - `modules/order-form`（`/activity/:activityId`）是舊流程，刻意放在 layout group 外、也不屬於商城 MVP——保留即可，不要把它併進 MVP 工作中。
-- LINE 登入目前是 mock；`useLineLogin.js` 有正式 redirect 邏輯但尚未接上（還沒有 token interceptor / 401 處理）。
+- **LINE 登入已實裝**（real 模式）：`LoginPage` 導向 LINE → `/auth/line/callback` 驗 `state` → `POST /auth/line/callback` → 存 token（`authStore`，localStorage `ccAnimateJapan.auth`）。`httpClient` request interceptor 帶 `Authorization: Bearer`、收到 401 清 token。非官方好友會被導到 `/auth/add-friend`（`AddFriendPage`）。`src/router/index.js` 有 **route guard**：real 模式未登入一律導 `/auth/login`（mock 模式不擋，demo 不壞）。
 
 ## 環境變數
 
-只有 `VITE_` 開頭的變數會暴露給前端：`VITE_API_BASE_URL`（預設 `/api`）、`VITE_API_PROXY_TARGET`（dev proxy 目標）、`VITE_USE_MOCK_API`、`VITE_ORDER_FORM_USE_MOCK_API`、`VITE_LINE_CLIENT_ID`。
+只有 `VITE_` 開頭的變數會暴露給前端：`VITE_API_BASE_URL`（預設 `/api`）、`VITE_API_PROXY_TARGET`（dev proxy 目標，預設 `http://localhost:5222`）、`VITE_USE_MOCK_API`（預設 `true`；本機 `.env.local` 設 `false` 打真 API）、`VITE_ORDER_FORM_USE_MOCK_API`、`VITE_LINE_CLIENT_ID`（= 後端 `Line:ChannelId`）、`VITE_LINE_ADD_FRIEND_URL`（官方帳號加好友連結，非好友頁用）。範本見 `.env.example`（複製為 `.env.local` 後填值）。**改 `.env.local` 後要重啟 `npm run dev` 才生效。**

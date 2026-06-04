@@ -9,6 +9,7 @@ export const ROUTE_NAMES = {
   ORDER_DETAIL: 'order-detail',
   LOGIN: 'login',
   LINE_CALLBACK: 'line-callback',
+  LINE_ADD_FRIEND: 'line-add-friend',
   MEMBER_PROFILE: 'member-profile',
   MEMBER_ADDRESS_BOOK: 'member-address-book'
 };

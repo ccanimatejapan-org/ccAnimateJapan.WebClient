@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { getStorageItem, setStorageItem } from '@/shared/utils/storage';
+import { shouldUseMockApi } from '@/shared/api/mockMode';
+import { addCartItem, getCart, removeCartItem, updateCartItem } from '../api/cartApi';
 
 const CART_STORAGE_KEY = 'ccAnimateJapan.cart';
 
@@ -42,8 +44,33 @@ function normalizeStoredItems(items) {
     .filter(Boolean);
 }
 
+// Map a server cart payload ({ activityId, activityName, items:[...] }) to the store item shape.
+function mapServerCart(cart) {
+  const serverItems = Array.isArray(cart?.items) ? cart.items : [];
+  const activityName = cart?.activityName || '';
+
+  return serverItems
+    .map((item) => {
+      const note = normalizeNote(item.note ?? item.info);
+      return {
+        id: item.id,
+        activityId: Number(item.activityId),
+        activityName: item.activityName || activityName,
+        productId: Number(item.productId),
+        productName: item.productName || '',
+        imageUrl: item.imageUrl || '',
+        price: Number(item.price) || 0,
+        quantity: Math.max(1, Number(item.quantity) || 1),
+        note,
+        info: note
+      };
+    })
+    .filter((item) => Number.isFinite(item.productId));
+}
+
 export const useCartStore = defineStore('cart', () => {
-  const items = ref(normalizeStoredItems(getStorageItem(CART_STORAGE_KEY, [])));
+  const useMock = shouldUseMockApi();
+  const items = ref(useMock ? normalizeStoredItems(getStorageItem(CART_STORAGE_KEY, [])) : []);
 
   const totalQuantity = computed(() =>
     items.value.reduce((total, item) => total + item.quantity, 0)
@@ -61,7 +88,21 @@ export const useCartStore = defineStore('cart', () => {
     return Number(activityId.value) === Number(nextActivityId);
   }
 
-  function addItem(payload) {
+  function applyServerCart(cart) {
+    items.value = mapServerCart(cart);
+  }
+
+  // Pull the authoritative cart from the server (real mode only).
+  async function hydrate() {
+    if (useMock) return;
+    try {
+      applyServerCart(await getCart());
+    } catch {
+      // Keep whatever we have; the next successful call will reconcile.
+    }
+  }
+
+  async function addItem(payload) {
     if (!payload || typeof payload !== 'object') {
       return { ok: false, reason: 'invalidItem' };
     }
@@ -78,6 +119,21 @@ export const useCartStore = defineStore('cart', () => {
 
     if (!canAddActivity(nextActivityId)) {
       return { ok: false, reason: 'mixedActivity' };
+    }
+
+    if (!useMock) {
+      try {
+        const cart = await addCartItem({
+          activityId: nextActivityId,
+          productId: nextProductId,
+          quantity,
+          note
+        });
+        applyServerCart(cart);
+        return { ok: true };
+      } catch {
+        return { ok: false, reason: 'addFailed' };
+      }
     }
 
     const id = createLineItemId(nextActivityId, nextProductId, note);
@@ -104,21 +160,47 @@ export const useCartStore = defineStore('cart', () => {
     return { ok: true, item };
   }
 
-  function updateQuantity(id, quantity) {
+  async function updateQuantity(id, quantity) {
+    const nextQuantity = Math.max(1, Number(quantity) || 1);
+
+    if (!useMock) {
+      try {
+        applyServerCart(await updateCartItem(id, nextQuantity));
+      } catch {
+        await hydrate();
+      }
+      return;
+    }
+
     const item = items.value.find((entry) => entry.id === id);
     if (!item) return;
-    item.quantity = Math.max(1, quantity);
+    item.quantity = nextQuantity;
   }
 
-  function removeItem(id) {
+  async function removeItem(id) {
+    if (!useMock) {
+      try {
+        applyServerCart(await removeCartItem(id));
+      } catch {
+        await hydrate();
+      }
+      return;
+    }
+
     items.value = items.value.filter((item) => item.id !== id);
   }
 
+  // The server clears its cart when an order is created, so this only resets local state.
   function clearCart() {
     items.value = [];
   }
 
-  watch(items, (value) => setStorageItem(CART_STORAGE_KEY, value), { deep: true });
+  if (useMock) {
+    watch(items, (value) => setStorageItem(CART_STORAGE_KEY, value), { deep: true });
+  } else {
+    // Load the server cart on first use (badge count, cart page, etc.).
+    hydrate();
+  }
 
   return {
     items,
@@ -130,6 +212,7 @@ export const useCartStore = defineStore('cart', () => {
     addItem,
     updateQuantity,
     removeItem,
-    clearCart
+    clearCart,
+    hydrate
   };
 });

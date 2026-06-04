@@ -2,7 +2,7 @@
 
 本文件說明 `ccAnimateJapan.WebClient` 目前前台商城 MVP 的架構、資料夾責任、資料流與開發規則。此專案是 ccAnimateJapan 面向一般使用者的 Web 前台，主要使用情境是手機瀏覽器、LINE 官方帳號與 LIFF WebView。
 
-目前第一階段 MVP 以純前端 mock data 完成基本購物流程：
+購物流程如下。資料來源由 `VITE_USE_MOCK_API` 切換：**預設 `true`（mock data）**；本機 `.env.local` 設 `false` 時改打正式後端 `ccAnimateJapan.WebAPI`，且 real 模式需 **LINE 登入＋加官方好友** 才能進商城：
 
 ```text
 首頁活動列表
@@ -12,7 +12,7 @@
   -> 我的訂單列表 / 訂單詳情
 ```
 
-目前沒有獨立 checkout 結帳流程；購物車會直接建立 mock order 並導向訂單列表。舊的活動訂購表單 `modules/order-form` 仍保留，路由為 `/activity/:activityId`，暫時不納入正式商城 MVP 流程。
+目前沒有獨立 checkout 結帳流程；購物車送出即建立訂單並導向訂單列表（mock 模式寫 localStorage、real 模式打後端 `POST /orders`）。舊的活動訂購表單 `modules/order-form` 仍保留，路由為 `/activity/:activityId`，暫時不納入正式商城 MVP 流程。
 
 ## 技術棧
 
@@ -107,9 +107,12 @@ src/
 /cart                         購物車，可修改數量、刪除商品、送出 mock 訂單
 /orders                       我的訂單列表
 /orders/:id                   訂單詳情簡版
-/auth/login                   LINE mock 登入導向頁
-/auth/line/callback           LINE OAuth callback mock 處理頁
+/auth/login                   LINE 登入導向頁
+/auth/line/callback           LINE OAuth callback 處理頁（驗 state、換 token、好友檢查）
+/auth/add-friend              非官方帳號好友時的加好友頁
 ```
+
+> real 模式（`VITE_USE_MOCK_API=false`）有 route guard：未登入進任何商城頁會被導到 `/auth/login`。
 
 保留但不屬於正式商城 MVP 的舊流程：
 
@@ -228,6 +231,7 @@ src/router/
 - 將舊 `order-form` route 放在 layout group 外，保留 `/activity/:activityId`。
 - 設定萬用路由 `/:pathMatch(.*)*`，未知路徑導回首頁。
 - 設定 `scrollBehavior()`，換頁時回到頁面頂端；若有 hash 會平滑捲動到目標區塊。
+- `router.beforeEach` 守衛：real 模式（`VITE_USE_MOCK_API=false`）未登入（localStorage `ccAnimateJapan.auth` 無 `accessToken`）一律導 `/auth/login`；登入相關路由（login / line-callback / add-friend）放行；mock 模式不擋。
 
 目前路由分組：
 
@@ -248,6 +252,7 @@ src/router/
 /auth                          -> AuthLayout
   /auth/login
   /auth/line/callback
+  /auth/add-friend
 ```
 
 路由命名：
@@ -305,7 +310,8 @@ src/shared/api/
 └─ httpClient.js
 ```
 
-- `httpClient.js`：建立 Axios instance。預設 `baseURL` 為 `VITE_API_BASE_URL`，沒有設定時使用 `/api`；timeout 為 15 秒；response interceptor 會回傳 `response.data`。
+- `httpClient.js`：建立 Axios instance。預設 `baseURL` 為 `VITE_API_BASE_URL`（未設用 `/api`）；timeout 15 秒。**request interceptor** 會從 localStorage `ccAnimateJapan.auth` 取 `accessToken` 帶上 `Authorization: Bearer`；**response interceptor** 成功回傳 `response.data`、遇 401 清掉 token。
+- `mockMode.js`：`shouldUseMockApi()`（對應 `VITE_USE_MOCK_API`，預設 `true`）與 `shouldUseOrderFormMockApi()`，給各 API 檔判斷走 mock 還是真 endpoint。
 - `apiResponse.js`：提供 `unwrapApiResponse()`，用來處理後端包裝格式，當 `status !== '200'` 時丟出錯誤，成功時回傳 `data`。
 - `apiResponse.test.js`：針對 API response helper 的測試。
 
@@ -339,7 +345,7 @@ src/shared/composables/
 ```
 
 - `useConfirm.js`：封裝確認對話框流程。
-- `useLineLogin.js`：封裝正式 LINE Login redirect。MVP 目前 login page 使用 mock session，尚未接正式 LINE。
+- `useLineLogin.js`：封裝 LINE Login redirect（scope `profile openid`、`bot_prompt` 加好友引導、`state` 防 CSRF）。real 模式 `LoginPage` 會真的導向 LINE。
 - `useLoading.js`：封裝 loading 狀態控制。
 - `usePagination.js`：封裝分頁狀態與計算。
 
@@ -527,8 +533,9 @@ src/modules/cart/
 
 資料夾功能：
 
-- `stores/cartStore.js`：管理購物車品項、總數量、小計、活動限制、加入商品、更新數量、移除品項與清空購物車，並透過 `shared/utils/storage` 持久化到 localStorage。
-- `pages/CartPage.vue`：購物車頁。送出時直接呼叫 `order/api/createOrderFromCartItems()` 建立 mock order，成功後清空購物車並導向 `/orders`。
+- `stores/cartStore.js`：管理購物車品項、總數量、小計、活動限制、加入/更新/移除/清空。**mock 模式**持久化到 localStorage；**real 模式**透過 `cart/api/cartApi.js` 與後端同步，操作後以伺服器回傳的購物車覆蓋本地（伺服器為準）。
+- `api/cartApi.js`：購物車 4 支端點封裝（`GET /cart`、`POST /cart/items`、`PUT/DELETE /cart/items/{id}`），含 mock 分支。
+- `pages/CartPage.vue`：購物車頁。送出時呼叫 `order/api/createOrderFromCartItems()`（mock 寫 localStorage；real 打 `POST /orders`），成功後清空購物車並導向 `/orders`。
 - `components/CartItem.vue`：單筆購物車項目，顯示商品名稱、活動名稱、單價、數量、備註、小計與刪除。
 - `components/CartSummary.vue`：購物車摘要，顯示活動名稱、總數量、小計與送出訂單按鈕。
 - `components/QuantityControl.vue`：數量調整控制。
@@ -553,8 +560,8 @@ src/modules/cart/
 
 MVP 限制：
 
-- 一次只允許同一個活動的商品在購物車中。
-- 不走獨立 checkout；購物車送出即建立 mock order。
+- 一次只允許同一個活動的商品在購物車中（real 模式由後端把關、mock 模式由 store 把關）。
+- 不走獨立 checkout；購物車送出即建立訂單（mock 寫 localStorage、real 打後端）。
 
 ### modules/order/
 
@@ -577,7 +584,7 @@ src/modules/order/
 
 資料夾功能：
 
-- `api/orderApi.js`：封裝訂單列表、訂單詳情與 `createOrderFromCartItems()`。MVP 開發模式下使用 mock orders 與 localStorage。
+- `api/orderApi.js`：封裝訂單列表、訂單詳情與 `createOrderFromCartItems()`。mock 模式用 localStorage；real 模式打後端 `GET /orders`、`GET /orders/{id}`、`POST /orders`（皆需登入帶 token）。
 - `pages/OrderListPage.vue`：訂單列表頁。
 - `pages/OrderDetailPage.vue`：訂單詳情簡版，接收 `id` route param。
 - `components/OrderCard.vue`：訂單摘要卡片，顯示訂單編號、活動名稱、總金額、付款狀態、處理狀態、建立時間。
@@ -591,6 +598,7 @@ src/modules/auth/
 ├─ api/
 │  └─ authApi.js
 ├─ pages/
+│  ├─ AddFriendPage.vue
 │  ├─ LineCallbackPage.vue
 │  └─ LoginPage.vue
 ├─ routes.js
@@ -602,11 +610,12 @@ src/modules/auth/
 
 資料夾功能：
 
-- `api/authApi.js`：封裝登入與 LINE Login callback API。MVP 開發模式下回傳 mock session。
-- `stores/authStore.js`：管理登入 session、LINE 登入與登出，並透過 storage 持久化。
-- `pages/LoginPage.vue`：LINE mock 登入頁，不做傳統帳密登入。
-- `pages/LineCallbackPage.vue`：LINE OAuth callback mock 處理頁。
-- `routes.js`：定義 `/auth/login` 與 `/auth/line/callback`，並將 `/auth` redirect 到 login。
+- `api/authApi.js`：封裝 LINE Login callback API（`loginWithLine(code)` → `POST /auth/line/callback`，帶 `redirectUri`）。含 mock 分支。
+- `stores/authStore.js`：管理登入 session（`accessToken` + `user`）、LINE 登入與登出，持久化於 localStorage `ccAnimateJapan.auth`。
+- `pages/LoginPage.vue`：登入頁。real 模式按鈕導向 LINE（`useLineLogin`）；mock 模式走 mock session。
+- `pages/LineCallbackPage.vue`：LINE OAuth callback 頁。real 模式驗 `state`、呼叫登入，成功導首頁、非好友（403 / `notFriend`）導 `/auth/add-friend`。
+- `pages/AddFriendPage.vue`：非官方帳號好友時的加好友頁，連到 `VITE_LINE_ADD_FRIEND_URL`。
+- `routes.js`：定義 `/auth/login`、`/auth/line/callback`、`/auth/add-friend`，並將 `/auth` redirect 到 login。
 
 ### modules/member/
 
@@ -739,16 +748,18 @@ ProductListPage
   -> ProductAddDialog
 ```
 
-購物車與訂單資料流：
+購物車與訂單資料流（mock 模式走 localStorage；real 模式走後端、帶 JWT）：
 
 ```text
 ProductAddDialog
   -> cartStore.addItem()
-  -> localStorage ccAnimateJapan.cart
+  -> mock: localStorage ccAnimateJapan.cart
+  -> real: cartApi.addCartItem() -> POST /cart/items（以伺服器回傳覆蓋本地）
 
 CartPage
   -> createOrderFromCartItems(cart.items)
-  -> localStorage ccAnimateJapan.mockOrders
+  -> mock: localStorage ccAnimateJapan.mockOrders
+  -> real: POST /orders（後端清空伺服器購物車）
   -> cartStore.clearCart()
   -> /orders
 ```
@@ -772,8 +783,10 @@ API 層分兩種：
 ```text
 src/shared/api/httpClient.js
 src/shared/api/apiResponse.js
+src/shared/api/mockMode.js
 src/modules/activity/api/activityApi.js
 src/modules/auth/api/authApi.js
+src/modules/cart/api/cartApi.js
 src/modules/member/api/memberApi.js
 src/modules/order/api/orderApi.js
 src/modules/order-form/api/orderFormApi.js
@@ -867,7 +880,12 @@ src/modules/order-form/utils/quantityPolicy.test.js
 
 - `VITE_API_BASE_URL`：前端呼叫 API 的 base URL。未設定時使用 `/api`。
 - `VITE_API_PROXY_TARGET`：Vite dev server proxy `/api` 的目標，未設定時為 `http://localhost:5222`。
-- `VITE_LINE_CLIENT_ID`：正式 LINE Login channel client id。MVP 目前尚未接正式 LINE Login。
+- `VITE_USE_MOCK_API`：是否用 mock data，**預設 `true`**；本機 `.env.local` 設 `false` 改打正式後端。
+- `VITE_ORDER_FORM_USE_MOCK_API`：舊 order-form 是否用 mock，預設 `false`。
+- `VITE_LINE_CLIENT_ID`：LINE Login channel id（= 後端 `Line:ChannelId`）。
+- `VITE_LINE_ADD_FRIEND_URL`：官方帳號加好友連結，非好友頁用。
+
+複製 `.env.example` 為 `.env.local` 後填值（`.env.local` 不進 git）；改 `.env.local` 後需重啟 `npm run dev` 才會生效。
 
 注意：
 
@@ -899,6 +917,7 @@ npm run dev -- --host 127.0.0.1 --port 5174
 
 - 補上正式測試 script，例如 Vitest，讓現有 `*.test.js` 可由 CI 執行。
 - 將開發模式 mock data 集中管理，避免 API 檔案過度膨脹。
-- 接正式後端 API 後，將 `orderApi.createOrderFromCartItems()` 改為呼叫正式建立訂單 endpoint。
-- 接正式 LINE Login API，並完成 token interceptor 與 401 處理。
-- 補上端到端測試，覆蓋首頁活動、活動商品、加入購物車、送出訂單、訂單查詢與 LINE callback。
+- ~~接正式建立訂單 endpoint~~ —— 已完成（real 模式 `POST /orders`）。
+- ~~接正式 LINE Login、token interceptor 與 401 處理~~ —— 已完成。
+- 補上端到端測試，覆蓋首頁活動、活動商品、加入購物車、送出訂單、訂單查詢與 LINE 登入/好友檢查。
+- LIFF（LINE App 內自動登入）尚未接；目前是網頁 OAuth，未來可加（同樣打 `/auth/line/callback`）。

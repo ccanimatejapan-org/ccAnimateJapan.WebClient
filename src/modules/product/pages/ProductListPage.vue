@@ -88,12 +88,12 @@ function openAddDialog(product) {
   selectedProduct.value = product;
 }
 
-function addToCart(payload) {
+async function addToCart(payload) {
   const product = selectedProduct.value;
   const activity = productStore.activity;
   if (!product?.id || !activity?.id) return;
 
-  const result = cart.addItem({
+  const result = await cart.addItem({
     activity,
     product,
     quantity: payload.quantity,
@@ -105,6 +105,11 @@ function addToCart(payload) {
       ui.showToast({
         title: t('cart.toast.mixedActivityTitle'),
         message: t('cart.toast.mixedActivityMessage')
+      });
+    } else {
+      ui.showToast({
+        title: t('cart.toast.addFailedTitle'),
+        message: t('cart.toast.addFailedMessage')
       });
     }
     return;

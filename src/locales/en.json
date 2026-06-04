@@ -170,7 +170,9 @@
       "orderCreatedTitle": "Order created",
       "orderCreatedMessage": "Mock order {orderNo} has been created",
       "submitFailedTitle": "Submit failed",
-      "submitFailedMessage": "Unable to create the order. Please try again later."
+      "submitFailedMessage": "Unable to create the order. Please try again later.",
+      "addFailedTitle": "Add failed",
+      "addFailedMessage": "Unable to add to cart. Please try again later."
     }
   },
   "order": {
@@ -183,6 +185,7 @@
     "total": "Total",
     "paymentStatusLabel": "Payment",
     "processStatusLabel": "Status",
+    "loadFailed": "Failed to load orders",
     "notFound": "Order not found",
     "paymentStatus": {
       "paid": "Paid",
@@ -209,7 +212,13 @@
     "login": "Login",
     "lineLogin": "Mock LINE login",
     "signingIn": "Signing in",
-    "processingLine": "Processing LINE login"
+    "processingLine": "Processing LINE login",
+    "loginFailed": "Login failed, please try again",
+    "loginFailedTitle": "Login failed",
+    "backToLogin": "Back to login",
+    "notFriendTitle": "Not a friend yet",
+    "notFriendMessage": "Please add our LINE Official Account as a friend before entering the shop.",
+    "addFriend": "Add Official Account"
   },
   "member": {
     "eyebrow": "Member",

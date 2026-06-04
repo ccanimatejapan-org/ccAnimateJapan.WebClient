@@ -1,5 +1,6 @@
 import { ORDER_STATUS } from '@/shared/constants/orderStatus';
 import { httpClient } from '@/shared/api/httpClient';
+import { unwrapApiResponse } from '@/shared/api/apiResponse';
 import { shouldUseMockApi } from '@/shared/api/mockMode';
 import { getStorageItem, setStorageItem } from '@/shared/utils/storage';
 
@@ -79,7 +80,8 @@ export async function getOrders() {
     return Promise.resolve(getMockOrders());
   }
 
-  return httpClient.get('/orders');
+  const response = await httpClient.get('/orders');
+  return unwrapApiResponse(response, 'order.loadFailed');
 }
 
 export async function getOrderById(id) {
@@ -87,7 +89,8 @@ export async function getOrderById(id) {
     return Promise.resolve(getMockOrders().find((order) => Number(order.id) === Number(id)) || null);
   }
 
-  return httpClient.get(`/orders/${id}`);
+  const response = await httpClient.get(`/orders/${id}`);
+  return unwrapApiResponse(response, 'order.notFound');
 }
 
 export async function createOrderFromCartItems(items) {
@@ -101,7 +104,8 @@ export async function createOrderFromCartItems(items) {
   }
 
   if (!shouldUseMockApi()) {
-    return httpClient.post('/orders', { items });
+    const response = await httpClient.post('/orders', { items });
+    return unwrapApiResponse(response, 'cart.toast.submitFailedMessage');
   }
 
   const createdAt = new Date().toISOString();

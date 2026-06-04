@@ -1,4 +1,5 @@
 import { httpClient } from '@/shared/api/httpClient';
+import { unwrapApiResponse } from '@/shared/api/apiResponse';
 import { shouldUseMockApi } from '@/shared/api/mockMode';
 
 export async function login(payload) {
@@ -29,5 +30,8 @@ export async function loginWithLine(code) {
     });
   }
 
-  return httpClient.post('/auth/line/callback', { code });
+  // redirectUri must match the one used in the authorize request (useLineLogin.js).
+  const redirectUri = `${window.location.origin}/auth/line/callback`;
+  const response = await httpClient.post('/auth/line/callback', { code, redirectUri });
+  return unwrapApiResponse(response, 'auth.loginFailed');
 }
