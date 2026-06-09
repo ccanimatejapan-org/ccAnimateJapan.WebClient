@@ -1,7 +1,9 @@
 @use '@/styles/variables' as *;
 
 .product-add-dialog {
-  display: grid;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
   gap: 18px;
 }
 
@@ -96,6 +98,7 @@
 }
 
 .product-add-dialog__actions {
+  margin-top: auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
