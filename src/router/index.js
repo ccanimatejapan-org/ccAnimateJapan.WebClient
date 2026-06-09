@@ -4,13 +4,11 @@ import AuthLayout from '@/layouts/AuthLayout.vue';
 import homeRoutes from '@/modules/home/routes';
 import productRoutes from '@/modules/product/routes';
 import cartRoutes from '@/modules/cart/routes';
-import orderFormRoutes from '@/modules/order-form/routes';
 import orderRoutes from '@/modules/order/routes';
 import authRoutes from '@/modules/auth/routes';
 import memberRoutes from '@/modules/member/routes';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { getStorageItem } from '@/shared/utils/storage';
-import { shouldUseMockApi } from '@/shared/api/mockMode';
 import { useAuthStore } from '@/modules/auth/stores/authStore';
 import { useUiStore } from '@/shared/stores/uiStore';
 import {
@@ -30,7 +28,6 @@ const PUBLIC_ROUTE_NAMES = new Set([
 ]);
 
 const routes = [
-  ...orderFormRoutes,
   {
     path: '/',
     component: DefaultLayout,
@@ -69,11 +66,9 @@ export const router = createRouter({
   }
 });
 
-// Real mode requires a LINE login (and friendship) before entering the shop.
-// The whole LIFF flow lives here so it works no matter which route the LIFF
-// endpoint opens. Mock/demo mode keeps everything open.
+// Entering the shop requires a LINE login (and friendship). The whole LIFF flow
+// lives here so it works no matter which route the LIFF endpoint opens.
 router.beforeEach(async (to) => {
-  if (shouldUseMockApi()) return true;
   if (PUBLIC_ROUTE_NAMES.has(to.name)) return true;
 
   const session = getStorageItem(AUTH_STORAGE_KEY, null);

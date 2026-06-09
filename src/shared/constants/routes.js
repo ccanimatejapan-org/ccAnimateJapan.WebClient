@@ -4,7 +4,6 @@ export const ROUTE_NAMES = {
   ACTIVITY_PRODUCTS: 'activity-products',
   PRODUCT_DETAIL: 'product-detail',
   CART: 'cart',
-  ORDER_FORM: 'order-form',
   ORDER_LIST: 'order-list',
   ORDER_DETAIL: 'order-detail',
   LOGIN: 'login',

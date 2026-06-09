@@ -35,95 +35,6 @@
     "unnamed": "未命名活動",
     "viewProducts": "查看活動商品"
   },
-  "orderForm": {
-    "eyebrow": "活動訂購表單",
-    "title": "填寫訂單",
-    "loading": "正在載入活動表單",
-    "loadFailed": "活動表單讀取失敗",
-    "noProducts": "這個活動目前沒有可訂購商品",
-    "stepsLabel": "訂購表單步驟",
-    "steps": {
-      "agreement": "同意事項",
-      "basicInfo": "基本資料",
-      "products": "選擇商品",
-      "preview": "預覽訂單"
-    },
-    "agreement": {
-      "title": "訂購須知",
-      "ruleContact": "請確認姓名與 Gmail 正確，後續會以此聯繫訂單確認。",
-      "ruleConfirmation": "送出表單後不代表訂單立即成立，商品數量與價格仍以工作人員確認為準。",
-      "ruleZeroQuantity": "數量填 0 的商品不會建立訂單明細。",
-      "checkbox": "我已閱讀並同意以上事項",
-      "sections": {
-        "orderPayment": {
-          "title": "📝 訂購與付款規則",
-          "items": {
-            "fullPayment": "採「全額匯款」。",
-            "minorConsent": "未成年規範：未成年者請徵得法定代理人同意。一旦進行匯款，即視同已取得父母或監護人同意，後續不得以「未經家長許可」為由要求取消訂單或退款。",
-            "paymentDeadline": "匯款時限：確認開團後會寄送訂單確認信，收到後請於 3 日內完成匯款，逾期名額將自動釋出。"
-          }
-        },
-        "shippingRefund": {
-          "title": "📦 物流與「缺貨保障」退款說明",
-          "items": {
-            "transparentQuote": "報價透明：需二補＋國內運費。",
-            "refundFormula": "退款試算：已收總額 - 實際買到商品總額 = 退還金額。",
-            "deliveryMethods": "取貨方式：提供「賣貨便」寄送、「宅配」、「台中面交」。"
-          }
-        },
-        "notes": {
-          "title": "⚠️ 注意事項",
-          "items": {
-            "internationalShipping": "國際運輸：海外運輸難免有微小碰撞，盒損魔人請斟酌下單。",
-            "afterSales": "售後規範：代購屬客製化給付，除重大瑕疵外，恕不接受個人因素（色差、買錯）退換貨。",
-            "arrivalTime": "到貨時間：依官方公布到貨時間。",
-            "customerService": "若有任何問題歡迎私訊 Line 官方客服：＠680javyx"
-          }
-        }
-      }
-    },
-    "basicInfo": {
-      "name": "姓名",
-      "email": "Gmail",
-      "bank": "銀行末五碼",
-      "deliveryType": "取貨方式",
-      "deliveryTypePlaceholder": "請選擇取貨方式"
-    },
-    "products": {
-      "quantity": "數量",
-      "note": "商品備註",
-      "previewImage": "放大查看 {name}",
-      "totalQuantity": "總數量",
-      "total": "總金額"
-    },
-    "preview": {
-      "contact": "基本資料",
-      "bank": "銀行末五碼",
-      "deliveryType": "取貨方式",
-      "items": "訂購商品",
-      "submit": "送出訂單",
-      "edit": "返回修改"
-    },
-    "success": {
-      "title": "表單已送出",
-      "message": "我們已收到你的表單，後續會依序確認訂單內容。",
-      "orderId": "模擬訂單編號"
-    },
-    "actions": {
-      "previous": "上一步",
-      "next": "下一步"
-    },
-    "errors": {
-      "agreeRequired": "請先同意以上事項",
-      "nameRequired": "請填寫姓名",
-      "gmailRequired": "請填寫有效的 Gmail",
-      "bankRequired": "請填寫銀行末五碼",
-      "deliveryTypeRequired": "請選擇取貨方式",
-      "productsRequired": "請至少選擇一項商品",
-      "formNotFound": "找不到活動表單",
-      "submitFailed": "送出失敗，請稍後再試"
-    }
-  },
   "product": {
     "eyebrow": "慢慢挑選",
     "title": "商品瀏覽",
@@ -169,7 +80,7 @@
       "mixedActivityTitle": "購物車已有其他活動",
       "mixedActivityMessage": "第一版一次只能送出同一個活動的商品，請先完成或清空目前購物車。",
       "orderCreatedTitle": "訂單已建立",
-      "orderCreatedMessage": "模擬訂單 {orderNo} 已建立",
+      "orderCreatedMessage": "訂單 {orderNo} 已建立",
       "submitFailedTitle": "送出失敗",
       "submitFailedMessage": "目前無法建立訂單，請稍後再試",
       "addFailedTitle": "加入失敗",
@@ -207,11 +118,11 @@
   "auth": {
     "eyebrow": "LINE 會員",
     "title": "使用 LINE 繼續",
-    "description": "第一版前台先使用 mock LINE session，之後再接正式 LINE Login API。",
+    "description": "請使用 LINE 帳號登入後進入商城。",
     "email": "Email",
     "password": "密碼",
     "login": "登入",
-    "lineLogin": "使用 LINE 模擬登入",
+    "lineLogin": "使用 LINE 登入",
     "signingIn": "登入中",
     "processingLine": "正在處理 LINE 登入",
     "loginFailed": "登入失敗，請重新嘗試",

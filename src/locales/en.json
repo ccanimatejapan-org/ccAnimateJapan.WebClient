@@ -35,94 +35,6 @@
     "unnamed": "Untitled activity",
     "viewProducts": "View products"
   },
-  "orderForm": {
-    "eyebrow": "Activity order form",
-    "title": "Create order",
-    "loading": "Loading order form",
-    "loadFailed": "Failed to load order form",
-    "noProducts": "No products are available for this activity",
-    "stepsLabel": "Order form steps",
-    "steps": {
-      "agreement": "Agreement",
-      "basicInfo": "Basic info",
-      "products": "Products",
-      "preview": "Preview"
-    },
-    "agreement": {
-      "title": "Order notes",
-      "ruleContact": "Please confirm your name and Gmail. We will use them to contact you about this order.",
-      "ruleConfirmation": "Submitting this form does not mean the order is confirmed. Staff will confirm quantities and prices later.",
-      "ruleZeroQuantity": "Products with quantity 0 will not be included in the order items.",
-      "checkbox": "I have read and agree to the terms above",
-      "sections": {
-        "orderPayment": {
-          "title": "Order and payment rules",
-          "items": {
-            "fullPayment": "Full payment by bank transfer is required.",
-            "minorConsent": "For minors: please obtain consent from your legal guardian. Once payment is made, it will be treated as confirmation that parental or guardian consent has been obtained, and the order cannot later be canceled or refunded for lack of permission.",
-            "paymentDeadline": "Payment deadline: after the group order is confirmed, an order confirmation email will be sent. Please complete payment within 3 days after receiving it, or your slot will be released automatically."
-          }
-        },
-        "shippingRefund": {
-          "title": "Shipping and out-of-stock refund policy",
-          "items": {
-            "transparentQuote": "Transparent pricing: a second payment plus domestic shipping is required.",
-            "refundFormula": "Refund estimate: total amount received - total amount of successfully purchased items = refund amount.",
-            "deliveryMethods": "Delivery methods: Ship711, home delivery, and Taichung meetup are available."
-          }
-        },
-        "notes": {
-          "title": "Important notes",
-          "items": {
-            "internationalShipping": "International shipping may involve minor bumps or box damage. Please order carefully if box condition is very important to you.",
-            "afterSales": "After-sales policy: proxy purchases are customized transactions. Except for major defects, returns or exchanges for personal reasons such as color differences or ordering mistakes are not accepted.",
-            "arrivalTime": "Arrival time: based on the official announced schedule.",
-            "customerService": "If you have any questions, please message our official Line customer service: ＠680javyx"
-          }
-        }
-      }
-    },
-    "basicInfo": {
-      "name": "Name",
-      "email": "Gmail",
-      "bank": "Last 5 digits of account",
-      "deliveryType": "Delivery method",
-      "deliveryTypePlaceholder": "Select delivery method"
-    },
-    "products": {
-      "quantity": "Quantity",
-      "note": "Product note",
-      "totalQuantity": "Total quantity",
-      "total": "Total"
-    },
-    "preview": {
-      "contact": "Basic info",
-      "items": "Order items",
-      "bank": "Last 5 digits of account",
-      "deliveryType": "Delivery method",
-      "submit": "Submit order",
-      "edit": "Edit"
-    },
-    "success": {
-      "title": "Form submitted",
-      "message": "This order was generated with frontend mock data. Backend API is not connected yet.",
-      "orderId": "Mock order ID"
-    },
-    "actions": {
-      "previous": "Previous",
-      "next": "Next"
-    },
-    "errors": {
-      "agreeRequired": "Please agree to the terms above first",
-      "nameRequired": "Please enter your name",
-      "gmailRequired": "Please enter a valid Gmail address",
-      "bankRequired": "Please enter the last 5 digits of the account (5 digits)",
-      "deliveryTypeRequired": "Please select a delivery method",
-      "productsRequired": "Please select at least one product",
-      "formNotFound": "Activity form not found",
-      "submitFailed": "Unable to submit. Please try again later"
-    }
-  },
   "product": {
     "eyebrow": "Take your time",
     "title": "Products",
@@ -168,7 +80,7 @@
       "mixedActivityTitle": "Cart has another activity",
       "mixedActivityMessage": "The first MVP supports one activity per order. Please finish or clear the current cart first.",
       "orderCreatedTitle": "Order created",
-      "orderCreatedMessage": "Mock order {orderNo} has been created",
+      "orderCreatedMessage": "Order {orderNo} has been created",
       "submitFailedTitle": "Submit failed",
       "submitFailedMessage": "Unable to create the order. Please try again later.",
       "addFailedTitle": "Add failed",
@@ -206,11 +118,11 @@
   "auth": {
     "eyebrow": "LINE member",
     "title": "Continue with LINE",
-    "description": "The first MVP uses a mock LINE session. The official LINE Login API can be connected later.",
+    "description": "Sign in with your LINE account to enter the shop.",
     "email": "Email",
     "password": "Password",
     "login": "Login",
-    "lineLogin": "Mock LINE login",
+    "lineLogin": "Sign in with LINE",
     "signingIn": "Signing in",
     "processingLine": "Processing LINE login",
     "loginFailed": "Login failed, please try again",

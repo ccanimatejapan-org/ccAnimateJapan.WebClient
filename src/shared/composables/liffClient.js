@@ -4,8 +4,8 @@ const LIFF_ID = import.meta.env.VITE_LIFF_ID;
 
 let initPromise = null;
 
-// True only when a LIFF ID is configured. Real mode without an ID should degrade
-// gracefully (back to the login page), not crash; mock mode never reaches here.
+// True only when a LIFF ID is configured. Without an ID the app should degrade
+// gracefully (back to the login page), not crash.
 export function isLiffConfigured() {
   return Boolean(LIFF_ID);
 }
