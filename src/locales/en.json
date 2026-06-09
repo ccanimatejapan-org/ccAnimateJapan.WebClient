@@ -3,7 +3,8 @@
     "products": "Activities",
     "orders": "Orders",
     "member": "Member",
-    "cart": "Cart"
+    "cart": "Cart",
+    "cartWithCount": "Cart ({count} items)"
   },
   "footer": {
     "copy": "Japan animation goods shop"

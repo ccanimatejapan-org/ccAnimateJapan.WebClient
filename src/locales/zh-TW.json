@@ -3,7 +3,8 @@
     "products": "活動",
     "orders": "訂單",
     "member": "會員中心",
-    "cart": "購物車"
+    "cart": "購物車",
+    "cartWithCount": "購物車（{count} 件）"
   },
   "footer": {
     "copy": "日本動畫商品選物平台"

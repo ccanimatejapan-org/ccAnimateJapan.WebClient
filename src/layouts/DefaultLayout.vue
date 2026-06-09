@@ -2,8 +2,11 @@
   <div class="site-shell">
     <header class="site-header">
       <RouterLink class="site-header__brand" :to="{ name: ROUTE_NAMES.HOME }">
-        <span>ccAnimateJapan</span>
-        <small>角色周邊小舖</small>
+        <img class="site-header__logo" :src="brandLogo" alt="CC日本動漫代購" />
+        <span class="site-header__brand-copy">
+          <span class="site-header__brand-name">CC日本動漫代購</span>
+          <small>角色周邊小舖</small>
+        </span>
       </RouterLink>
       <nav class="site-header__nav" aria-label="Main">
         <RouterLink :to="{ name: ROUTE_NAMES.HOME, hash: '#activities' }">
@@ -17,9 +20,27 @@
         class="site-header__cart"
         :class="{ 'site-header__cart--bump': cartBumped }"
         :to="{ name: ROUTE_NAMES.CART }"
+        :aria-label="cart.totalQuantity > 0
+          ? t('nav.cartWithCount', { count: cart.totalQuantity })
+          : t('nav.cart')"
       >
-        {{ t('nav.cart') }}
-        <span>{{ cart.totalQuantity }}</span>
+        <svg
+          class="site-header__cart-icon"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="9" cy="20" r="1.4" />
+          <circle cx="18" cy="20" r="1.4" />
+          <path d="M2.5 3h2.2l2.1 11.2a1.6 1.6 0 0 0 1.6 1.3h8.4a1.6 1.6 0 0 0 1.6-1.3L21.5 7H6" />
+        </svg>
+        <span v-show="cart.totalQuantity > 0">{{ cart.totalQuantity }}</span>
       </RouterLink>
     </header>
 
@@ -40,6 +61,7 @@ import { RouterLink, RouterView } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { useCartStore } from '@/modules/cart/stores/cartStore';
+import brandLogo from '@/assets/logo/brand-logo.jpg';
 
 const { t } = useI18n();
 const cart = useCartStore();
