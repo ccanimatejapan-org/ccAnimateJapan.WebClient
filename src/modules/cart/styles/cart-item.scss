@@ -23,7 +23,7 @@
 
 .cart-item__body {
   display: grid;
-  gap: 6px;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -36,7 +36,7 @@
 .cart-item__body p,
 .cart-item__body > span {
   color: $color-muted;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .cart-item__body h3 {
@@ -55,6 +55,10 @@
 }
 
 .text-button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 4px;
   border: 0;
   background: transparent;
   color: $color-primary;

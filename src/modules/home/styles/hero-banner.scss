@@ -2,7 +2,7 @@
 
 .hero-banner {
   position: relative;
-  min-height: 420px;
+  min-height: clamp(320px, 60vh, 420px);
   display: grid;
   align-items: center;
   padding: clamp(28px, 6vw, 64px);
