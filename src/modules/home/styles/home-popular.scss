@@ -1,0 +1,23 @@
+@use '@/styles/variables' as *;
+
+.home-popular {
+  display: grid;
+  gap: 12px;
+}
+
+.home-popular__title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.home-popular__row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.home-popular__item {
+  flex: 0 0 150px;
+}

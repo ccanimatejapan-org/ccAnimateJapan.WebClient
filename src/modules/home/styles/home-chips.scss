@@ -1,0 +1,28 @@
+@use '@/styles/variables' as *;
+
+.home-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.home-chips__item {
+  flex: 0 0 auto;
+  padding: 7px 16px;
+  border: 1px solid $color-border;
+  border-radius: 999px;
+  background: #fff;
+  color: $color-muted;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.home-chips__item--active {
+  border-color: $color-ink;
+  background: $color-ink;
+  color: #fff;
+}

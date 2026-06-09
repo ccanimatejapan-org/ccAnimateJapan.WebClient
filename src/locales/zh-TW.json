@@ -7,7 +7,16 @@
     "cartWithCount": "購物車（{count} 件）"
   },
   "footer": {
-    "copy": "日本動畫商品選物平台"
+    "copy": "日本動畫商品選物平台",
+    "contactGroup": "聯繫我們",
+    "shopGroup": "購物資訊",
+    "lineOfficial": "LINE 官方帳號",
+    "lineCommunity": "LINE 社群",
+    "instagram": "Instagram",
+    "purchaseNotice": "購買須知",
+    "userGuide": "使用者指南",
+    "privacy": "隱私權政策",
+    "terms": "服務條款"
   },
   "common": {
     "viewAll": "查看全部",
@@ -25,7 +34,41 @@
     "cta": "去逛逛商品",
     "note": "加入購物車會即時提醒你",
     "featuredEyebrow": "活動推薦",
-    "featuredTitle": "精選活動"
+    "featuredTitle": "精選活動",
+    "viewProducts": "看商品",
+    "workCount": "{count} 檔",
+    "chips": {
+      "all": "全部",
+      "preOrder": "預購",
+      "inStock": "現貨"
+    },
+    "badge": {
+      "preOrder": "預購",
+      "inStock": "現貨"
+    },
+    "animateType": {
+      "title": "依作品逛",
+      "viewAll": "作品列表"
+    },
+    "ongoing": {
+      "title": "進行中活動"
+    },
+    "popular": {
+      "title": "人氣活動",
+      "rank": "第 {rank} 名"
+    },
+    "guide": {
+      "title": "第一次購買？",
+      "desc": "了解預購與現貨差別、付款與取貨流程",
+      "lineCta": "加入 LINE 開始購物"
+    }
+  },
+  "work": {
+    "listTitle": "作品列表",
+    "listSubtitle": "選擇喜歡的作品，看看有哪些活動",
+    "empty": "目前沒有作品",
+    "activitiesEmpty": "這個作品目前沒有活動",
+    "notFound": "找不到作品"
   },
   "activity": {
     "datePending": "活動時間未定",

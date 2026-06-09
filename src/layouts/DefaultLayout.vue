@@ -49,8 +49,37 @@
     </main>
 
     <footer class="site-footer">
-      <span>ccAnimateJapan</span>
-      <span>{{ t('footer.copy') }}</span>
+      <div class="site-footer__brand">ccAnimateJapan</div>
+      <div class="site-footer__groups">
+        <div class="site-footer__group">
+          <h2 class="site-footer__heading">{{ t('footer.contactGroup') }}</h2>
+          <a :href="externalLinks.lineOfficial" target="_blank" rel="noopener">
+            {{ t('footer.lineOfficial') }}
+          </a>
+          <a :href="externalLinks.lineCommunity" target="_blank" rel="noopener">
+            {{ t('footer.lineCommunity') }}
+          </a>
+          <a :href="externalLinks.instagram" target="_blank" rel="noopener">
+            {{ t('footer.instagram') }}
+          </a>
+        </div>
+        <div class="site-footer__group">
+          <h2 class="site-footer__heading">{{ t('footer.shopGroup') }}</h2>
+          <a :href="externalLinks.purchaseNotice" target="_blank" rel="noopener">
+            {{ t('footer.purchaseNotice') }}
+          </a>
+          <a :href="externalLinks.userGuide" target="_blank" rel="noopener">
+            {{ t('footer.userGuide') }}
+          </a>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <span>© ccAnimateJapan</span>
+        <span class="site-footer__legal">
+          <a href="#">{{ t('footer.privacy') }}</a>
+          <a href="#">{{ t('footer.terms') }}</a>
+        </span>
+      </div>
     </footer>
   </div>
 </template>
@@ -60,6 +89,7 @@ import { onBeforeUnmount, ref, watch } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
+import { externalLinks } from '@/shared/constants/externalLinks';
 import { useCartStore } from '@/modules/cart/stores/cartStore';
 import brandLogo from '@/assets/logo/brand-logo.jpg';
 

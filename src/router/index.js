@@ -3,6 +3,7 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import homeRoutes from '@/modules/home/routes';
 import productRoutes from '@/modules/product/routes';
+import activityRoutes from '@/modules/activity/routes';
 import cartRoutes from '@/modules/cart/routes';
 import orderFormRoutes from '@/modules/order-form/routes';
 import orderRoutes from '@/modules/order/routes';
@@ -27,6 +28,7 @@ const routes = [
     children: [
       ...homeRoutes,
       ...productRoutes,
+      ...activityRoutes,
       ...cartRoutes,
       ...orderRoutes,
       ...memberRoutes

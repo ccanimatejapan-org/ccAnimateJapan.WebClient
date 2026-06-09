@@ -1,0 +1,47 @@
+@use '@/styles/variables' as *;
+
+.home-banner {
+  display: grid;
+  gap: 10px;
+}
+
+.home-banner__viewport {
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.home-banner__track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+.home-banner__slide {
+  flex: 0 0 100%;
+}
+
+.home-banner__slide img {
+  width: 100%;
+  aspect-ratio: 5 / 2;
+  object-fit: cover;
+  display: block;
+}
+
+.home-banner__dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+}
+
+.home-banner__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba($color-primary, 0.28);
+  cursor: pointer;
+}
+
+.home-banner__dot--active {
+  background: $color-primary;
+}

@@ -133,12 +133,68 @@
 }
 
 .site-footer {
+  margin-top: 24px;
+  padding: 28px clamp(20px, 5vw, 72px) 24px;
+  display: grid;
+  gap: 18px;
+  background: $color-ink;
+  color: #e8e0cf;
+}
+
+.site-footer__brand {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.site-footer__groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.site-footer__group {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.site-footer__heading {
+  margin: 0 0 2px;
+  color: #b8af90;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.site-footer__group a {
+  color: #e8e0cf;
+  font-size: 0.86rem;
+}
+
+.site-footer__group a:hover {
+  color: #fff;
+}
+
+.site-footer__bottom {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 16px;
-  padding: 24px clamp(20px, 5vw, 72px);
-  color: $color-muted;
-  border-top: 1px dashed $color-border;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: #8a8262;
+  font-size: 0.72rem;
+}
+
+.site-footer__legal {
+  display: flex;
+  gap: 14px;
+}
+
+.site-footer__legal a {
+  color: #8a8262;
 }
 
 @keyframes cart-bump {

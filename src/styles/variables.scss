@@ -1,6 +1,11 @@
-$color-canvas: #fff7ef;
-$color-ink: #3a2c28;
-$color-muted: #8f786f;
-$color-border: #ead8cc;
-$color-primary: #a86408;
-$color-accent: #8fb78f;
+// 全站設計 token —— 淡黃色系（奶油白 ↔ 淡黃 交錯）
+$color-canvas: #fffdf6; // 主底（奶油白）
+$color-surface: #fbf1c9; // 交錯區塊底（淡黃）
+$color-ink: #2d2a24; // 主要文字
+$color-muted: #8f786f; // 次要文字
+$color-border: #f0e6c6; // 邊線
+$color-primary: #b26a00; // 重點／連結（琥珀）
+$color-accent: #8fb78f; // 既有輔助色（保留給舊樣式）
+$color-preorder: #c8881c; // 狀態：預購
+$color-instock: #0a7d33; // 狀態：現貨
+$color-line: #06c75a; // LINE CTA
