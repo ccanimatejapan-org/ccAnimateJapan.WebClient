@@ -9,6 +9,7 @@
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
+    "@line/liff": "^2.29.0",
     "axios": "^1.7.9",
     "dompurify": "^3.4.7",
     "pinia": "^2.3.0",

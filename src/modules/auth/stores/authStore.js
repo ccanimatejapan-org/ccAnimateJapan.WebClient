@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { getStorageItem, removeStorageItem, setStorageItem } from '@/shared/utils/storage';
-import { login, loginWithLine } from '../api/authApi';
+import { login, loginWithLiff } from '../api/authApi';
 
 const AUTH_STORAGE_KEY = 'ccAnimateJapan.auth';
 
@@ -13,8 +13,8 @@ export const useAuthStore = defineStore('auth', () => {
     setStorageItem(AUTH_STORAGE_KEY, session.value);
   }
 
-  async function signInWithLine(code) {
-    session.value = await loginWithLine(code);
+  async function signInWithLiff(accessToken) {
+    session.value = await loginWithLiff(accessToken);
     setStorageItem(AUTH_STORAGE_KEY, session.value);
   }
 
@@ -26,7 +26,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     session,
     signIn,
-    signInWithLine,
+    signInWithLiff,
     signOut
   };
 });

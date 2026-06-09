@@ -12,6 +12,9 @@
     >
       {{ t('auth.addFriend') }}
     </a>
+    <button type="button" class="app-button app-button--secondary" @click="recheck">
+      {{ t('auth.recheckFriend') }}
+    </button>
     <RouterLink class="app-button app-button--secondary" :to="{ name: ROUTE_NAMES.LOGIN }">
       {{ t('auth.backToLogin') }}
     </RouterLink>
@@ -19,12 +22,18 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 
 const { t } = useI18n();
+const router = useRouter();
 const addFriendUrl = import.meta.env.VITE_LINE_ADD_FRIEND_URL || '';
+
+// Re-enter the shop so the router guard re-checks friendship via liff.getFriendship().
+function recheck() {
+  router.replace({ name: ROUTE_NAMES.HOME });
+}
 </script>
 
 <style scoped lang="scss">

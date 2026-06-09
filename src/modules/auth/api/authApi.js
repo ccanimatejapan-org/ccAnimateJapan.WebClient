@@ -17,7 +17,7 @@ export async function login(payload) {
   return httpClient.post('/auth/login', payload);
 }
 
-export async function loginWithLine(code) {
+export async function loginWithLiff(accessToken) {
   if (shouldUseMockApi()) {
     return Promise.resolve({
       accessToken: 'dev-line-token',
@@ -25,13 +25,12 @@ export async function loginWithLine(code) {
         id: 2,
         name: 'LINE User',
         email: ''
-      },
-      code
+      }
     });
   }
 
-  // redirectUri must match the one used in the authorize request (useLineLogin.js).
-  const redirectUri = `${window.location.origin}/auth/line/callback`;
-  const response = await httpClient.post('/auth/line/callback', { code, redirectUri });
+  // accessToken comes from liff.getAccessToken(); the backend verifies it with LINE
+  // and upserts the member, returning our own session token in `data.accessToken`.
+  const response = await httpClient.post('/auth/line/login', { accessToken });
   return unwrapApiResponse(response, 'auth.loginFailed');
 }

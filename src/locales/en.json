@@ -218,7 +218,9 @@
     "backToLogin": "Back to login",
     "notFriendTitle": "Not a friend yet",
     "notFriendMessage": "Please add our LINE Official Account as a friend before entering the shop.",
-    "addFriend": "Add Official Account"
+    "addFriend": "Add Official Account",
+    "liffError": "LINE login failed to start. Please refresh and try again.",
+    "recheckFriend": "I've added — re-check"
   },
   "member": {
     "eyebrow": "Member",
