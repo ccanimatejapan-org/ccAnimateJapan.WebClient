@@ -40,7 +40,7 @@ const ui = useUiStore();
   right: clamp(16px, 4vw, 36px);
   bottom: clamp(16px, 4vw, 36px);
   z-index: 60;
-  width: min(420px, calc(100vw - 32px));
+  width: min(420px, calc(100% - 32px));
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
@@ -68,10 +68,16 @@ const ui = useUiStore();
 .app-toast__body {
   display: grid;
   gap: 2px;
+  min-width: 0;
+}
+
+.app-toast__body strong,
+.app-toast__body p {
+  margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .app-toast__body p {
-  margin: 0;
   color: $color-muted;
   font-size: 0.9rem;
 }
@@ -111,8 +117,8 @@ const ui = useUiStore();
 @media (max-width: 640px) {
   .app-toast {
     right: 12px;
-    bottom: 12px;
     left: 12px;
+    bottom: 12px;
     width: auto;
     grid-template-columns: auto minmax(0, 1fr) auto;
   }

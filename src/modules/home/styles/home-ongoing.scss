@@ -1,0 +1,17 @@
+@use '@/styles/variables' as *;
+
+.home-ongoing {
+  display: grid;
+  gap: 14px;
+}
+
+.home-ongoing__title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.home-ongoing__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}

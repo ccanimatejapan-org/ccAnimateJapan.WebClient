@@ -3,10 +3,23 @@
     "products": "Activities",
     "orders": "Orders",
     "member": "Member",
-    "cart": "Cart"
+    "cart": "Cart",
+    "cartWithCount": "Cart ({count} items)",
+    "menu": "Open menu",
+    "closeMenu": "Close menu",
+    "quickLinks": "Quick links"
   },
   "footer": {
-    "copy": "Japan animation goods shop"
+    "copy": "Japan animation goods shop",
+    "contactGroup": "Contact us",
+    "shopGroup": "Shopping info",
+    "lineOfficial": "LINE Official Account",
+    "lineCommunity": "LINE Community",
+    "instagram": "Instagram",
+    "purchaseNotice": "Purchase notice",
+    "userGuide": "User guide",
+    "privacy": "Privacy policy",
+    "terms": "Terms of service"
   },
   "common": {
     "viewAll": "View all",
@@ -15,7 +28,9 @@
     "save": "Save",
     "cancel": "Cancel",
     "loading": "Loading",
-    "close": "Close notification"
+    "close": "Close notification",
+    "scrollPrev": "Scroll left",
+    "scrollNext": "Scroll right"
   },
   "home": {
     "eyebrow": "What would you like to collect today?",
@@ -24,7 +39,41 @@
     "cta": "Browse goods",
     "note": "Cart updates will let you know right away",
     "featuredEyebrow": "Event picks",
-    "featuredTitle": "Featured activities"
+    "featuredTitle": "Featured activities",
+    "viewProducts": "View goods",
+    "workCount": "{count} events",
+    "chips": {
+      "all": "All",
+      "preOrder": "Pre-order",
+      "inStock": "In stock"
+    },
+    "badge": {
+      "preOrder": "Pre-order",
+      "inStock": "In stock"
+    },
+    "animateType": {
+      "title": "Browse by title",
+      "viewAll": "All titles"
+    },
+    "ongoing": {
+      "title": "Ongoing activities"
+    },
+    "popular": {
+      "title": "Popular activities",
+      "rank": "No. {rank}"
+    },
+    "guide": {
+      "title": "First time here?",
+      "desc": "Learn about pre-order vs in-stock, payment, and pickup",
+      "lineCta": "Join LINE to start shopping"
+    }
+  },
+  "work": {
+    "listTitle": "Titles",
+    "listSubtitle": "Pick a title to see its activities",
+    "empty": "No titles yet",
+    "activitiesEmpty": "No activities for this title yet",
+    "notFound": "Title not found"
   },
   "activity": {
     "datePending": "Date pending",

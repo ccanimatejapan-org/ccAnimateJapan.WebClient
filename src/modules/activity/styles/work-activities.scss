@@ -1,0 +1,34 @@
+@use '@/styles/variables' as *;
+
+.work-activities {
+  display: grid;
+  gap: 18px;
+}
+
+.work-activities__head {
+  display: grid;
+  gap: 6px;
+}
+
+.work-activities__back {
+  color: $color-primary;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.work-activities__title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.work-activities__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 600px) {
+  .work-activities__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

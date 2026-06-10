@@ -82,13 +82,43 @@ onMounted(async () => {
   background: #fff;
 }
 
+.order-detail__item > div {
+  min-width: 0;
+}
+
 .order-detail__item h3,
 .order-detail__item p {
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .order-detail__item p {
   color: $color-muted;
   font-size: 0.9rem;
+}
+
+.order-detail__item > span,
+.order-detail__item > .app-price {
+  white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+  .order-detail__item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
+
+  .order-detail__item > div {
+    grid-column: 1 / -1;
+  }
+
+  .order-detail__item > span {
+    grid-column: 1;
+  }
+
+  .order-detail__item > .app-price {
+    grid-column: 2;
+    justify-self: end;
+  }
 }
 </style>

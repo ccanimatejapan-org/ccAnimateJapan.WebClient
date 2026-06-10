@@ -1,0 +1,30 @@
+@use '@/styles/variables' as *;
+
+.home-popular {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.home-popular__title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.home-popular__item {
+  flex: 0 0 150px;
+  display: flex;
+  min-width: 0;
+}
+
+// 卡片填滿等高的項目，讓整列人氣商品卡片高度一致
+.home-popular__item .home-activity-card {
+  flex: 1;
+}
+
+// 名稱固定保留兩行，避免名稱 1 行 / 2 行造成卡片內容高度不一
+.home-popular__item :deep(.home-activity-card__name) {
+  min-height: 2.5rem;
+}

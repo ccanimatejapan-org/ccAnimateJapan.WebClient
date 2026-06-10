@@ -3,6 +3,8 @@ export const ROUTE_NAMES = {
   PRODUCT_LIST: 'product-list',
   ACTIVITY_PRODUCTS: 'activity-products',
   PRODUCT_DETAIL: 'product-detail',
+  WORK_LIST: 'work-list',
+  WORK_ACTIVITIES: 'work-activities',
   CART: 'cart',
   ORDER_LIST: 'order-list',
   ORDER_DETAIL: 'order-detail',

@@ -60,4 +60,4 @@ node --test src/shared/api/apiResponse.test.js   # 執行單一測試檔
 
 ## 環境變數
 
-只有 `VITE_` 開頭的變數會暴露給前端：`VITE_API_BASE_URL`（預設 `/api`）、`VITE_API_PROXY_TARGET`（dev proxy 目標，預設 `http://localhost:5222`）、`VITE_LINE_CLIENT_ID`（= 後端 `Line:ChannelId`）、`VITE_LINE_ADD_FRIEND_URL`（官方帳號加好友連結，非好友頁用）、`VITE_LIFF_ID`（= 後端 `Line:LiffId`）。範本見 `.env.example`（複製為 `.env.local` 後填值）。**改 `.env.local` 後要重啟 `npm run dev` 才生效。**
+只有 `VITE_` 開頭的變數會暴露給前端：`VITE_API_BASE_URL`（預設 `/api`）、`VITE_API_PROXY_TARGET`（dev proxy 目標，預設 `http://localhost:5222`）、`VITE_LINE_ADD_FRIEND_URL`（官方帳號加好友連結，非好友頁用）、`VITE_LIFF_ID`（= 後端 `Line:LiffId`，登入入口）、`VITE_ACTIVITY_USE_MOCK`（首頁活動暫用假資料，預設 `false`；後端 `/activities` 補 `animateTypeId`/`orderCount` 後移除）、`VITE_DEV_AUTO_LOGIN`（本地免 LINE 登入，預設 `false`，僅 dev 生效，走後端 `POST /auth/dev-login`）。範本見 `.env.example`（複製為 `.env.local` 後填值）。**改 `.env.local` 後要重啟 `npm run dev` 才生效。**

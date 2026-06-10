@@ -1,0 +1,120 @@
+@use '@/styles/variables' as *;
+
+.home-activity-card {
+  display: block;
+  overflow: hidden;
+  border: 1px solid $color-border;
+  border-radius: 14px;
+  background: #fff;
+  color: $color-ink;
+  box-shadow: 0 10px 24px rgba(120, 100, 30, 0.06);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.home-activity-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(120, 100, 30, 0.12);
+}
+
+.home-activity-card__media {
+  position: relative;
+}
+
+.home-activity-card__media img,
+.home-activity-card__placeholder {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.home-activity-card__placeholder {
+  background: linear-gradient(135deg, rgba($color-primary, 0.16), $color-surface);
+}
+
+.home-activity-card__badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.home-activity-card__badge--preorder {
+  background: $color-preorder;
+}
+
+.home-activity-card__badge--instock {
+  background: $color-instock;
+}
+
+.home-activity-card__badge--right {
+  left: auto;
+  right: 10px;
+}
+
+.home-activity-card__rank {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: $color-primary;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 900;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+.home-activity-card__body {
+  display: grid;
+  gap: 5px;
+  padding: 12px 14px;
+}
+
+.home-activity-card__work {
+  color: $color-primary;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.home-activity-card__name {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.home-activity-card__date {
+  margin: 0;
+  color: $color-muted;
+  font-size: 0.82rem;
+}
+
+.home-activity-card__action {
+  color: $color-primary;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.home-activity-card--featured .home-activity-card__media img,
+.home-activity-card--featured .home-activity-card__placeholder {
+  aspect-ratio: 16 / 9;
+}
+
+.home-activity-card--compact .home-activity-card__media img,
+.home-activity-card--compact .home-activity-card__placeholder {
+  aspect-ratio: 4 / 3;
+}
+
+.home-activity-card--compact .home-activity-card__name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 0.92rem;
+}

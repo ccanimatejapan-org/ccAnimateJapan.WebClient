@@ -1,7 +1,7 @@
 .product-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 18px 14px;
 }
 
 .product-page__intro {
@@ -9,6 +9,8 @@
   margin: 12px 0 0;
   color: #64748b;
   line-height: 1.7;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 @media (min-width: 680px) {

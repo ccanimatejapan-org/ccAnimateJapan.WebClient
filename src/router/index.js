@@ -3,6 +3,7 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import homeRoutes from '@/modules/home/routes';
 import productRoutes from '@/modules/product/routes';
+import activityRoutes from '@/modules/activity/routes';
 import cartRoutes from '@/modules/cart/routes';
 import orderRoutes from '@/modules/order/routes';
 import authRoutes from '@/modules/auth/routes';
@@ -34,6 +35,7 @@ const routes = [
     children: [
       ...homeRoutes,
       ...productRoutes,
+      ...activityRoutes,
       ...cartRoutes,
       ...orderRoutes,
       ...memberRoutes
@@ -73,6 +75,18 @@ router.beforeEach(async (to) => {
 
   const session = getStorageItem(AUTH_STORAGE_KEY, null);
   if (session?.accessToken) return true;
+
+  // Dev only：本地略過 LINE/LIFF（callback URL 設定在正式環境），改向後端 Development-only 的
+  // POST /auth/dev-login 取 DB 第一筆會員的真實 session 直接進站。整段被包在
+  // import.meta.env.DEV 內，正式 build 會被 tree-shake 移除；後端非 Development 也回 404。
+  if (import.meta.env.DEV && import.meta.env.VITE_DEV_AUTO_LOGIN === 'true') {
+    try {
+      await useAuthStore().signInWithDev();
+      return true;
+    } catch {
+      return { name: ROUTE_NAMES.LOGIN, query: { error: 'devlogin' } };
+    }
+  }
 
   // No session yet: drive the LIFF login flow. Degrade to the login page if LIFF
   // isn't configured (e.g. VITE_LIFF_ID empty) instead of crashing.

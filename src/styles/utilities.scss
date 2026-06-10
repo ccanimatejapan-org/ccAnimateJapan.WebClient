@@ -10,6 +10,7 @@
   margin: 0;
   line-height: 1.12;
   letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
 }
 
 .narrow-section {
@@ -21,6 +22,10 @@
   align-items: end;
   justify-content: space-between;
   gap: 20px;
+}
+
+.section__header > * {
+  min-width: 0;
 }
 
 .section__header h1,
