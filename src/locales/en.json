@@ -4,7 +4,10 @@
     "orders": "Orders",
     "member": "Member",
     "cart": "Cart",
-    "cartWithCount": "Cart ({count} items)"
+    "cartWithCount": "Cart ({count} items)",
+    "menu": "Open menu",
+    "closeMenu": "Close menu",
+    "quickLinks": "Quick links"
   },
   "footer": {
     "copy": "Japan animation goods shop",

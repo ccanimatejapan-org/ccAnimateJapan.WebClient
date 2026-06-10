@@ -4,7 +4,10 @@
     "orders": "訂單",
     "member": "會員中心",
     "cart": "購物車",
-    "cartWithCount": "購物車（{count} 件）"
+    "cartWithCount": "購物車（{count} 件）",
+    "menu": "開啟選單",
+    "closeMenu": "關閉選單",
+    "quickLinks": "快速前往"
   },
   "footer": {
     "copy": "日本動畫商品選物平台",
