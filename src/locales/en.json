@@ -25,7 +25,9 @@
     "save": "Save",
     "cancel": "Cancel",
     "loading": "Loading",
-    "close": "Close notification"
+    "close": "Close notification",
+    "scrollPrev": "Scroll left",
+    "scrollNext": "Scroll right"
   },
   "home": {
     "eyebrow": "What would you like to collect today?",

@@ -52,8 +52,10 @@
 
 .site-header__brand-name {
   overflow: hidden;
+  min-width: 0;
   font-size: 1rem;
   text-overflow: ellipsis;
+  overflow-wrap: anywhere;
 }
 
 .site-header__brand small {
@@ -81,6 +83,11 @@
   align-items: center;
   border-radius: 8px;
   padding: 0 10px;
+}
+
+.site-header__nav a {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .site-header__nav a.router-link-active,
@@ -238,11 +245,33 @@
 
 @media (max-width: 420px) {
   .site-header {
-    gap: 8px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'brand cart'
+      'nav nav';
+    row-gap: 6px;
+    column-gap: 8px;
     padding: 0 10px;
+  }
+
+  .site-header__brand {
+    grid-area: brand;
+  }
+
+  .site-header__nav {
+    grid-area: nav;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    font-size: 0.88rem;
+    white-space: normal;
+    width: 100%;
   }
 
   .site-header__nav a {
     padding: 0 8px;
+  }
+
+  .site-header__cart {
+    grid-area: cart;
   }
 }

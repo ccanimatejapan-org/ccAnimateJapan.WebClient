@@ -7,7 +7,7 @@
       </RouterLink>
     </div>
 
-    <div class="home-works__row">
+    <AppCarousel :gap="16">
       <RouterLink
         v-for="work in animateTypes"
         :key="work.id"
@@ -17,7 +17,7 @@
         <span class="home-works__circle">{{ work.name }}</span>
         <span class="home-works__count">{{ t('home.workCount', { count: work.count }) }}</span>
       </RouterLink>
-    </div>
+    </AppCarousel>
   </section>
 </template>
 
@@ -26,6 +26,7 @@ import { storeToRefs } from 'pinia';
 import { RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useActivityStore } from '@/modules/activity/stores/activityStore';
+import AppCarousel from '@/shared/components/AppCarousel.vue';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 
 const { t } = useI18n();

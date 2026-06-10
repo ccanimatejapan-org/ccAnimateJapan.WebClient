@@ -25,7 +25,9 @@
     "save": "儲存",
     "cancel": "取消",
     "loading": "載入中",
-    "close": "關閉提示"
+    "close": "關閉提示",
+    "scrollPrev": "向左捲動",
+    "scrollNext": "向右捲動"
   },
   "home": {
     "eyebrow": "今日想收藏什麼？",
