@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
-import { getActivities } from '../api/activityApi';
+import { ref } from 'vue';
+import { getActivities, getPopularActivities, getWorks } from '../api/activityApi';
 
 function normalizeActivities(value) {
   if (!Array.isArray(value)) return [];
@@ -14,42 +14,9 @@ export const useActivityStore = defineStore('activity', () => {
   const isLoading = ref(false);
   const error = ref(null);
 
-  const featuredActivities = computed(() => activities.value.slice(0, 3));
-
-  // 從已載入的活動 group 出「作品」清單（unique animateTypeId + 名稱 + 檔數）。
-  // 沒有 animateTypeId 的活動（例如 real 模式尚未補欄位）會被忽略。
-  const animateTypes = computed(() => {
-    const map = new Map();
-
-    for (const activity of activities.value) {
-      const id = activity?.animateTypeId;
-      if (id == null) continue;
-
-      const existing = map.get(id);
-      if (existing) {
-        existing.count += 1;
-      } else {
-        map.set(id, { id, name: activity.animateTypeName || '', count: 1 });
-      }
-    }
-
-    return Array.from(map.values());
-  });
-
-  function activitiesByAnimateType(animateTypeId) {
-    const id = Number(animateTypeId);
-    if (!Number.isFinite(id)) return [];
-    return activities.value.filter((activity) => Number(activity?.animateTypeId) === id);
-  }
-
-  // 人氣活動：依訂單數量由多到少取前 5 名。沒有 orderCount 的活動（例如 real 模式尚未補欄位）會被忽略。
-  const popularActivities = computed(() =>
-    activities.value
-      .filter((activity) => Number(activity?.orderCount) > 0)
-      .slice()
-      .sort((a, b) => Number(b.orderCount) - Number(a.orderCount))
-      .slice(0, 5)
-  );
+  // 人氣活動與作品改由專屬 API 取得（後端 /activities/popular、/works）。
+  const popularActivities = ref([]);
+  const works = ref([]);
 
   async function fetchActivities(params = {}) {
     if (isLoading.value) return;
@@ -68,15 +35,45 @@ export const useActivityStore = defineStore('activity', () => {
     }
   }
 
+  async function fetchPopularActivities(limit = 5) {
+    try {
+      popularActivities.value = normalizeActivities(await getPopularActivities(limit));
+    } catch (err) {
+      error.value = err;
+      popularActivities.value = [];
+    }
+  }
+
+  async function fetchWorks(limit) {
+    try {
+      const list = await getWorks(limit);
+      // 後端回 { id, name, activityCount }；對應前端模板使用的 { id, name, count }。
+      works.value = Array.isArray(list)
+        ? list
+            .filter((work) => work?.id != null)
+            .map((work) => ({ id: work.id, name: work.name, count: work.activityCount ?? 0 }))
+        : [];
+    } catch (err) {
+      error.value = err;
+      works.value = [];
+    }
+  }
+
+  // 作品頁 drill-down：取某作品底下的活動，回傳結果（不覆蓋首頁 activities）。
+  async function fetchActivitiesByWork(animateTypeId) {
+    return normalizeActivities(await getActivities({ animateTypeId }));
+  }
+
   return {
     activities,
     isLoaded,
     isLoading,
     error,
-    featuredActivities,
-    animateTypes,
-    activitiesByAnimateType,
     popularActivities,
-    fetchActivities
+    works,
+    fetchActivities,
+    fetchPopularActivities,
+    fetchWorks,
+    fetchActivitiesByWork
   };
 });

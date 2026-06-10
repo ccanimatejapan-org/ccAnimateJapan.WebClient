@@ -7,7 +7,7 @@
       <h1 class="work-activities__title">{{ workName }}</h1>
     </header>
 
-    <AppLoading v-if="activityStore.isLoading" :label="t('common.loading')" />
+    <AppLoading v-if="isLoading" :label="t('common.loading')" />
     <AppEmpty v-else-if="!activities.length" :message="t('work.activitiesEmpty')" />
     <div v-else class="work-activities__grid">
       <HomeActivityCard
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useActivityStore } from '@/modules/activity/stores/activityStore';
@@ -40,19 +40,25 @@ const props = defineProps({
 const { t } = useI18n();
 const activityStore = useActivityStore();
 
-const activities = computed(() => activityStore.activitiesByAnimateType(props.animateTypeId));
+const activities = ref([]);
+const isLoading = ref(false);
 
-const workName = computed(() => {
-  const id = Number(props.animateTypeId);
-  const match = activityStore.animateTypes.find((work) => work.id === id);
-  return match?.name || t('work.notFound');
-});
+// 作品名取自第一筆活動（後端活動已帶 animateTypeName）。
+const workName = computed(() => activities.value[0]?.animateTypeName || t('work.notFound'));
 
-onMounted(() => {
-  if (!activityStore.isLoaded) {
-    activityStore.fetchActivities();
+async function load(animateTypeId) {
+  isLoading.value = true;
+  try {
+    activities.value = await activityStore.fetchActivitiesByWork(animateTypeId);
+  } catch {
+    activities.value = [];
+  } finally {
+    isLoading.value = false;
   }
-});
+}
+
+onMounted(() => load(props.animateTypeId));
+watch(() => props.animateTypeId, (id) => load(id));
 </script>
 
 <style scoped lang="scss">

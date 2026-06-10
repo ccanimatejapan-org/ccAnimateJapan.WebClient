@@ -14,6 +14,7 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useActivityStore } from '@/modules/activity/stores/activityStore';
@@ -23,6 +24,12 @@ import HomeActivityCard from './HomeActivityCard.vue';
 const { t } = useI18n();
 const activityStore = useActivityStore();
 const { popularActivities } = storeToRefs(activityStore);
+
+onMounted(() => {
+  if (!popularActivities.value.length) {
+    activityStore.fetchPopularActivities(5);
+  }
+});
 </script>
 
 <style scoped lang="scss">
