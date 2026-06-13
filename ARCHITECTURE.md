@@ -459,7 +459,6 @@ src/modules/home/
 │  ├─ HomeAnimateTypeRow.vue
 │  ├─ HomeBannerCarousel.vue
 │  ├─ HomeCategoryChips.vue
-│  ├─ HomeGuideSection.vue
 │  ├─ HomeOngoingActivities.vue
 │  └─ HomePopularActivities.vue
 ├─ config/
@@ -481,7 +480,6 @@ src/modules/home/
 - `components/HomePopularActivities.vue`：「熱門活動」區塊，mount 時 `fetchPopularActivities(5)`。
 - `components/HomeAnimateTypeRow.vue`：「依作品逛」區塊，mount 時 `fetchWorks(10)`，可 drill-down 到 `/works/:animateTypeId`。
 - `components/HomeOngoingActivities.vue`：進行中活動列表，由 HomePage 傳入篩選後的活動。
-- `components/HomeGuideSection.vue`：首頁引導／指南區塊。
 - `components/HomeActivityCard.vue`：首頁活動卡片（含作品標籤、預購／現貨 badge、排名），由熱門、進行中、作品頁共用。
 - `config/homeBanners.js`：首頁輪播 banner 設定。
 - `utils/activityFilters.js`：`filterByAvailability()` 等首頁活動篩選純函式（依 `isPreOrder`）。

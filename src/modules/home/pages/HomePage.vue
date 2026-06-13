@@ -8,7 +8,6 @@
       :activities="filteredActivities"
       :loading="activityStore.isLoading"
     />
-    <HomeGuideSection />
   </div>
 </template>
 
@@ -21,7 +20,6 @@ import HomeBannerCarousel from '../components/HomeBannerCarousel.vue';
 import HomePopularActivities from '../components/HomePopularActivities.vue';
 import HomeAnimateTypeRow from '../components/HomeAnimateTypeRow.vue';
 import HomeOngoingActivities from '../components/HomeOngoingActivities.vue';
-import HomeGuideSection from '../components/HomeGuideSection.vue';
 
 const activityStore = useActivityStore();
 const availability = ref('all');

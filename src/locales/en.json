@@ -61,11 +61,6 @@
     "popular": {
       "title": "Popular activities",
       "rank": "No. {rank}"
-    },
-    "guide": {
-      "title": "First time here?",
-      "desc": "Learn about pre-order vs in-stock, payment, and pickup",
-      "lineCta": "Join LINE to start shopping"
     }
   },
   "work": {

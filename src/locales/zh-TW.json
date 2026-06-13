@@ -61,11 +61,6 @@
     "popular": {
       "title": "人氣活動",
       "rank": "第 {rank} 名"
-    },
-    "guide": {
-      "title": "第一次購買？",
-      "desc": "了解預購與現貨差別、付款與取貨流程",
-      "lineCta": "加入 LINE 開始購物"
     }
   },
   "work": {
