@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { ensureLiffReady, getAccessToken, isLiffConfigured, isLoggedIn } from '@/shared/composables/liffClient';
 import { getStorageItem, removeStorageItem, setStorageItem } from '@/shared/utils/storage';
 import { devLogin, login, loginWithLiff } from '../api/authApi';
 
@@ -18,6 +19,23 @@ export const useAuthStore = defineStore('auth', () => {
     setStorageItem(AUTH_STORAGE_KEY, session.value);
   }
 
+  function isSessionValid() {
+    const expiresAt = Date.parse(session.value?.expiresAt);
+    return Boolean(session.value?.accessToken && Number.isFinite(expiresAt) && expiresAt - 60_000 > Date.now());
+  }
+
+  async function renewSession() {
+    try {
+      if (!isLiffConfigured()) return false;
+      await ensureLiffReady();
+      if (!isLoggedIn()) return false;
+      await signInWithLiff(getAccessToken());
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   // 僅本地開發使用（見 router guard 的 import.meta.env.DEV + VITE_DEV_AUTO_LOGIN 分支）。
   async function signInWithDev() {
     session.value = await devLogin();
@@ -33,6 +51,8 @@ export const useAuthStore = defineStore('auth', () => {
     session,
     signIn,
     signInWithLiff,
+    isSessionValid,
+    renewSession,
     signInWithDev,
     signOut
   };

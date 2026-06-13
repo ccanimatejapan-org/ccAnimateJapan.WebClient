@@ -73,15 +73,15 @@ export const router = createRouter({
 router.beforeEach(async (to) => {
   if (PUBLIC_ROUTE_NAMES.has(to.name)) return true;
 
-  const session = getStorageItem(AUTH_STORAGE_KEY, null);
-  if (session?.accessToken) return true;
+  const auth = useAuthStore();
+  if (auth.isSessionValid()) return true;
 
   // Dev only：本地略過 LINE/LIFF（callback URL 設定在正式環境），改向後端 Development-only 的
   // POST /auth/dev-login 取 DB 第一筆會員的真實 session 直接進站。整段被包在
   // import.meta.env.DEV 內，正式 build 會被 tree-shake 移除；後端非 Development 也回 404。
   if (import.meta.env.DEV && import.meta.env.VITE_DEV_AUTO_LOGIN === 'true') {
     try {
-      await useAuthStore().signInWithDev();
+      await auth.signInWithDev();
       return true;
     } catch {
       return { name: ROUTE_NAMES.LOGIN, query: { error: 'devlogin' } };
@@ -108,7 +108,7 @@ router.beforeEach(async (to) => {
       return { name: ROUTE_NAMES.LINE_ADD_FRIEND };
     }
 
-    await useAuthStore().signInWithLiff(getAccessToken());
+    await auth.signInWithLiff(getAccessToken());
     return true;
   } catch (error) {
     if (error?.message === 'notFriend') {
