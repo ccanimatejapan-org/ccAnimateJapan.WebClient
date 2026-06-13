@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
-import { getActivityProductCatalog, getProducts } from '../api/productApi';
+import { getProducts, getProductsByActivity } from '../api/productApi';
+import { useActivityStore } from '@/modules/activity/stores/activityStore';
 
 function normalizeProducts(value) {
   if (!Array.isArray(value)) return [];
@@ -68,8 +69,11 @@ export const useProductStore = defineStore('product', () => {
     error.value = null;
 
     try {
-      const result = await getActivityProductCatalog(normalizedActivityId);
-      const nextActivity = result?.activity || null;
+      const activityStore = useActivityStore();
+      const [productList, nextActivity] = await Promise.all([
+        getProductsByActivity(normalizedActivityId),
+        activityStore.getOrFetchActivity(normalizedActivityId)
+      ]);
 
       if (!nextActivity?.id) {
         isLoaded.value = true;
@@ -77,7 +81,7 @@ export const useProductStore = defineStore('product', () => {
       }
 
       activity.value = nextActivity;
-      products.value = normalizeProducts(result?.products);
+      products.value = normalizeProducts(productList);
       isLoaded.value = true;
       return { ok: true, activity: activity.value, products: products.value };
     } catch (err) {

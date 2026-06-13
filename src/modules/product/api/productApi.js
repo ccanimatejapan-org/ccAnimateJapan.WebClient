@@ -1,6 +1,5 @@
 import { httpClient } from '@/shared/api/httpClient';
 import { unwrapApiResponse } from '@/shared/api/apiResponse';
-import { getActivities } from '@/modules/activity/api/activityApi';
 
 function normalizeActivityProducts(products, activityId) {
   if (!Array.isArray(products)) return [];
@@ -28,24 +27,10 @@ export async function getProducts(params = {}) {
 }
 
 export async function getProductsByActivity(activityId) {
-  const result = await getActivityProductCatalog(activityId);
-  return result.products;
-}
-
-export async function getActivityProductCatalog(activityId) {
   const normalizedActivityId = Number(activityId);
-
-  const [productsResponse, activities] = await Promise.all([
-    httpClient.get(`/activities/${normalizedActivityId}/products`),
-    getActivities()
-  ]);
-  const products = unwrapApiResponse(productsResponse, 'product.loadFailed');
-  const activityList = Array.isArray(activities) ? activities : [];
-
-  return {
-    activity: activityList.find((activity) => activity.id === normalizedActivityId) || null,
-    products: normalizeActivityProducts(products, normalizedActivityId)
-  };
+  const response = await httpClient.get(`/activities/${normalizedActivityId}/products`);
+  const products = unwrapApiResponse(response, 'product.loadFailed');
+  return normalizeActivityProducts(products, normalizedActivityId);
 }
 
 export async function getProductById(id) {

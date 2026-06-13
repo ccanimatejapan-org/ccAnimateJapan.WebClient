@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { getActivities, getPopularActivities, getWorks } from '../api/activityApi';
+import { getActivities, getActivity, getPopularActivities, getWorks } from '../api/activityApi';
 
 function normalizeActivities(value) {
   if (!Array.isArray(value)) return [];
@@ -64,6 +64,20 @@ export const useActivityStore = defineStore('activity', () => {
     return normalizeActivities(await getActivities({ animateTypeId }));
   }
 
+  async function getOrFetchActivity(activityId) {
+    const id = Number(activityId);
+    if (!Number.isFinite(id) || id <= 0) return null;
+
+    const cached = activities.value.find((item) => Number(item.id) === id);
+    if (cached) return cached;
+
+    try {
+      return (await getActivity(id)) || null;
+    } catch {
+      return null;
+    }
+  }
+
   return {
     activities,
     isLoaded,
@@ -74,6 +88,7 @@ export const useActivityStore = defineStore('activity', () => {
     fetchActivities,
     fetchPopularActivities,
     fetchWorks,
-    fetchActivitiesByWork
+    fetchActivitiesByWork,
+    getOrFetchActivity
   };
 });

@@ -7,6 +7,11 @@ export async function getActivities(params = {}) {
   return unwrapApiResponse(response, 'activity.loadFailed');
 }
 
+export async function getActivity(activityId) {
+  const response = await httpClient.get(`/activities/${Number(activityId)}`);
+  return unwrapApiResponse(response, 'activity.loadFailed');
+}
+
 // 人氣活動：依訂單數量由多到少取前 N 名（後端預設 5）。
 export async function getPopularActivities(limit = 5) {
   const response = await httpClient.get('/activities/popular', { params: { limit } });

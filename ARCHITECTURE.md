@@ -514,7 +514,7 @@ src/modules/product/
 
 資料夾功能：
 
-- `api/productApi.js`：封裝活動商品列表（`getActivityProductCatalog(activityId)` 同時取活動與商品），可依 `activityId` 取得。
+- `api/productApi.js`：封裝活動商品列表（`getProductsByActivity(activityId)` 打 `GET /api/activities/{id}/products`）。目前活動資訊改由 `activityStore.getOrFetchActivity()` 提供（快取優先、未命中才打單筆 `GET /api/activities/{id}`），不再重撈整包活動清單。
 - `stores/productStore.js`：管理目前活動、活動商品清單、載入狀態、錯誤狀態與分類狀態。
 - `pages/ProductListPage.vue`：活動商品頁，路由為 `/activities/:activityId/products`。
 - `components/ProductCard.vue`：商品卡片，顯示圖片、分類、名稱、價格、簡短備註與加入購物車按鈕。
@@ -733,7 +733,8 @@ WorkActivitiesPage
 
 ProductListPage
   -> productStore.fetchProductsByActivity(activityId)
-  -> productApi.getActivityProductCatalog(activityId)  -> GET /api/activities/{id}/products（並行取活動資訊）
+       -> productApi.getProductsByActivity(activityId)  -> GET /api/activities/{id}/products
+       -> activityStore.getOrFetchActivity(activityId)  -> 命中首頁快取則不打 API，未命中才 GET /api/activities/{id}
   -> ProductCard -> ProductAddDialog
 ```
 
@@ -781,7 +782,7 @@ src/modules/product/api/productApi.js
 
 - 所有 HTTP 呼叫一律透過 `httpClient`（已無 mock 分支）。
 - 後端回傳統一包裝格式 `{ status, data, message }`，用 `unwrapApiResponse()` 解開（`status !== '200'` 丟錯）。
-- API function 命名要描述業務意圖，例如 `getActivities()`、`getPopularActivities()`、`getWorks()`、`getActivityProductCatalog()`、`createOrderFromCartItems()`。
+- API function 命名要描述業務意圖，例如 `getActivities()`、`getActivity()`、`getPopularActivities()`、`getWorks()`、`getProductsByActivity()`、`createOrderFromCartItems()`。
 
 ## Store 規則
 
