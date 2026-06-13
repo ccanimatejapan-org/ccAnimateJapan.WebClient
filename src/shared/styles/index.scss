@@ -86,7 +86,8 @@
   color: $color-muted;
 }
 
-.form-grid input {
+.form-grid input,
+.form-grid select {
   min-height: 46px;
   padding: 0 14px;
   border: 1px solid $color-border;
@@ -95,7 +96,12 @@
   color: $color-ink;
 }
 
-.form-grid input:focus {
+.form-grid select {
+  cursor: pointer;
+}
+
+.form-grid input:focus,
+.form-grid select:focus {
   border-color: $color-primary;
   box-shadow: 0 0 0 4px rgba(184, 121, 22, 0.12);
   outline: none;
@@ -103,6 +109,22 @@
 
 .form-grid__full {
   grid-column: 1 / -1;
+}
+
+.form-grid__hint {
+  font-size: 0.8rem;
+  color: $color-muted;
+}
+
+.form-grid__error {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #c0392b;
+}
+
+.form-grid input[aria-invalid='true'] {
+  border-color: #c0392b;
+  box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.12);
 }
 
 .summary-row {

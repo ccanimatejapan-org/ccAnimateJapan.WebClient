@@ -5,6 +5,7 @@ import homeRoutes from '@/modules/home/routes';
 import productRoutes from '@/modules/product/routes';
 import activityRoutes from '@/modules/activity/routes';
 import cartRoutes from '@/modules/cart/routes';
+import checkoutRoutes from '@/modules/checkout/routes';
 import orderRoutes from '@/modules/order/routes';
 import authRoutes from '@/modules/auth/routes';
 import memberRoutes from '@/modules/member/routes';
@@ -37,6 +38,7 @@ const routes = [
       ...productRoutes,
       ...activityRoutes,
       ...cartRoutes,
+      ...checkoutRoutes,
       ...orderRoutes,
       ...memberRoutes
     ]

@@ -185,9 +185,47 @@
     "name": "姓名",
     "email": "Email",
     "phone": "手機",
-    "addressName": "地址名稱",
-    "receiver": "收件人",
-    "address": "地址",
-    "addAddress": "新增地址"
+    "phonePlaceholder": "0912345678",
+    "phoneHint": "手機格式：09 開頭，共 10 碼數字",
+    "phoneInvalid": "手機格式不正確，請輸入 09 開頭的 10 碼數字",
+    "saved": "已儲存",
+    "saveSuccess": "儲存成功",
+    "loadFailed": "資料讀取失敗",
+    "saveFailed": "儲存失敗",
+    "deleteFailed": "刪除失敗",
+    "completeProfileFirst": "請先填寫會員資料（姓名、Email、手機）",
+    "deliveryMethod": "物流方式",
+    "label": "標籤",
+    "labelHint": {
+      "home": "例如：家、公司",
+      "store": "例如：台北中山（縣市區）"
+    },
+    "addAddress": "新增地址",
+    "setDefault": "設為預設",
+    "default": "預設",
+    "edit": "編輯",
+    "delete": "刪除",
+    "field": {
+      "address": "地址"
+    },
+    "addressHint": {
+      "home": "請填寫完整收件地址",
+      "store": "請填寫取貨門市完整地點（店名／店號）"
+    }
+  },
+  "checkout": {
+    "eyebrow": "結帳",
+    "title": "結帳",
+    "goCheckout": "前往結帳",
+    "chooseMethod": "選擇物流方式",
+    "chooseAddress": "選擇收件地址",
+    "useNewAddress": "使用新地址",
+    "saveAsAddress": "存成常用地址",
+    "recipientPhone": "收件電話",
+    "summary": "訂單摘要",
+    "placeOrder": "送出訂單",
+    "submitting": "送出中",
+    "noAddressNeeded": "此物流方式不需填寫地址",
+    "selectAddress": "請選擇或填寫收件地址"
   }
 }

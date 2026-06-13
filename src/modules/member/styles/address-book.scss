@@ -2,12 +2,95 @@
 
 .address-list {
   display: grid;
+  grid-template-columns: 1fr;
   gap: 12px;
 }
 
 .address-card {
+  display: grid;
+  gap: 8px;
   padding: 16px;
   border: 1px solid $color-border;
-  border-radius: 8px;
+  border-radius: 16px;
   background: #fff;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.address-card:hover {
+  border-color: rgba(178, 106, 0, 0.35);
+  box-shadow: 0 8px 20px rgba(50, 35, 20, 0.06);
+}
+
+.address-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.address-card__header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.address-card__badge {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #fff1d6;
+  color: $color-primary;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.address-card__method {
+  margin: 0;
+  color: $color-muted;
+  font-size: 0.85rem;
+}
+
+.address-card p {
+  margin: 0;
+  color: $color-ink;
+  overflow-wrap: anywhere;
+}
+
+.address-card__actions {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.address-card__actions button {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid $color-border;
+  border-radius: 999px;
+  background: #fffaf3;
+  color: $color-ink;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+
+.address-card__actions button:hover {
+  border-color: rgba(178, 106, 0, 0.4);
+  background: #fff5e0;
+}
+
+.address-card__delete {
+  color: #c0392b;
+  border-color: rgba(192, 57, 43, 0.3) !important;
+}
+
+.address-card__delete:hover {
+  background: rgba(192, 57, 43, 0.08) !important;
+  border-color: rgba(192, 57, 43, 0.5) !important;
+}
+
+@media (min-width: 680px) {
+  .address-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

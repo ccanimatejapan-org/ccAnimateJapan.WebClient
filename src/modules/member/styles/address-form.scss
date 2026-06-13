@@ -3,6 +3,47 @@
 .address-form {
   padding: 20px;
   border: 1px solid $color-border;
-  border-radius: 8px;
+  border-radius: 16px;
   background: #fff;
+}
+
+.address-form__default {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: $color-muted;
+  font-weight: 600;
+}
+
+.address-form__default input {
+  width: 18px;
+  height: 18px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 4px;
+  accent-color: $color-primary;
+}
+
+.address-form__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.address-form__cancel {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid $color-border;
+  border-radius: 999px;
+  background: #fffaf3;
+  color: $color-ink;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+
+.address-form__cancel:hover {
+  border-color: rgba(178, 106, 0, 0.4);
+  background: #fff5e0;
 }

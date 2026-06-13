@@ -52,7 +52,7 @@ node --test src/shared/api/apiResponse.test.js   # 執行單一測試檔
 
 ## MVP 範圍注意事項（依 ARCHITECTURE.md）
 
-- 沒有獨立結帳流程：`CartPage` 直接呼叫 `createOrderFromCartItems()`（打 `POST /orders` 建訂單並由後端清空伺服器購物車）後導向 `/orders`。沒有 `/checkout` route，也沒有 `modules/checkout`。
+- 結帳流程：`CartPage` 的「前往結帳」導向 `/checkout`（`modules/checkout`）→ 選物流方式 + 收件地址（依 `deliveryTypes.addressKind`：1 宅配地址 / 2 超商門市 / 3 免地址）→ `createOrderFromCartItems(items, shipping)` 打 `POST /orders` 建訂單（後端清空伺服器購物車並寫入收件快照）後導向 `/orders`。結帳前會檢查會員 email/姓名/電話，未填則導去會員資料頁補齊。
 - 購物車一次只允許同一個活動的商品。
 - 沒有商品詳情 route；`/products` 會 redirect 回首頁。`ProductDetailPage.vue`、`ProductFilter.vue`、`ProductImageGallery.vue` 是保留但未使用的檔案。
 - 舊的 `modules/order-form`（`/activity/:activityId`）流程**已整個移除**（含前端模組與後端 `GET /activities/:id/order-form`、`POST /activities/:id/orders`）；現在一律走購物車流程。

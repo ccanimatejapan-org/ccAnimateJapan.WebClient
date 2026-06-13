@@ -11,7 +11,7 @@ export async function getOrderById(id) {
   return unwrapApiResponse(response, 'order.notFound');
 }
 
-export async function createOrderFromCartItems(items) {
+export async function createOrderFromCartItems(items, shipping = {}) {
   if (!Array.isArray(items) || items.length === 0) {
     throw new Error('cart.toast.submitFailedMessage');
   }
@@ -21,6 +21,16 @@ export async function createOrderFromCartItems(items) {
     throw new Error('cart.toast.mixedActivityMessage');
   }
 
-  const response = await httpClient.post('/orders', { items });
+  const payload = {
+    items,
+    deliveryTypeId: shipping.deliveryTypeId ?? null,
+    addressId: shipping.addressId ?? null,
+    saveAddress: Boolean(shipping.saveAddress),
+    addressName: shipping.addressName ?? null,
+    address: shipping.address ?? null,
+    recipientPhone: shipping.recipientPhone ?? null
+  };
+
+  const response = await httpClient.post('/orders', payload);
   return unwrapApiResponse(response, 'cart.toast.submitFailedMessage');
 }

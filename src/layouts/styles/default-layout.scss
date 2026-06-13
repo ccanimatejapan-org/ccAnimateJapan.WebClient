@@ -103,8 +103,8 @@
   overflow-wrap: anywhere;
 }
 
-.site-header__nav a.router-link-active,
-.site-header__cart.router-link-active {
+.site-header__nav a.router-link-exact-active,
+.site-header__cart.router-link-exact-active {
   color: $color-primary;
   background: rgba(184, 121, 22, 0.08);
 }
@@ -310,7 +310,7 @@
   font-weight: 900;
 }
 
-.site-mobile-menu__item.router-link-active {
+.site-mobile-menu__item.router-link-exact-active {
   color: $color-primary;
   background: rgba(184, 121, 22, 0.09);
 }

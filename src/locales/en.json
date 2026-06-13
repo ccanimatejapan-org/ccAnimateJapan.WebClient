@@ -185,9 +185,47 @@
     "name": "Name",
     "email": "Email",
     "phone": "Phone",
-    "addressName": "Address name",
-    "receiver": "Receiver",
-    "address": "Address",
-    "addAddress": "Add address"
+    "phonePlaceholder": "0912345678",
+    "phoneHint": "Format: starts with 09, 10 digits total",
+    "phoneInvalid": "Invalid phone. Enter a 10-digit number starting with 09",
+    "saved": "Saved",
+    "saveSuccess": "Saved successfully",
+    "loadFailed": "Failed to load",
+    "saveFailed": "Failed to save",
+    "deleteFailed": "Failed to delete",
+    "completeProfileFirst": "Please complete your profile (name, email, phone) first",
+    "deliveryMethod": "Delivery method",
+    "label": "Label",
+    "labelHint": {
+      "home": "e.g. Home, Office",
+      "store": "e.g. Taipei Zhongshan (city / district)"
+    },
+    "addAddress": "Add address",
+    "setDefault": "Set as default",
+    "default": "Default",
+    "edit": "Edit",
+    "delete": "Delete",
+    "field": {
+      "address": "Address"
+    },
+    "addressHint": {
+      "home": "Enter the full delivery address",
+      "store": "Enter the full pickup store location (name / store ID)"
+    }
+  },
+  "checkout": {
+    "eyebrow": "Checkout",
+    "title": "Checkout",
+    "goCheckout": "Checkout",
+    "chooseMethod": "Delivery method",
+    "chooseAddress": "Shipping address",
+    "useNewAddress": "Use a new address",
+    "saveAsAddress": "Save as a frequent address",
+    "recipientPhone": "Recipient phone",
+    "summary": "Order summary",
+    "placeOrder": "Place order",
+    "submitting": "Submitting",
+    "noAddressNeeded": "This delivery method needs no address",
+    "selectAddress": "Please select or enter a shipping address"
   }
 }

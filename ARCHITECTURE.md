@@ -8,11 +8,11 @@
 首頁（活動／熱門／依作品逛）
   -> 活動商品列表
   -> 加入購物車
-  -> 購物車送出訂單
+  -> 購物車 -> 前往結帳（選物流方式 / 收件地址）
   -> 我的訂單列表 / 訂單詳情
 ```
 
-目前沒有獨立 checkout 結帳流程；購物車送出即建立訂單（打後端 `POST /orders`）並導向訂單列表。舊的活動訂購表單模組 `modules/order-form` 已**完全移除**，所有活動訂購統一走購物車流程。
+購物車送出後進入獨立結帳流程 `modules/checkout`（`/checkout`）：選物流方式 → 依物流方式的 `addressKind` 選/填收件地址（免地址型態則略過）→ 送出建立訂單（打後端 `POST /orders`，後端清空伺服器購物車並寫入收件快照）後導向訂單列表。舊的活動訂購表單模組 `modules/order-form` 已**完全移除**，所有活動訂購統一走購物車流程。
 
 ## 技術棧
 
@@ -119,8 +119,7 @@ src/
 
 目前特別沒有：
 
-- 沒有獨立 `/checkout` route。
-- 沒有 `modules/checkout`、`CheckoutLayout`。
+- 有獨立 `/checkout` route（`modules/checkout`）；沿用 `DefaultLayout`，沒有獨立 `CheckoutLayout`。
 - 沒有舊的 `order-form` 流程（`/activity/:activityId` 已移除）。
 - 沒有商品詳情 route；`/products` 會 redirect 回首頁。
 - 沒有多活動合併訂單；購物車一次只允許同一個活動的商品。
@@ -579,7 +578,7 @@ src/modules/cart/
 MVP 限制：
 
 - 一次只允許同一個活動的商品在購物車中（由後端把關）。
-- 不走獨立 checkout；購物車送出即建立訂單（打後端 `POST /orders`）。
+- 購物車送出後進入 `/checkout` 結帳流程（選物流方式 + 收件地址）再建立訂單（打後端 `POST /orders`）。
 
 ### modules/order/
 

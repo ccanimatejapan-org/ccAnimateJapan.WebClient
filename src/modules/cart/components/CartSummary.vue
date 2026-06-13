@@ -13,9 +13,7 @@
       <span>{{ t('cart.subtotal') }}</span>
       <AppPrice :value="cart.subtotal" />
     </div>
-    <AppButton :disabled="isSubmitting" @click="$emit('submit')">
-      {{ isSubmitting ? t('cart.submitting') : t('cart.submitOrder') }}
-    </AppButton>
+    <AppButton @click="$emit('submit')">{{ t('checkout.goCheckout') }}</AppButton>
   </aside>
 </template>
 
@@ -24,13 +22,6 @@ import { useI18n } from 'vue-i18n';
 import AppButton from '@/shared/components/AppButton.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
 import { useCartStore } from '../stores/cartStore';
-
-defineProps({
-  isSubmitting: {
-    type: Boolean,
-    default: false
-  }
-});
 
 defineEmits(['submit']);
 

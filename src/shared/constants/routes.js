@@ -6,6 +6,7 @@ export const ROUTE_NAMES = {
   WORK_LIST: 'work-list',
   WORK_ACTIVITIES: 'work-activities',
   CART: 'cart',
+  CHECKOUT: 'checkout',
   ORDER_LIST: 'order-list',
   ORDER_DETAIL: 'order-detail',
   LOGIN: 'login',

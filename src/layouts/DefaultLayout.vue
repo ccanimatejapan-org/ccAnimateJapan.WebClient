@@ -15,6 +15,9 @@
         <RouterLink :to="{ name: ROUTE_NAMES.ORDER_LIST }">
           {{ t('nav.orders') }}
         </RouterLink>
+        <RouterLink :to="{ name: ROUTE_NAMES.MEMBER_PROFILE }">
+          {{ t('nav.member') }}
+        </RouterLink>
       </nav>
       <div class="site-header__actions">
         <RouterLink
@@ -100,14 +103,11 @@
         </RouterLink>
         <RouterLink
           class="site-mobile-menu__item"
-          :to="{ name: ROUTE_NAMES.CART }"
+          :to="{ name: ROUTE_NAMES.MEMBER_PROFILE }"
           @click="closeMenu"
         >
-          <span>{{ t('nav.cart') }}</span>
-          <span v-if="cart.totalQuantity > 0" class="site-mobile-menu__badge">
-            {{ cart.totalQuantity }}
-          </span>
-          <span v-else aria-hidden="true">›</span>
+          <span>{{ t('nav.member') }}</span>
+          <span aria-hidden="true">›</span>
         </RouterLink>
       </nav>
     </Transition>
