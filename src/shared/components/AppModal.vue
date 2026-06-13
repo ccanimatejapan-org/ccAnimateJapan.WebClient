@@ -50,7 +50,7 @@ defineEmits(['update:modelValue']);
 .app-modal__panel {
   position: relative;
   width: 100%;
-  height: min(70vh, 600px);
+  max-height: min(70vh, 600px);
   overflow: auto;
   display: flex;
   flex-direction: column;
