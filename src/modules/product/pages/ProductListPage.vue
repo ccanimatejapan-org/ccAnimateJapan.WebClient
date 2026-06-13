@@ -4,9 +4,6 @@
       <div>
         <p class="eyebrow">{{ t('product.activityEyebrow') }}</p>
         <h1>{{ productStore.activity?.name || t('product.activityTitleFallback') }}</h1>
-        <p v-if="productStore.activity?.info" class="product-page__intro">
-          {{ productStore.activity.info }}
-        </p>
       </div>
     </div>
 
