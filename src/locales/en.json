@@ -188,6 +188,8 @@
     "phonePlaceholder": "0912345678",
     "phoneHint": "Format: starts with 09, 10 digits total",
     "phoneInvalid": "Invalid phone. Enter a 10-digit number starting with 09",
+    "nameRequired": "Name is required",
+    "emailInvalid": "Invalid email format",
     "saved": "Saved",
     "saveSuccess": "Saved successfully",
     "loadFailed": "Failed to load",

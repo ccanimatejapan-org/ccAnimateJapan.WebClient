@@ -8,7 +8,12 @@ export function getStorageItem(key, fallback = null) {
 }
 
 export function setStorageItem(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function removeStorageItem(key) {

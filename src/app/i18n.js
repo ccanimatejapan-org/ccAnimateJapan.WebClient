@@ -6,6 +6,8 @@ export const i18n = createI18n({
   legacy: false,
   locale: 'zh-TW',
   fallbackLocale: 'en',
+  missingWarn: false,
+  fallbackWarn: false,
   messages: {
     'zh-TW': zhTW,
     en

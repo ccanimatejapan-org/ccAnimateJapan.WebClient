@@ -48,9 +48,7 @@ httpClient.interceptors.response.use(
       if (error.config && !error.config._retried) {
         try {
           if (isLiffConfigured()) {
-            const [{ useAuthStore }] = await Promise.all([
-              import('@/modules/auth/stores/authStore')
-            ]);
+            const { useAuthStore } = await import('@/modules/auth/stores/authStore');
             const renewed = await renewSessionOnce(useAuthStore());
             if (renewed) {
               error.config._retried = true;

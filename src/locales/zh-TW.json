@@ -188,6 +188,8 @@
     "phonePlaceholder": "0912345678",
     "phoneHint": "手機格式：09 開頭，共 10 碼數字",
     "phoneInvalid": "手機格式不正確，請輸入 09 開頭的 10 碼數字",
+    "nameRequired": "請輸入姓名",
+    "emailInvalid": "Email 格式不正確",
     "saved": "已儲存",
     "saveSuccess": "儲存成功",
     "loadFailed": "資料讀取失敗",

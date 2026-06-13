@@ -10,7 +10,6 @@ import orderRoutes from '@/modules/order/routes';
 import authRoutes from '@/modules/auth/routes';
 import memberRoutes from '@/modules/member/routes';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
-import { getStorageItem } from '@/shared/utils/storage';
 import { useAuthStore } from '@/modules/auth/stores/authStore';
 import { useUiStore } from '@/shared/stores/uiStore';
 import {
@@ -22,7 +21,6 @@ import {
   login as liffLogin
 } from '@/shared/composables/liffClient';
 
-const AUTH_STORAGE_KEY = 'ccAnimateJapan.auth';
 const PUBLIC_ROUTE_NAMES = new Set([
   ROUTE_NAMES.LOGIN,
   ROUTE_NAMES.LINE_CALLBACK,

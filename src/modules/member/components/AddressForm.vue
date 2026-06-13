@@ -19,7 +19,7 @@
       <span>{{ t('member.setDefault') }}</span>
     </label>
     <div class="address-form__buttons form-grid__full">
-      <AppButton type="submit">{{ submitLabel }}</AppButton>
+      <AppButton type="submit" :disabled="saving">{{ submitLabel }}</AppButton>
       <button v-if="props.address" type="button" class="address-form__cancel" @click="$emit('cancel')">
         {{ t('common.cancel') }}
       </button>
@@ -41,6 +41,10 @@ const props = defineProps({
   address: {
     type: Object,
     default: null
+  },
+  saving: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -86,6 +90,7 @@ const labelPlaceholder = computed(() =>
 const submitLabel = computed(() => (props.address ? t('common.save') : t('member.addAddress')));
 
 function submit() {
+  if (props.saving) return;
   emit('submit', {
     deliveryTypeId: form.deliveryTypeId,
     addressName: form.addressName,

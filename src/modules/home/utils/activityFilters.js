@@ -14,7 +14,7 @@ export function filterByAvailability(activities, value) {
   }
 
   if (value === 'inStock') {
-    return list.filter((activity) => activity?.isPreOrder === false);
+    return list.filter((activity) => activity?.isPreOrder !== true);
   }
 
   return list;

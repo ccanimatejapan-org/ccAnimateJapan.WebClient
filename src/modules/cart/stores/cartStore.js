@@ -95,13 +95,16 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
+  let updateSeq = 0;
   async function updateQuantity(id, quantity) {
-    const nextQuantity = Math.max(1, Number(quantity) || 1);
+    const nextQuantity = Math.max(1, Math.floor(Number(quantity)) || 1);
+    const seq = ++updateSeq;
 
     try {
-      applyServerCart(await updateCartItem(id, nextQuantity));
+      const cart = await updateCartItem(id, nextQuantity);
+      if (seq === updateSeq) applyServerCart(cart);
     } catch {
-      await hydrate();
+      if (seq === updateSeq) await hydrate();
     }
   }
 

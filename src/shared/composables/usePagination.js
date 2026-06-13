@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 export function usePagination(items, pageSize = 12) {
   const page = ref(1);
@@ -8,6 +8,12 @@ export function usePagination(items, pageSize = 12) {
     const start = (page.value - 1) * pageSize;
     return items.value.slice(start, start + pageSize);
   });
+
+  watch(totalPages, (max) => {
+    if (page.value > max) {
+      page.value = max;
+    }
+  }, { flush: 'sync' });
 
   function setPage(nextPage) {
     page.value = Math.min(Math.max(nextPage, 1), totalPages.value);

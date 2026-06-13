@@ -133,7 +133,7 @@ onMounted(async () => {
     profile.value = profileData;
     addresses.value = addressList;
   } catch (error) {
-    ui.showToast({ title: t('member.saveFailed'), message: t(error.message || 'member.loadFailed') });
+    ui.showToast({ title: t('member.saveFailed'), message: t('member.loadFailed') });
     return;
   }
 

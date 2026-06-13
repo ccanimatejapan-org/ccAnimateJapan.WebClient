@@ -8,6 +8,7 @@
     </div>
 
     <AppLoading v-if="isLoading" :label="t('common.loading')" />
+    <AppEmpty v-else-if="loadFailed" :message="t('order.loadFailed')" />
     <AppEmpty v-else-if="orders.length === 0" :message="t('order.empty')" />
     <div v-else class="order-list">
       <OrderCard v-for="order in orders" :key="order.id" :order="order" />
@@ -26,10 +27,13 @@ import { getOrders } from '../api/orderApi';
 const { t } = useI18n();
 const orders = ref([]);
 const isLoading = ref(true);
+const loadFailed = ref(false);
 
 onMounted(async () => {
   try {
     orders.value = await getOrders();
+  } catch {
+    loadFailed.value = true;
   } finally {
     isLoading.value = false;
   }

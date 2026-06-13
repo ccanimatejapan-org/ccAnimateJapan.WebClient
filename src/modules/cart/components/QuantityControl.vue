@@ -22,7 +22,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 
 function emitValue(value) {
-  emit('update:modelValue', Math.max(1, value || 1));
+  emit('update:modelValue', Math.max(1, Math.floor(value) || 1));
 }
 </script>
 

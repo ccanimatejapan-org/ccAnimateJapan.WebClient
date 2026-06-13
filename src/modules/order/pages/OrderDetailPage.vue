@@ -1,5 +1,6 @@
 <template>
-  <section v-if="order" class="section narrow-section">
+  <AppLoading v-if="isLoading" :label="t('common.loading')" />
+  <section v-else-if="order" class="section narrow-section">
     <p class="eyebrow">{{ t('order.detail') }}</p>
     <h1>{{ order.orderNo || `#${order.id}` }}</h1>
     <p class="order-detail__activity">{{ order.activityName }}</p>
@@ -25,13 +26,14 @@
       </article>
     </div>
   </section>
-  <AppEmpty v-else :message="t('order.notFound')" />
+  <AppEmpty v-else :message="t(loadFailed ? 'order.loadFailed' : 'order.notFound')" />
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppEmpty from '@/shared/components/AppEmpty.vue';
+import AppLoading from '@/shared/components/AppLoading.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
 import { formatDateTime } from '@/shared/utils/date';
 import OrderStatusBadge from '../components/OrderStatusBadge.vue';
@@ -46,9 +48,17 @@ const props = defineProps({
 
 const { t } = useI18n();
 const order = ref(null);
+const isLoading = ref(true);
+const loadFailed = ref(false);
 
 onMounted(async () => {
-  order.value = await getOrderById(props.id);
+  try {
+    order.value = await getOrderById(props.id);
+  } catch {
+    loadFailed.value = true;
+  } finally {
+    isLoading.value = false;
+  }
 });
 </script>
 

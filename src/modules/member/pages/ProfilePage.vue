@@ -12,7 +12,7 @@
         {{ t('member.addressBook') }}
       </RouterLink>
     </div>
-    <ProfileForm v-if="profile" :profile="profile" @submit="save" />
+    <ProfileForm v-if="profile" :profile="profile" :saving="saving" @submit="save" />
     <AppLoading v-else :label="t('common.loading')" />
   </section>
 </template>
@@ -30,21 +30,25 @@ import { getProfile, updateProfile } from '../api/memberApi';
 const { t } = useI18n();
 const ui = useUiStore();
 const profile = ref(null);
+const saving = ref(false);
 
 onMounted(async () => {
   try {
     profile.value = await getProfile();
   } catch (error) {
-    ui.showToast({ title: t('member.saveFailed'), message: t(error.message || 'member.loadFailed') });
+    ui.showToast({ title: t('member.saveFailed'), message: t('member.loadFailed') });
   }
 });
 
 async function save(payload) {
+  saving.value = true;
   try {
     profile.value = await updateProfile(payload);
     ui.showToast({ title: t('member.profile'), message: t('member.saveSuccess') });
-  } catch (error) {
-    ui.showToast({ title: t('member.saveFailed'), message: t(error.message || 'member.saveFailed') });
+  } catch {
+    ui.showToast({ title: t('member.saveFailed'), message: t('member.saveFailed') });
+  } finally {
+    saving.value = false;
   }
 }
 </script>

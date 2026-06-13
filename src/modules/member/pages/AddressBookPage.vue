@@ -16,6 +16,7 @@
     <AddressForm
       :delivery-types="deliveryTypes"
       :address="editing"
+      :saving="saving"
       @submit="save"
       @cancel="editing = null"
     />
@@ -63,6 +64,7 @@ const ui = useUiStore();
 const addresses = ref([]);
 const deliveryTypes = ref([]);
 const editing = ref(null);
+const saving = ref(false);
 
 async function reload() {
   addresses.value = await getAddresses();
@@ -74,11 +76,12 @@ onMounted(async () => {
     deliveryTypes.value = types;
     addresses.value = list;
   } catch (error) {
-    ui.showToast({ title: t('member.saveFailed'), message: t(error.message || 'member.loadFailed') });
+    ui.showToast({ title: t('member.saveFailed'), message: t('member.loadFailed') });
   }
 });
 
 async function save(payload) {
+  saving.value = true;
   try {
     if (editing.value) {
       await updateAddress(editing.value.id, payload);
@@ -87,8 +90,10 @@ async function save(payload) {
     }
     editing.value = null;
     await reload();
-  } catch (error) {
-    ui.showToast({ title: t('member.saveFailed'), message: t(error.message || 'member.saveFailed') });
+  } catch {
+    ui.showToast({ title: t('member.saveFailed'), message: t('member.saveFailed') });
+  } finally {
+    saving.value = false;
   }
 }
 
@@ -97,7 +102,7 @@ async function makeDefault(id) {
     await setDefaultAddress(id);
     await reload();
   } catch (error) {
-    ui.showToast({ title: t('member.saveFailed'), message: t(error.message || 'member.saveFailed') });
+    ui.showToast({ title: t('member.saveFailed'), message: t('member.saveFailed') });
   }
 }
 
@@ -107,7 +112,7 @@ async function remove(id) {
     if (editing.value?.id === id) editing.value = null;
     await reload();
   } catch (error) {
-    ui.showToast({ title: t('member.deleteFailed'), message: t(error.message || 'member.deleteFailed') });
+    ui.showToast({ title: t('member.deleteFailed'), message: t('member.deleteFailed') });
   }
 }
 </script>

@@ -75,6 +75,10 @@ export const useProductStore = defineStore('product', () => {
         activityStore.getOrFetchActivity(normalizedActivityId)
       ]);
 
+      if (activeActivityId.value !== normalizedActivityId) {
+        return { ok: false, reason: 'superseded' };
+      }
+
       if (!nextActivity?.id) {
         isLoaded.value = true;
         return { ok: false, reason: 'activityNotFound' };
@@ -85,12 +89,17 @@ export const useProductStore = defineStore('product', () => {
       isLoaded.value = true;
       return { ok: true, activity: activity.value, products: products.value };
     } catch (err) {
+      if (activeActivityId.value !== normalizedActivityId) {
+        return { ok: false, reason: 'superseded' };
+      }
       error.value = err;
       activity.value = null;
       products.value = [];
       return { ok: false, reason: 'error', error: err };
     } finally {
-      isLoading.value = false;
+      if (activeActivityId.value === normalizedActivityId) {
+        isLoading.value = false;
+      }
     }
   }
 
