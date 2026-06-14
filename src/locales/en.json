@@ -87,6 +87,7 @@
     "loadFailed": "Unable to load products",
     "emptyForActivity": "No products are available for this activity",
     "addToCart": "Add to cart",
+    "soldOut": "Sold out",
     "addedToCart": "Added",
     "notFound": "Product not found",
     "addDialog": {

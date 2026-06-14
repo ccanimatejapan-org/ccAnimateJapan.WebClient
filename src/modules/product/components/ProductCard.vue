@@ -6,8 +6,8 @@
       <h3>{{ product.name }}</h3>
       <span v-if="product.note" class="product-card__note">{{ product.note }}</span>
       <AppPrice :value="product.price" />
-      <AppButton @click="$emit('add', product)">
-        {{ t('product.addToCart') }}
+      <AppButton :disabled="product.isOutStock" @click="$emit('add', product)">
+        {{ product.isOutStock ? t('product.soldOut') : t('product.addToCart') }}
       </AppButton>
     </div>
   </article>

@@ -16,6 +16,7 @@ import {
   ensureLiffReady,
   getAccessToken,
   getFriendFlag,
+  isInClient,
   isLiffConfigured,
   isLoggedIn,
   login as liffLogin
@@ -100,6 +101,9 @@ router.beforeEach(async (to) => {
     // Inside LINE, liff.init() has already logged the user in. In an external
     // browser we redirect to LINE login and return to the same URL.
     if (!isLoggedIn()) {
+      if (isInClient()) {
+        return { name: ROUTE_NAMES.LOGIN, query: { error: 'liff' } };
+      }
       liffLogin(window.location.origin + to.fullPath);
       return false;
     }
@@ -111,7 +115,7 @@ router.beforeEach(async (to) => {
     await auth.signInWithLiff(getAccessToken());
     return true;
   } catch (error) {
-    if (error?.message === 'notFriend') {
+    if (error?.apiStatus === '403' || error?.message === 'notFriend') {
       return { name: ROUTE_NAMES.LINE_ADD_FRIEND };
     }
     return { name: ROUTE_NAMES.LOGIN, query: { error: 'liff' } };

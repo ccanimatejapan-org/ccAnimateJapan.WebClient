@@ -49,8 +49,8 @@
         <AppButton variant="secondary" @click="$emit('update:modelValue', false)">
           {{ t('common.cancel') }}
         </AppButton>
-        <AppButton @click="confirm">
-          {{ t('product.addDialog.confirm') }}
+        <AppButton :disabled="isSoldOut" @click="confirm">
+          {{ isSoldOut ? t('product.soldOut') : t('product.addDialog.confirm') }}
         </AppButton>
       </div>
     </div>
@@ -84,10 +84,15 @@ const { t } = useI18n();
 const quantity = ref(1);
 const note = ref('');
 
+const MAX_QUANTITY = 999;
+
+const isSoldOut = computed(() => Boolean(props.product?.isOutStock));
+
 const maxQuantity = computed(() => {
+  if (props.activity?.isPreOrder) return MAX_QUANTITY;
   const stock = Number(props.product?.stock);
-  if (!Number.isFinite(stock) || stock <= 0) return null;
-  return stock;
+  if (!Number.isFinite(stock)) return MAX_QUANTITY;
+  return Math.min(MAX_QUANTITY, Math.max(0, stock));
 });
 
 watch(
@@ -101,10 +106,12 @@ watch(
 
 function setQuantity(value) {
   const nextValue = Math.max(1, Math.floor(Number(value) || 1));
-  quantity.value = maxQuantity.value ? Math.min(maxQuantity.value, nextValue) : nextValue;
+  const cap = maxQuantity.value;
+  quantity.value = cap > 0 ? Math.min(cap, nextValue) : nextValue;
 }
 
 function confirm() {
+  if (isSoldOut.value) return;
   setQuantity(quantity.value);
   if (!props.product?.id) {
     emit('update:modelValue', false);

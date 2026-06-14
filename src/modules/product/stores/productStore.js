@@ -107,6 +107,16 @@ export const useProductStore = defineStore('product', () => {
     selectedCategory.value = category;
   }
 
+  function reset() {
+    products.value = [];
+    activity.value = null;
+    activeActivityId.value = null;
+    isLoaded.value = false;
+    isLoading.value = false;
+    error.value = null;
+    selectedCategory.value = 'all';
+  }
+
   return {
     products,
     activity,
@@ -119,6 +129,7 @@ export const useProductStore = defineStore('product', () => {
     featuredProducts,
     fetchProducts,
     fetchProductsByActivity,
-    setCategory
+    setCategory,
+    reset
   };
 });

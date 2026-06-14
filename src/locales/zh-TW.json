@@ -87,6 +87,7 @@
     "loadFailed": "商品資料讀取失敗",
     "emptyForActivity": "這個活動目前沒有可購買商品",
     "addToCart": "加入購物車",
+    "soldOut": "已售完",
     "addedToCart": "已加入",
     "notFound": "找不到商品",
     "addDialog": {

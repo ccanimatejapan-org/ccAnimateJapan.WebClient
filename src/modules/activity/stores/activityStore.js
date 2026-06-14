@@ -78,6 +78,15 @@ export const useActivityStore = defineStore('activity', () => {
     }
   }
 
+  function reset() {
+    activities.value = [];
+    isLoaded.value = false;
+    isLoading.value = false;
+    error.value = null;
+    popularActivities.value = [];
+    works.value = [];
+  }
+
   return {
     activities,
     isLoaded,
@@ -89,6 +98,7 @@ export const useActivityStore = defineStore('activity', () => {
     fetchPopularActivities,
     fetchWorks,
     fetchActivitiesByWork,
-    getOrFetchActivity
+    getOrFetchActivity,
+    reset
   };
 });

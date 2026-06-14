@@ -305,8 +305,8 @@ src/shared/api/
 └─ httpClient.js
 ```
 
-- `httpClient.js`：建立 Axios instance。預設 `baseURL` 為 `VITE_API_BASE_URL`（未設用 `/api`）；timeout 15 秒。**request interceptor** 會從 localStorage `ccAnimateJapan.auth` 取 `accessToken` 帶上 `Authorization: Bearer`；**response interceptor** 成功回傳 `response.data`、遇 401 清掉 token 並導回登入頁（動態 import 避免與 authStore 形成循環相依）。
-- `apiResponse.js`：提供 `unwrapApiResponse()`，處理後端包裝格式 `{ status, data, message }`，當 `status !== '200'` 時丟出錯誤，成功時回傳 `data`。
+- `httpClient.js`：建立 Axios instance。預設 `baseURL` 為 `VITE_API_BASE_URL`（未設用 `/api`）；timeout 15 秒。**request interceptor** 會從 localStorage `ccAnimateJapan.auth` 取 `accessToken` 帶上 `Authorization: Bearer`；**response interceptor** 成功時回傳 `response.data`，遇 401（HTTP 狀態或 body `status` 皆然）會先嘗試靜默續期並重試，失敗才清掉 token 並導回登入頁（動態 import 避免與 authStore 形成循環相依；auth 端點本身帶 `skipAuthHandling`，不走此續期流程以免遞迴卡死）。
+- `apiResponse.js`：提供 `unwrapApiResponse()` 與 `ApiResponseError`，處理後端包裝格式 `{ status, data, message }`；`status !== '200'` 時丟出帶 `apiStatus` 的 `ApiResponseError`（呼叫端／router 可依狀態碼分流，例如 403 → 加好友頁），成功時回傳 `data`。
 - `apiResponse.test.js`：API response helper 的測試。
 
 > 已移除 mock 切換層：沒有 `mockMode.js`，各 API 檔直接呼叫 `httpClient`，不要再加回假資料分支。
@@ -665,9 +665,9 @@ src/modules/member/
 
 1. 已有 session（localStorage `ccAnimateJapan.auth` 有 `accessToken`）→ 放行。
 2. **本地 dev-login**：`import.meta.env.DEV && VITE_DEV_AUTO_LOGIN === 'true'` 時，呼叫 `authStore.signInWithDev()`（打 `POST /auth/dev-login`，用 DB 第一筆有效會員發真實 JWT）直接進站。此分支只在 dev build 存在（正式 build 被 tree-shake 移除），後端非 Development 也回 404。
-3. **LIFF 流程**：未設 `VITE_LIFF_ID` → 導 `/auth/login`；否則 `ensureLiffReady()` → 若 `!isLoggedIn()` 則 `login(redirectUri)` 導向 LINE → `getFriendFlag()` 為 false 導 `/auth/add-friend` → `authStore.signInWithLiff(getAccessToken())` 換後端 session。
+3. **LIFF 流程**：未設 `VITE_LIFF_ID` → 導 `/auth/login`；否則 `ensureLiffReady()` → 若 `!isLoggedIn()`：在 LINE app 內（`isInClient()`）改導登入頁避免卡白畫面，否則 `login(redirectUri)` 導向 LINE → `getFriendFlag()` 為 false（或後端 body 403）導 `/auth/add-friend` → `authStore.signInWithLiff(getAccessToken())` 換後端 session。
 
-登入成功後 `httpClient` request interceptor 自動帶 `Authorization: Bearer`；遇 401 清掉 token 並重導登入頁。
+登入成功後 `httpClient` request interceptor 自動帶 `Authorization: Bearer`；遇 401 會先嘗試靜默續期並重試，失敗才清掉 token 並重導登入頁。
 
 ## 依賴方向
 
