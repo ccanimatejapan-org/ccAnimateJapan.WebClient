@@ -483,7 +483,6 @@ src/modules/home/
 - `config/homeBanners.js`：首頁輪播 banner 設定。
 - `utils/activityFilters.js`：`filterByAvailability()` 等首頁活動篩選純函式（依 `isPreOrder`）。
 - `routes.js`：定義首頁路由 `path: ''`、`name: ROUTE_NAMES.HOME`。
-- `components/ActivityCard.vue`、`ActivitySection.vue`、`HeroBanner.vue`、`ProductSection.vue`（與對應 `activity-card.scss`／`activity-section.scss`／`hero-banner.scss`）為改版前保留檔，目前首頁已改用上述 `Home*` 區塊、不再使用。
 
 ### modules/product/
 
@@ -493,11 +492,8 @@ src/modules/product/
 │  └─ productApi.js
 ├─ components/
 │  ├─ ProductAddDialog.vue
-│  ├─ ProductCard.vue
-│  ├─ ProductFilter.vue
-│  └─ ProductImageGallery.vue
+│  └─ ProductCard.vue
 ├─ pages/
-│  ├─ ProductDetailPage.vue
 │  └─ ProductListPage.vue
 ├─ routes.js
 ├─ stores/
@@ -505,9 +501,6 @@ src/modules/product/
 └─ styles/
    ├─ product-add-dialog.scss
    ├─ product-card.scss
-   ├─ product-detail.scss
-   ├─ product-filter.scss
-   ├─ product-gallery.scss
    └─ product-grid.scss
 ```
 
@@ -518,7 +511,6 @@ src/modules/product/
 - `pages/ProductListPage.vue`：活動商品頁，路由為 `/activities/:activityId/products`。
 - `components/ProductCard.vue`：商品卡片，顯示圖片、分類、名稱、價格、簡短備註與加入購物車按鈕。
 - `components/ProductAddDialog.vue`：加入購物車 dialog，可選數量、填備註，確認後交給 cart store。
-- `components/ProductFilter.vue`、`ProductImageGallery.vue`、`pages/ProductDetailPage.vue`：保留的舊／預留檔案，目前 MVP 沒有商品詳情 route。
 - `routes.js`：定義活動商品頁；舊 `/products` route 會 redirect 回首頁。
 
 模組定位：
@@ -900,5 +892,5 @@ npm run dev -- --host 127.0.0.1 --port 5174
 
 - 補上正式測試 script，例如 Vitest，讓現有 `*.test.js` 可由 CI 執行。
 - 補上端到端測試，覆蓋首頁、依作品逛、活動商品、加入購物車、送出訂單、訂單查詢與 LIFF 登入/好友檢查流程。
-- 考慮增加商品詳情頁面（目前 MVP 無此功能，`ProductDetailPage.vue` 為預留）。
+- 考慮增加商品詳情頁面（目前 MVP 無此功能）。
 - 考慮支援跨活動購物車（目前 MVP 一次只允許同一活動的商品）。

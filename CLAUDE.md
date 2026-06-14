@@ -54,7 +54,7 @@ node --test src/shared/api/apiResponse.test.js   # 執行單一測試檔
 
 - 結帳流程：`CartPage` 的「前往結帳」導向 `/checkout`（`modules/checkout`）→ 選物流方式 + 收件地址（依 `deliveryTypes.addressKind`：1 宅配地址 / 2 超商門市 / 3 免地址）→ `createOrderFromCartItems(items, shipping)` 打 `POST /orders` 建訂單（後端清空伺服器購物車並寫入收件快照）後導向 `/orders`。結帳前會檢查會員 email/姓名/電話，未填則導去會員資料頁補齊。
 - 購物車一次只允許同一個活動的商品。
-- 沒有商品詳情 route；`/products` 會 redirect 回首頁。`ProductDetailPage.vue`、`ProductFilter.vue`、`ProductImageGallery.vue` 是保留但未使用的檔案。
+- 沒有商品詳情 route；`/products` 會 redirect 回首頁。
 - 舊的 `modules/order-form`（`/activity/:activityId`）流程**已整個移除**（含前端模組與後端 `GET /activities/:id/order-form`、`POST /activities/:id/orders`）；現在一律走購物車流程。
 - **LINE 登入＝LIFF**：整個登入流程集中在 `src/router/index.js` 的 `beforeEach` guard，能力由 `src/shared/composables/liffClient.js` 提供（`ensureLiffReady`/`isLoggedIn`/`getFriendFlag`/`getAccessToken`）。成功後 `authStore.signInWithLiff(accessToken)` → `POST /auth/line/login` 存 token（localStorage `ccAnimateJapan.auth`）。`httpClient` request interceptor 帶 `Authorization: Bearer`、收到 401 清 token。非官方好友導 `/auth/add-friend`；未設 `VITE_LIFF_ID` 時降級導 `/auth/login`。（已不走舊的 OAuth `/auth/line/callback` redirect。）
 - **本地免登入（dev-login）**：`import.meta.env.DEV && VITE_DEV_AUTO_LOGIN === 'true'` 時，guard 改打 `authStore.signInWithDev()` → 後端 Development-only `POST /auth/dev-login`（DB 第一筆有效會員發真實 JWT）直接進站。正式 build 此分支被 tree-shake、後端非 Development 回 404。

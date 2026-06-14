@@ -201,6 +201,9 @@ watch(
 );
 
 watch(isMenuOpen, async (menuOpen) => {
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+  }
   if (!menuOpen) return;
   await nextTick();
   focusMenuTarget(firstMobileMenuItem.value);
@@ -214,6 +217,9 @@ onBeforeUnmount(() => {
   window.cancelAnimationFrame(cartBumpFrame);
   window.clearTimeout(cartBumpTimer);
   window.removeEventListener('keydown', closeMenuOnEscape);
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = '';
+  }
 });
 </script>
 

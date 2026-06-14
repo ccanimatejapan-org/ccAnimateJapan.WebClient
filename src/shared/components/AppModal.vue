@@ -16,7 +16,9 @@
 </template>
 
 <script setup>
-defineProps({
+import { onBeforeUnmount, watch } from 'vue';
+
+const props = defineProps({
   modelValue: {
     type: Boolean,
     default: false
@@ -28,6 +30,15 @@ defineProps({
 });
 
 defineEmits(['update:modelValue']);
+
+function lockBodyScroll(locked) {
+  if (typeof document === 'undefined') return;
+  document.body.style.overflow = locked ? 'hidden' : '';
+}
+
+watch(() => props.modelValue, lockBodyScroll);
+
+onBeforeUnmount(() => lockBodyScroll(false));
 </script>
 
 <style scoped lang="scss">
