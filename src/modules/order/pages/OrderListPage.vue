@@ -9,35 +9,42 @@
 
     <AppLoading v-if="isLoading" :label="t('common.loading')" />
     <AppEmpty v-else-if="loadFailed" :message="t('order.loadFailed')" />
-    <AppEmpty v-else-if="orders.length === 0" :message="t('order.empty')" />
+    <AppEmpty v-else-if="items.length === 0" :message="t('order.empty')" />
     <div v-else class="order-list">
-      <OrderCard v-for="order in orders" :key="order.id" :order="order" />
+      <OrderCard v-for="order in items" :key="order.id" :order="order" />
     </div>
+    <AppPagination :page="page" :total-pages="totalPages" @update:page="goTo" />
   </section>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppEmpty from '@/shared/components/AppEmpty.vue';
 import AppLoading from '@/shared/components/AppLoading.vue';
+import AppPagination from '@/shared/components/AppPagination.vue';
+import { useServerPagination } from '@/shared/composables/useServerPagination';
 import OrderCard from '../components/OrderCard.vue';
 import { getOrders } from '../api/orderApi';
 
 const { t } = useI18n();
-const orders = ref([]);
-const isLoading = ref(true);
-const loadFailed = ref(false);
+const {
+  page,
+  items,
+  isLoading,
+  loadFailed,
+  totalPages,
+  load,
+  goTo
+} = useServerPagination(
+  (p, ps) => getOrders({ page: p, pageSize: ps }).then((data) => ({
+    items: data.items,
+    total: data.totalCount
+  })),
+  10
+);
 
-onMounted(async () => {
-  try {
-    orders.value = await getOrders();
-  } catch {
-    loadFailed.value = true;
-  } finally {
-    isLoading.value = false;
-  }
-});
+onMounted(() => load(1));
 </script>
 
 <style scoped lang="scss">

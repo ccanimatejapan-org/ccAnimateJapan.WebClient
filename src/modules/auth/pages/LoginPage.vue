@@ -35,7 +35,6 @@ const shouldAutoRetry = computed(() => !hasAutoRetried.value && !hasHardError.va
 const isAutoRetrying = ref(shouldAutoRetry.value);
 const autoRetryMessageKey = computed(() => {
   if (te('auth.processingLine')) return 'auth.processingLine';
-  if (te('auth.signingIn')) return 'auth.signingIn';
   return 'auth.description';
 });
 

@@ -9,7 +9,7 @@
 defineProps({
   label: {
     type: String,
-    default: 'Loading'
+    default: ''
   }
 });
 </script>

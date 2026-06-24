@@ -1,8 +1,8 @@
 import { httpClient } from '@/shared/api/httpClient';
 import { unwrapApiResponse } from '@/shared/api/apiResponse';
 
-export async function getOrders() {
-  const response = await httpClient.get('/orders');
+export async function getOrders(params = {}) {
+  const response = await httpClient.get('/orders', { params });
   return unwrapApiResponse(response, 'order.loadFailed');
 }
 

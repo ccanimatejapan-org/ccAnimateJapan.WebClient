@@ -103,16 +103,21 @@ export const useCartStore = defineStore('cart', () => {
     try {
       const cart = await updateCartItem(id, nextQuantity);
       if (seq === updateSeq) applyServerCart(cart);
+      return { ok: true };
     } catch {
-      if (seq === updateSeq) await hydrate();
+      if (seq !== updateSeq) return { ok: true };
+      await hydrate();
+      return { ok: false, reason: 'updateFailed' };
     }
   }
 
   async function removeItem(id) {
     try {
       applyServerCart(await removeCartItem(id));
+      return { ok: true };
     } catch {
       await hydrate();
+      return { ok: false, reason: 'removeFailed' };
     }
   }
 

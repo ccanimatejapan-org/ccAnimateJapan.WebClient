@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
-import { getProducts, getProductsByActivity } from '../api/productApi';
+import { ref } from 'vue';
+import { getProductsByActivity } from '../api/productApi';
 import { useActivityStore } from '@/modules/activity/stores/activityStore';
 
 function normalizeProducts(value) {
@@ -10,92 +10,50 @@ function normalizeProducts(value) {
 }
 
 export const useProductStore = defineStore('product', () => {
-  const products = ref([]);
   const activity = ref(null);
   const activeActivityId = ref(null);
   const isLoaded = ref(false);
   const isLoading = ref(false);
   const error = ref(null);
-  const selectedCategory = ref('all');
 
-  const availableProducts = computed(() => normalizeProducts(products.value));
-
-  const filteredProducts = computed(() => {
-    if (selectedCategory.value === 'all') return availableProducts.value;
-    return availableProducts.value.filter((product) => product.category === selectedCategory.value);
-  });
-
-  const featuredProducts = computed(() =>
-    availableProducts.value.filter((product) => product.featured).slice(0, 3)
-  );
-
-  async function fetchProducts(params = {}) {
-    isLoading.value = true;
-    error.value = null;
-
-    try {
-      products.value = normalizeProducts(await getProducts(params));
-      isLoaded.value = true;
-    } catch (err) {
-      error.value = err;
-      products.value = [];
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  async function fetchProductsByActivity(activityId) {
+  async function getOrFetchActivity(activityId) {
     const normalizedActivityId = Number(activityId);
     if (!Number.isFinite(normalizedActivityId) || normalizedActivityId <= 0) {
       activeActivityId.value = null;
       activity.value = null;
-      products.value = [];
-      selectedCategory.value = 'all';
       isLoaded.value = true;
       isLoading.value = false;
       error.value = null;
-      return { ok: false, reason: 'missingActivity' };
+      return null;
     }
 
     if (activeActivityId.value === normalizedActivityId && isLoaded.value && activity.value) {
-      return { ok: true, activity: activity.value, products: products.value };
+      return activity.value;
     }
 
     activeActivityId.value = normalizedActivityId;
     activity.value = null;
-    products.value = [];
-    selectedCategory.value = 'all';
     isLoading.value = true;
     error.value = null;
 
     try {
       const activityStore = useActivityStore();
-      const [productList, nextActivity] = await Promise.all([
-        getProductsByActivity(normalizedActivityId),
-        activityStore.getOrFetchActivity(normalizedActivityId)
-      ]);
+      const nextActivity = await activityStore.getOrFetchActivity(normalizedActivityId);
 
       if (activeActivityId.value !== normalizedActivityId) {
-        return { ok: false, reason: 'superseded' };
+        return null;
       }
 
-      if (!nextActivity?.id) {
-        isLoaded.value = true;
-        return { ok: false, reason: 'activityNotFound' };
-      }
-
-      activity.value = nextActivity;
-      products.value = normalizeProducts(productList);
+      activity.value = nextActivity?.id ? nextActivity : null;
       isLoaded.value = true;
-      return { ok: true, activity: activity.value, products: products.value };
+      return activity.value;
     } catch (err) {
       if (activeActivityId.value !== normalizedActivityId) {
-        return { ok: false, reason: 'superseded' };
+        return null;
       }
       error.value = err;
       activity.value = null;
-      products.value = [];
-      return { ok: false, reason: 'error', error: err };
+      return null;
     } finally {
       if (activeActivityId.value === normalizedActivityId) {
         isLoading.value = false;
@@ -103,33 +61,30 @@ export const useProductStore = defineStore('product', () => {
     }
   }
 
-  function setCategory(category) {
-    selectedCategory.value = category;
+  async function fetchProductsByActivityPaged(activityId, page, pageSize) {
+    const data = await getProductsByActivity(activityId, { page, pageSize });
+    return {
+      items: normalizeProducts(data?.items),
+      total: Math.max(0, Number(data?.totalCount) || 0)
+    };
   }
 
   function reset() {
-    products.value = [];
     activity.value = null;
     activeActivityId.value = null;
     isLoaded.value = false;
     isLoading.value = false;
     error.value = null;
-    selectedCategory.value = 'all';
   }
 
   return {
-    products,
     activity,
     activeActivityId,
     isLoaded,
     isLoading,
     error,
-    selectedCategory,
-    filteredProducts,
-    featuredProducts,
-    fetchProducts,
-    fetchProductsByActivity,
-    setCategory,
+    getOrFetchActivity,
+    fetchProductsByActivityPaged,
     reset
   };
 });

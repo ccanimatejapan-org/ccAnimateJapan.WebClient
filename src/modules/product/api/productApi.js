@@ -21,19 +21,17 @@ function normalizeActivityProducts(products, activityId) {
     });
 }
 
-export async function getProducts(params = {}) {
-  const response = await httpClient.get('/products', { params });
-  return unwrapApiResponse(response, 'product.loadFailed');
-}
-
-export async function getProductsByActivity(activityId) {
+export async function getProductsByActivity(activityId, params = {}) {
   const normalizedActivityId = Number(activityId);
-  const response = await httpClient.get(`/activities/${normalizedActivityId}/products`);
-  const products = unwrapApiResponse(response, 'product.loadFailed');
-  return normalizeActivityProducts(products, normalizedActivityId);
-}
+  const response = await httpClient.get(`/activities/${normalizedActivityId}/products`, { params });
+  const data = unwrapApiResponse(response, 'product.loadFailed');
 
-export async function getProductById(id) {
-  const response = await httpClient.get(`/products/${id}`);
-  return unwrapApiResponse(response, 'product.notFound');
+  if (Array.isArray(data)) {
+    return normalizeActivityProducts(data, normalizedActivityId);
+  }
+
+  return {
+    ...data,
+    items: normalizeActivityProducts(data?.items, normalizedActivityId)
+  };
 }

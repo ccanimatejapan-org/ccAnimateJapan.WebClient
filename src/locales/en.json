@@ -31,7 +31,11 @@
     "loading": "Loading",
     "close": "Close notification",
     "scrollPrev": "Scroll left",
-    "scrollNext": "Scroll right"
+    "scrollNext": "Scroll right",
+    "prevPage": "Prev",
+    "nextPage": "Next",
+    "pageIndicator": "Page {current} of {total}",
+    "pagination": "Pagination"
   },
   "home": {
     "eyebrow": "What would you like to collect today?",
@@ -39,6 +43,8 @@
     "subtitle": "Figures, acrylic stands, art books, and limited goods in a relaxed shopping flow.",
     "cta": "Browse goods",
     "note": "Cart updates will let you know right away",
+    "bannerAriaLabel": "Main visual",
+    "bannerSlideAriaLabel": "Slide {num}",
     "featuredEyebrow": "Event picks",
     "featuredTitle": "Featured activities",
     "viewProducts": "View goods",
@@ -98,12 +104,6 @@
       "notePlaceholder": "Character, option, or other request",
       "subtotal": "Subtotal",
       "confirm": "Add to cart"
-    },
-    "category": {
-      "all": "All",
-      "figure": "Figures",
-      "goods": "Goods",
-      "book": "Books"
     }
   },
   "cart": {
@@ -130,7 +130,9 @@
       "submitFailedTitle": "Submit failed",
       "submitFailedMessage": "Unable to create the order. Please try again later.",
       "addFailedTitle": "Add failed",
-      "addFailedMessage": "Unable to add to cart. Please try again later."
+      "addFailedMessage": "Unable to add to cart. Please try again later.",
+      "actionFailedTitle": "Action failed",
+      "actionFailedMessage": "Couldn't update your cart, please try again."
     }
   },
   "order": {
@@ -169,7 +171,6 @@
     "password": "Password",
     "login": "Login",
     "lineLogin": "Sign in with LINE",
-    "signingIn": "Signing in",
     "processingLine": "Processing LINE login",
     "loginFailed": "Login failed, please try again",
     "loginFailedTitle": "Login failed",
@@ -192,7 +193,6 @@
     "phoneInvalid": "Invalid phone. Enter a 10-digit number starting with 09",
     "nameRequired": "Name is required",
     "emailInvalid": "Invalid email format",
-    "saved": "Saved",
     "saveSuccess": "Saved successfully",
     "loadFailed": "Failed to load",
     "saveFailed": "Failed to save",

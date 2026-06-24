@@ -59,9 +59,13 @@ export const useActivityStore = defineStore('activity', () => {
     }
   }
 
-  // 作品頁 drill-down：取某作品底下的活動，回傳結果（不覆蓋首頁 activities）。
-  async function fetchActivitiesByWork(animateTypeId) {
-    return normalizeActivities(await getActivities({ animateTypeId }));
+  // 作品頁 drill-down：分頁取某作品底下的活動，回傳結果（不覆蓋首頁 activities）。
+  async function fetchActivitiesByWorkPaged(animateTypeId, page, pageSize) {
+    const data = await getActivities({ animateTypeId, page, pageSize });
+    return {
+      items: normalizeActivities(data?.items),
+      total: Math.max(0, Number(data?.totalCount) || 0)
+    };
   }
 
   async function getOrFetchActivity(activityId) {
@@ -97,7 +101,7 @@ export const useActivityStore = defineStore('activity', () => {
     fetchActivities,
     fetchPopularActivities,
     fetchWorks,
-    fetchActivitiesByWork,
+    fetchActivitiesByWorkPaged,
     getOrFetchActivity,
     reset
   };

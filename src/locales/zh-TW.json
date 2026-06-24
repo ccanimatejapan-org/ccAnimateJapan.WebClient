@@ -31,7 +31,11 @@
     "loading": "載入中",
     "close": "關閉提示",
     "scrollPrev": "向左捲動",
-    "scrollNext": "向右捲動"
+    "scrollNext": "向右捲動",
+    "prevPage": "上一頁",
+    "nextPage": "下一頁",
+    "pageIndicator": "第 {current} / {total} 頁",
+    "pagination": "分頁"
   },
   "home": {
     "eyebrow": "今日想收藏什麼？",
@@ -39,6 +43,8 @@
     "subtitle": "模型、壓克力立牌、畫冊與限定周邊都在這裡，輕鬆挑選、安心下單。",
     "cta": "去逛逛商品",
     "note": "加入購物車會即時提醒你",
+    "bannerAriaLabel": "主視覺",
+    "bannerSlideAriaLabel": "第 {num} 張",
     "featuredEyebrow": "活動推薦",
     "featuredTitle": "精選活動",
     "viewProducts": "看商品",
@@ -98,12 +104,6 @@
       "notePlaceholder": "可填角色、款式或其他需求",
       "subtotal": "小計",
       "confirm": "加入購物車"
-    },
-    "category": {
-      "all": "全部",
-      "figure": "模型",
-      "goods": "周邊",
-      "book": "書籍"
     }
   },
   "cart": {
@@ -130,7 +130,9 @@
       "submitFailedTitle": "送出失敗",
       "submitFailedMessage": "目前無法建立訂單，請稍後再試",
       "addFailedTitle": "加入失敗",
-      "addFailedMessage": "目前無法加入購物車，請稍後再試"
+      "addFailedMessage": "目前無法加入購物車，請稍後再試",
+      "actionFailedTitle": "操作失敗",
+      "actionFailedMessage": "目前無法更新購物車，請稍後再試"
     }
   },
   "order": {
@@ -169,7 +171,6 @@
     "password": "密碼",
     "login": "登入",
     "lineLogin": "使用 LINE 登入",
-    "signingIn": "登入中",
     "processingLine": "正在處理 LINE 登入",
     "loginFailed": "登入失敗，請重新嘗試",
     "loginFailedTitle": "登入失敗",
@@ -192,7 +193,6 @@
     "phoneInvalid": "手機格式不正確，請輸入 09 開頭的 10 碼數字",
     "nameRequired": "請輸入姓名",
     "emailInvalid": "Email 格式不正確",
-    "saved": "已儲存",
     "saveSuccess": "儲存成功",
     "loadFailed": "資料讀取失敗",
     "saveFailed": "儲存失敗",

@@ -9,7 +9,7 @@
 defineProps({
   message: {
     type: String,
-    default: 'No data'
+    default: ''
   }
 });
 </script>

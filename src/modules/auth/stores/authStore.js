@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { ensureLiffReady, getAccessToken, isLiffConfigured, isLoggedIn } from '@/shared/composables/liffClient';
 import { getStorageItem, removeStorageItem, setStorageItem } from '@/shared/utils/storage';
-import { devLogin, login, loginWithLiff } from '../api/authApi';
+import { devLogin, loginWithLiff } from '../api/authApi';
 
 const AUTH_STORAGE_KEY = 'ccAnimateJapan.auth';
 
@@ -23,11 +23,6 @@ export const useAuthStore = defineStore('auth', () => {
     useCartStore().clearCart();
     useProductStore().reset();
     useActivityStore().reset();
-  }
-
-  async function signIn(payload) {
-    session.value = await login(payload);
-    setStorageItem(AUTH_STORAGE_KEY, session.value);
   }
 
   async function signInWithLiff(accessToken, { hydrateCart = true } = {}) {
@@ -68,7 +63,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     session,
-    signIn,
     signInWithLiff,
     isSessionValid,
     renewSession,

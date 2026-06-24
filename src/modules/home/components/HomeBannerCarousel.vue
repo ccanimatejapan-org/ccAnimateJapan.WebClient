@@ -1,5 +1,5 @@
 <template>
-  <section v-if="banners.length" class="home-banner" aria-label="主視覺">
+  <section v-if="banners.length" class="home-banner" :aria-label="t('home.bannerAriaLabel')">
     <div class="home-banner__viewport">
       <div class="home-banner__track" :style="{ transform: `translateX(-${current * 100}%)` }">
         <component
@@ -21,7 +21,7 @@
         type="button"
         class="home-banner__dot"
         :class="{ 'home-banner__dot--active': index === current }"
-        :aria-label="`第 ${index + 1} 張`"
+        :aria-label="t('home.bannerSlideAriaLabel', { num: index + 1 })"
         @click="go(index)"
       />
     </div>
@@ -31,8 +31,10 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { homeBanners } from '../config/homeBanners';
 
+const { t } = useI18n();
 const banners = homeBanners;
 const current = ref(0);
 let timer;
