@@ -13,7 +13,7 @@ function normalizeActivityProducts(products, activityId) {
       return {
         ...product,
         activityId: Number(product.activityId ?? activityId),
-        category: product.category || '',
+        productTypeName: product.productTypeName || '',
         stock: Number.isFinite(stock) ? stock : null,
         note: product.note ?? info,
         description: product.description ?? info

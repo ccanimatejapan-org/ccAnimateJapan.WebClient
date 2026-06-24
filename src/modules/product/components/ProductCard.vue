@@ -2,7 +2,7 @@
   <article v-if="product" class="product-card">
     <img :src="product.imageUrl" :alt="product.name" loading="lazy" />
     <div class="product-card__body">
-      <p>{{ product.category }}</p>
+      <p v-if="product.productTypeName">{{ product.productTypeName }}</p>
       <h3>{{ product.name }}</h3>
       <span v-if="product.note" class="product-card__note">{{ product.note }}</span>
       <AppPrice :value="product.price" />
