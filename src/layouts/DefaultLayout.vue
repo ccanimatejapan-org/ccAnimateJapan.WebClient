@@ -20,6 +20,7 @@
         </RouterLink>
       </nav>
       <div class="site-header__actions">
+        <LanguageSwitcher class="site-header__lang" />
         <RouterLink
           class="site-header__cart"
           :class="{ 'site-header__cart--bump': cartBumped }"
@@ -159,6 +160,7 @@ import { useI18n } from 'vue-i18n';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { externalLinks } from '@/shared/constants/externalLinks';
 import { useCartStore } from '@/modules/cart/stores/cartStore';
+import LanguageSwitcher from '@/shared/components/LanguageSwitcher.vue';
 import { useMobileMenu } from './useMobileMenu';
 import brandLogo from '@/assets/logo/brand-logo.jpg';
 
