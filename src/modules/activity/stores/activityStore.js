@@ -47,11 +47,16 @@ export const useActivityStore = defineStore('activity', () => {
   async function fetchWorks(limit) {
     try {
       const list = await getWorks(limit);
-      // 後端回 { id, name, activityCount }；對應前端模板使用的 { id, name, count }。
+      // 後端回 { id, name, imageUrl, activityCount }；對應前端模板使用的 { id, name, imageUrl, count }。
       works.value = Array.isArray(list)
         ? list
             .filter((work) => work?.id != null)
-            .map((work) => ({ id: work.id, name: work.name, count: work.activityCount ?? 0 }))
+            .map((work) => ({
+              id: work.id,
+              name: work.name,
+              imageUrl: work.imageUrl || '',
+              count: work.activityCount ?? 0
+            }))
         : [];
     } catch (err) {
       error.value = err;

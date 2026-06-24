@@ -14,9 +14,18 @@
         class="work-list__card"
         :to="{ name: ROUTE_NAMES.WORK_ACTIVITIES, params: { animateTypeId: work.id } }"
       >
-        <span class="work-list__circle">{{ work.name }}</span>
+        <span class="work-list__avatar">
+          <img
+            v-if="work.imageUrl"
+            class="work-list__img"
+            :src="work.imageUrl"
+            :alt="work.name"
+            loading="lazy"
+          />
+          <span v-else class="work-list__fallback">{{ (work.name || '?').slice(0, 1) }}</span>
+          <span class="work-list__badge">{{ t('home.workCount', { count: work.count }) }}</span>
+        </span>
         <span class="work-list__name">{{ work.name }}</span>
-        <span class="work-list__count">{{ t('home.workCount', { count: work.count }) }}</span>
       </RouterLink>
     </div>
   </div>

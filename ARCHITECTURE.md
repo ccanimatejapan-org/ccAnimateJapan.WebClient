@@ -438,7 +438,7 @@ src/modules/activity/
 
 資料夾功能：
 
-- `api/activityApi.js`：封裝活動與作品 API——`getActivities({ animateTypeId, limit })`（打 `/activities`，`animateTypeId` 用於作品 drill-down）、`getPopularActivities(limit)`（打 `/activities/popular`）、`getWorks(limit)`（打 `/works`）。
+- `api/activityApi.js`：封裝活動與作品 API——`getActivities({ animateTypeId, limit })`（打 `/activities`，`animateTypeId` 用於作品 drill-down）、`getPopularActivities(limit)`（打 `/activities/popular`）、`getWorks(limit)`（打 `/works`，回作品 `{id,name,imageUrl,activityCount}`）。
 - `stores/activityStore.js`：管理 `activities`、`popularActivities`、`works` 狀態與載入／錯誤狀態，提供 `fetchActivities()`、`fetchPopularActivities()`、`fetchWorks(limit)` 與 `fetchActivitiesByWork(animateTypeId)`。
 - `pages/WorkListPage.vue`：作品列表頁，路由 `/works`，使用 `works`。
 - `pages/WorkActivitiesPage.vue`：特定作品底下的活動，路由 `/works/:animateTypeId`，使用 `fetchActivitiesByWork()`。
@@ -477,7 +477,7 @@ src/modules/home/
 - `components/HomeBannerCarousel.vue`：輪播 banner（資料來自 `config/homeBanners.js`）。
 - `components/HomeCategoryChips.vue`：可用狀態篩選 chip。
 - `components/HomePopularActivities.vue`：「熱門活動」區塊，mount 時 `fetchPopularActivities(5)`。
-- `components/HomeAnimateTypeRow.vue`：「依作品逛」區塊，mount 時 `fetchWorks(10)`，可 drill-down 到 `/works/:animateTypeId`。
+- `components/HomeAnimateTypeRow.vue`：「依作品逛」區塊，mount 時 `fetchWorks(10)`，可 drill-down 到 `/works/:animateTypeId`。圈圈為作品圖片圓形頭像＋名稱＋活動檔數徽章（`work.imageUrl`，無圖退回名稱首字），`WorkListPage` 同款。
 - `components/HomeOngoingActivities.vue`：進行中活動列表，由 HomePage 傳入篩選後的活動。
 - `components/HomeActivityCard.vue`：首頁活動卡片（含作品標籤、預購／現貨 badge、排名），由熱門、進行中、作品頁共用。
 - `config/homeBanners.js`：首頁輪播 banner 設定。

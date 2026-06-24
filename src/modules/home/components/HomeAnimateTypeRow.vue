@@ -14,8 +14,18 @@
         class="home-works__chip"
         :to="{ name: ROUTE_NAMES.WORK_ACTIVITIES, params: { animateTypeId: work.id } }"
       >
-        <span class="home-works__circle">{{ work.name }}</span>
-        <span class="home-works__count">{{ t('home.workCount', { count: work.count }) }}</span>
+        <span class="home-works__avatar">
+          <img
+            v-if="work.imageUrl"
+            class="home-works__img"
+            :src="work.imageUrl"
+            :alt="work.name"
+            loading="lazy"
+          />
+          <span v-else class="home-works__fallback">{{ (work.name || '?').slice(0, 1) }}</span>
+          <span class="home-works__badge">{{ t('home.workCount', { count: work.count }) }}</span>
+        </span>
+        <span class="home-works__name">{{ work.name }}</span>
       </RouterLink>
     </AppCarousel>
   </section>
