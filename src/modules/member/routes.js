@@ -1,16 +1,15 @@
 import { ROUTE_NAMES } from '@/shared/constants/routes';
-import ProfilePage from './pages/ProfilePage.vue';
-import AddressBookPage from './pages/AddressBookPage.vue';
+import MemberCenterPage from './pages/MemberCenterPage.vue';
 
 export default [
   {
     path: 'member/profile',
     name: ROUTE_NAMES.MEMBER_PROFILE,
-    component: ProfilePage
+    component: MemberCenterPage
   },
   {
     path: 'member/addresses',
     name: ROUTE_NAMES.MEMBER_ADDRESS_BOOK,
-    component: AddressBookPage
+    component: MemberCenterPage
   }
 ];

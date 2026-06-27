@@ -1,0 +1,29 @@
+@use '@/styles/variables' as *;
+
+.member-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  width: min(100%, 360px);
+  padding: 4px;
+  border: 1px solid $color-border;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.member-tabs__item {
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: $color-muted;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.member-tabs__item--active {
+  background: $color-ink;
+  color: #fff;
+}

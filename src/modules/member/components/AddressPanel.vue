@@ -1,54 +1,36 @@
 <template>
-  <section class="section narrow-section">
-    <div class="section__header">
-      <div>
-        <p class="eyebrow">{{ t('member.eyebrow') }}</p>
-        <h1>{{ t('member.addressBook') }}</h1>
+  <AddressForm
+    :delivery-types="deliveryTypes"
+    :address="editing"
+    :saving="saving"
+    @submit="save"
+    @cancel="editing = null"
+  />
+
+  <div class="address-list">
+    <article v-for="address in addresses" :key="address.id" class="address-card">
+      <header class="address-card__header">
+        <h3>{{ address.addressName || address.deliveryTypeName }}</h3>
+        <span v-if="address.isDefault" class="address-card__badge">{{ t('member.default') }}</span>
+      </header>
+      <p class="address-card__method">{{ address.deliveryTypeName }}</p>
+      <p>{{ address.address }}</p>
+      <div class="address-card__actions">
+        <button v-if="!address.isDefault" type="button" @click="makeDefault(address.id)">
+          {{ t('member.setDefault') }}
+        </button>
+        <button type="button" @click="editing = { ...address }">{{ t('member.edit') }}</button>
+        <button type="button" class="address-card__delete" @click="remove(address.id)">
+          {{ t('member.delete') }}
+        </button>
       </div>
-      <RouterLink
-        class="app-button app-button--secondary"
-        :to="{ name: ROUTE_NAMES.MEMBER_PROFILE }"
-      >
-        {{ t('member.profile') }}
-      </RouterLink>
-    </div>
-
-    <AddressForm
-      :delivery-types="deliveryTypes"
-      :address="editing"
-      :saving="saving"
-      @submit="save"
-      @cancel="editing = null"
-    />
-
-    <div class="address-list">
-      <article v-for="address in addresses" :key="address.id" class="address-card">
-        <header class="address-card__header">
-          <h3>{{ address.addressName || address.deliveryTypeName }}</h3>
-          <span v-if="address.isDefault" class="address-card__badge">{{ t('member.default') }}</span>
-        </header>
-        <p class="address-card__method">{{ address.deliveryTypeName }}</p>
-        <p>{{ address.address }}</p>
-        <div class="address-card__actions">
-          <button v-if="!address.isDefault" type="button" @click="makeDefault(address.id)">
-            {{ t('member.setDefault') }}
-          </button>
-          <button type="button" @click="editing = { ...address }">{{ t('member.edit') }}</button>
-          <button type="button" class="address-card__delete" @click="remove(address.id)">
-            {{ t('member.delete') }}
-          </button>
-        </div>
-      </article>
-    </div>
-  </section>
+    </article>
+  </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import AddressForm from '../components/AddressForm.vue';
-import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { useUiStore } from '@/shared/stores/uiStore';
 import {
   createAddress,
@@ -58,6 +40,7 @@ import {
   setDefaultAddress,
   updateAddress
 } from '../api/memberApi';
+import AddressForm from './AddressForm.vue';
 
 const { t } = useI18n();
 const ui = useUiStore();
