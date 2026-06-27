@@ -20,6 +20,7 @@
         v-for="product in products"
         :key="product.id"
         :product="product"
+        :activity="productStore.activity"
         @add="openAddDialog"
       />
     </div>

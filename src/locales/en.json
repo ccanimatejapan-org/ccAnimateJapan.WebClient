@@ -58,7 +58,8 @@
     },
     "badge": {
       "preOrder": "Pre-order",
-      "inStock": "In stock"
+      "inStock": "In stock",
+      "ended": "Ended"
     },
     "animateType": {
       "title": "Browse by title",
@@ -105,6 +106,7 @@
     "emptyForActivity": "No products are available for this activity",
     "addToCart": "Add to cart",
     "soldOut": "Sold out",
+    "activityEnded": "Activity ended",
     "addedToCart": "Added",
     "notFound": "Product not found",
     "addDialog": {

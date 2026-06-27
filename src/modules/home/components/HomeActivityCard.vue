@@ -61,15 +61,20 @@ const props = defineProps({
 
 const { locale, t } = useI18n();
 
-const badgeLabel = computed(() =>
-  props.activity.isPreOrder ? t('home.badge.preOrder') : t('home.badge.inStock')
-);
+const ACTIVITY_STATUS_ENDED = 4;
+const isEnded = computed(() => props.activity.status === ACTIVITY_STATUS_ENDED);
 
-const badgeClass = computed(() =>
-  props.activity.isPreOrder
+const badgeLabel = computed(() => {
+  if (isEnded.value) return t('home.badge.ended');
+  return props.activity.isPreOrder ? t('home.badge.preOrder') : t('home.badge.inStock');
+});
+
+const badgeClass = computed(() => {
+  if (isEnded.value) return 'home-activity-card__badge--ended';
+  return props.activity.isPreOrder
     ? 'home-activity-card__badge--preorder'
-    : 'home-activity-card__badge--instock'
-);
+    : 'home-activity-card__badge--instock';
+});
 
 function formatDate(value) {
   if (!value) return '';

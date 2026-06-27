@@ -58,7 +58,8 @@
     },
     "badge": {
       "preOrder": "預購",
-      "inStock": "現貨"
+      "inStock": "現貨",
+      "ended": "已結束"
     },
     "animateType": {
       "title": "依作品逛",
@@ -105,6 +106,7 @@
     "emptyForActivity": "這個活動目前沒有可購買商品",
     "addToCart": "加入購物車",
     "soldOut": "已售完",
+    "activityEnded": "活動已結束",
     "addedToCart": "已加入",
     "notFound": "找不到商品",
     "addDialog": {

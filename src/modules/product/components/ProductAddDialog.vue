@@ -50,7 +50,7 @@
           {{ t('common.cancel') }}
         </AppButton>
         <AppButton :disabled="isSoldOut" @click="confirm">
-          {{ isSoldOut ? t('product.soldOut') : t('product.addDialog.confirm') }}
+          {{ confirmButtonLabel }}
         </AppButton>
       </div>
     </div>
@@ -85,8 +85,14 @@ const quantity = ref(1);
 const note = ref('');
 
 const MAX_QUANTITY = 999;
+const ACTIVITY_STATUS_ENDED = 4;
 
-const isSoldOut = computed(() => Boolean(props.product?.isOutStock));
+const isActivityEnded = computed(() => props.activity?.status === ACTIVITY_STATUS_ENDED);
+const isSoldOut = computed(() => Boolean(props.product?.isOutStock || isActivityEnded.value));
+const confirmButtonLabel = computed(() => {
+  if (isActivityEnded.value) return t('product.activityEnded');
+  return isSoldOut.value ? t('product.soldOut') : t('product.addDialog.confirm');
+});
 
 const maxQuantity = computed(() => {
   if (props.activity?.isPreOrder) return MAX_QUANTITY;
