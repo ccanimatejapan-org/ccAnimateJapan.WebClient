@@ -6,6 +6,7 @@
 }
 
 .home-banner__viewport {
+  position: relative;
   overflow: hidden;
   border-radius: 16px;
 }
@@ -44,4 +45,31 @@
 
 .home-banner__dot--active {
   background: $color-primary;
+}
+.home-banner__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.home-banner__arrow--prev {
+  left: 10px;
+}
+
+.home-banner__arrow--next {
+  right: 10px;
 }

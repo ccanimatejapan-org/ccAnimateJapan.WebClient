@@ -38,6 +38,8 @@
     "pagination": "分頁"
   },
   "home": {
+    "bannerPrev": "上一張",
+    "bannerNext": "下一張",
     "eyebrow": "今日想收藏什麼？",
     "title": "把喜歡的角色帶回家",
     "subtitle": "模型、壓克力立牌、畫冊與限定周邊都在這裡，輕鬆挑選、安心下單。",

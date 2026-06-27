@@ -38,6 +38,8 @@
     "pagination": "Pagination"
   },
   "home": {
+    "bannerPrev": "Previous slide",
+    "bannerNext": "Next slide",
     "eyebrow": "What would you like to collect today?",
     "title": "Bring your favorite characters home",
     "subtitle": "Figures, acrylic stands, art books, and limited goods in a relaxed shopping flow.",
