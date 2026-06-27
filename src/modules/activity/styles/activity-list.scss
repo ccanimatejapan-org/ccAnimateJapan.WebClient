@@ -1,0 +1,92 @@
+@use '@/styles/variables' as *;
+
+.activity-list {
+  display: grid;
+  gap: 18px;
+}
+
+.activity-list__head {
+  display: grid;
+  gap: 12px;
+}
+
+.activity-list__title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+// 篩選列：左側 全部／預購／現貨 分類與右側搜尋同一排（不換行，分類可水平捲動）。
+.activity-list__filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.activity-list__filters .home-chips {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+// 搜尋：預設只顯示放大鏡，點擊後展開成輸入框。
+.activity-list__search {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.activity-list__search--open {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+.activity-list__search-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid $color-border;
+  border-radius: 999px;
+  background: #fff;
+  color: $color-muted;
+  cursor: pointer;
+}
+
+.activity-list__search-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.activity-list__search-input {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 14px;
+  border: 1px solid $color-border;
+  border-radius: 999px;
+  background: #fff;
+  color: $color-ink;
+  font-size: 0.9rem;
+}
+
+.activity-list__search-input::placeholder {
+  color: $color-muted;
+}
+
+.activity-list__search-input:focus {
+  outline: none;
+  border-color: $color-ink;
+}
+
+.activity-list__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 600px) {
+  .activity-list__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

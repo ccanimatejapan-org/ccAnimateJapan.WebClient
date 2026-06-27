@@ -1,36 +1,38 @@
 <template>
   <div class="page-stack">
-    <HomeCategoryChips v-model="availability" />
     <HomeBannerCarousel />
-    <HomePopularActivities />
     <HomeAnimateTypeRow />
+    <HomePopularActivities />
     <HomeOngoingActivities
-      :activities="filteredActivities"
-      :loading="activityStore.isLoading"
+      :activities="activityStore.latestActivities"
+      :loading="activityStore.isLatestLoading"
+    />
+    <HomeEndingSoonActivities
+      :activities="activityStore.endingSoonActivities"
+      :loading="activityStore.isEndingSoonLoading"
     />
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useActivityStore } from '@/modules/activity/stores/activityStore';
-import { filterByAvailability } from '../utils/activityFilters';
-import HomeCategoryChips from '../components/HomeCategoryChips.vue';
 import HomeBannerCarousel from '../components/HomeBannerCarousel.vue';
-import HomePopularActivities from '../components/HomePopularActivities.vue';
 import HomeAnimateTypeRow from '../components/HomeAnimateTypeRow.vue';
+import HomePopularActivities from '../components/HomePopularActivities.vue';
 import HomeOngoingActivities from '../components/HomeOngoingActivities.vue';
+import HomeEndingSoonActivities from '../components/HomeEndingSoonActivities.vue';
 
 const activityStore = useActivityStore();
-const availability = ref('all');
-
-const filteredActivities = computed(() =>
-  filterByAvailability(activityStore.activities, availability.value)
-);
 
 onMounted(() => {
-  if (!activityStore.isLoaded) {
-    activityStore.fetchActivities();
+  // 「最新活動」資料由後端套用「過去兩週到今天」時間區間後回傳。
+  if (!activityStore.latestActivities.length) {
+    activityStore.fetchLatestActivities();
+  }
+  // 「快結束活動」資料由後端套用「今天到一週後」時間區間後回傳。
+  if (!activityStore.endingSoonActivities.length) {
+    activityStore.fetchEndingSoonActivities();
   }
 });
 </script>

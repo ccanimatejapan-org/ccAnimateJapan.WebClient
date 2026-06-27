@@ -18,6 +18,18 @@ export async function getPopularActivities(limit = 5) {
   return unwrapApiResponse(response, 'activity.loadFailed');
 }
 
+// 最新活動：後端回 activeStartTime 落在「過去兩週到今天」的公開活動，依開始時間由新到舊（後端預設 6）。
+export async function getLatestActivities(limit = 6) {
+  const response = await httpClient.get('/activities/latest', { params: { limit } });
+  return unwrapApiResponse(response, 'activity.loadFailed');
+}
+
+// 快結束活動：後端回 activeEndTime 落在「今天到一週後」的公開活動，依結束時間由近到遠（後端預設 6）。
+export async function getEndingSoonActivities(limit = 6) {
+  const response = await httpClient.get('/activities/ending-soon', { params: { limit } });
+  return unwrapApiResponse(response, 'activity.loadFailed');
+}
+
 // 作品（= animateType）：只回有被進行中活動使用的作品。首頁傳 limit=10、作品列表不傳（全部）。
 export async function getWorks(limit) {
   const params = limit != null ? { limit } : {};

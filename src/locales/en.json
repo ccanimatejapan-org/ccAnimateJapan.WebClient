@@ -65,7 +65,12 @@
       "viewAll": "All titles"
     },
     "ongoing": {
-      "title": "Ongoing activities"
+      "title": "Latest activities",
+      "viewAll": "View all"
+    },
+    "endingSoon": {
+      "title": "Ending soon",
+      "viewAll": "View all"
     },
     "popular": {
       "title": "Popular activities",
@@ -80,6 +85,9 @@
     "notFound": "Title not found"
   },
   "activity": {
+    "listTitle": "All activities",
+    "searchPlaceholder": "Search activities or titles",
+    "searchLabel": "Search activities",
     "datePending": "Date pending",
     "empty": "No activities to show",
     "loadFailed": "Unable to load activities",

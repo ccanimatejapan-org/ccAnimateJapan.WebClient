@@ -65,7 +65,12 @@
       "viewAll": "作品列表"
     },
     "ongoing": {
-      "title": "進行中活動"
+      "title": "最新活動",
+      "viewAll": "查看全部活動"
+    },
+    "endingSoon": {
+      "title": "快結束活動",
+      "viewAll": "查看全部活動"
     },
     "popular": {
       "title": "人氣活動",
@@ -80,6 +85,9 @@
     "notFound": "找不到作品"
   },
   "activity": {
+    "listTitle": "全部活動",
+    "searchPlaceholder": "搜尋活動或作品名稱",
+    "searchLabel": "搜尋活動",
     "datePending": "活動時間未定",
     "empty": "目前沒有可顯示的活動",
     "loadFailed": "活動資料讀取失敗",

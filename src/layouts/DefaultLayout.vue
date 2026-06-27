@@ -9,7 +9,7 @@
         </span>
       </RouterLink>
       <nav class="site-header__nav" aria-label="Main">
-        <RouterLink :to="{ name: ROUTE_NAMES.HOME, hash: '#activities' }">
+        <RouterLink :to="{ name: ROUTE_NAMES.ACTIVITY_LIST }">
           {{ t('nav.products') }}
         </RouterLink>
         <RouterLink :to="{ name: ROUTE_NAMES.ORDER_LIST }">
@@ -88,7 +88,7 @@
         <RouterLink
           ref="firstMobileMenuItem"
           class="site-mobile-menu__item"
-          :to="{ name: ROUTE_NAMES.HOME, hash: '#activities' }"
+          :to="{ name: ROUTE_NAMES.ACTIVITY_LIST }"
           @click="closeMenu"
         >
           <span>{{ t('nav.products') }}</span>

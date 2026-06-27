@@ -1,9 +1,9 @@
 <template>
-  <section id="activities" class="home-ongoing">
-    <div class="home-ongoing__head">
-      <h2 class="home-ongoing__title">{{ t('home.ongoing.title') }}</h2>
-      <RouterLink class="home-ongoing__more" :to="{ name: ROUTE_NAMES.ACTIVITY_LIST }">
-        {{ t('home.ongoing.viewAll') }} ›
+  <section class="home-ending-soon">
+    <div class="home-ending-soon__head">
+      <h2 class="home-ending-soon__title">{{ t('home.endingSoon.title') }}</h2>
+      <RouterLink class="home-ending-soon__more" :to="{ name: ROUTE_NAMES.ACTIVITY_LIST }">
+        {{ t('home.endingSoon.viewAll') }} ›
       </RouterLink>
     </div>
 
@@ -13,7 +13,7 @@
       <div
         v-for="activity in activities"
         :key="activity.id"
-        class="home-ongoing__item"
+        class="home-ending-soon__item"
       >
         <HomeActivityCard :activity="activity" variant="compact" />
       </div>
@@ -45,5 +45,5 @@ const { t } = useI18n();
 </script>
 
 <style scoped lang="scss">
-@use '../styles/home-ongoing';
+@use '../styles/home-ending-soon';
 </style>

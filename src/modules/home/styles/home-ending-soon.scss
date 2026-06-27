@@ -1,40 +1,40 @@
 @use '@/styles/variables' as *;
 
-.home-ongoing {
+.home-ending-soon {
   display: grid;
   gap: 14px;
 }
 
-.home-ongoing__head {
+.home-ending-soon__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.home-ongoing__title {
+.home-ending-soon__title {
   margin: 0;
   font-size: 1.15rem;
 }
 
-.home-ongoing__more {
+.home-ending-soon__more {
   color: $color-primary;
   font-size: 0.85rem;
   font-weight: 700;
 }
 
 // 與人氣活動相同尺寸：固定 150px 寬的卡片，水平捲動。
-.home-ongoing__item {
+.home-ending-soon__item {
   flex: 0 0 150px;
   display: flex;
   min-width: 0;
 }
 
 // 卡片填滿等高的項目，讓整列卡片高度一致
-.home-ongoing__item .home-activity-card {
+.home-ending-soon__item .home-activity-card {
   flex: 1;
 }
 
 // 名稱固定保留兩行，避免名稱 1 行 / 2 行造成卡片內容高度不一
-.home-ongoing__item :deep(.home-activity-card__name) {
+.home-ending-soon__item :deep(.home-activity-card__name) {
   min-height: 2.5rem;
 }

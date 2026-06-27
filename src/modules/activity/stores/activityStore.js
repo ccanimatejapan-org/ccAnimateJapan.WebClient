@@ -1,6 +1,13 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { getActivities, getActivity, getPopularActivities, getWorks } from '../api/activityApi';
+import {
+  getActivities,
+  getActivity,
+  getPopularActivities,
+  getLatestActivities,
+  getEndingSoonActivities,
+  getWorks
+} from '../api/activityApi';
 
 function normalizeActivities(value) {
   if (!Array.isArray(value)) return [];
@@ -17,6 +24,14 @@ export const useActivityStore = defineStore('activity', () => {
   // 人氣活動與作品改由專屬 API 取得（後端 /activities/popular、/works）。
   const popularActivities = ref([]);
   const works = ref([]);
+
+  // 最新活動：後端已套用「過去兩週到今天」的時間區間（/activities/latest），前端只負責顯示。
+  const latestActivities = ref([]);
+  const isLatestLoading = ref(false);
+
+  // 快結束活動：後端已套用「今天到一週後」的時間區間（/activities/ending-soon），前端只負責顯示。
+  const endingSoonActivities = ref([]);
+  const isEndingSoonLoading = ref(false);
 
   async function fetchActivities(params = {}) {
     if (isLoading.value) return;
@@ -41,6 +56,30 @@ export const useActivityStore = defineStore('activity', () => {
     } catch (err) {
       error.value = err;
       popularActivities.value = [];
+    }
+  }
+
+  async function fetchLatestActivities(limit = 6) {
+    isLatestLoading.value = true;
+    try {
+      latestActivities.value = normalizeActivities(await getLatestActivities(limit));
+    } catch (err) {
+      error.value = err;
+      latestActivities.value = [];
+    } finally {
+      isLatestLoading.value = false;
+    }
+  }
+
+  async function fetchEndingSoonActivities(limit = 6) {
+    isEndingSoonLoading.value = true;
+    try {
+      endingSoonActivities.value = normalizeActivities(await getEndingSoonActivities(limit));
+    } catch (err) {
+      error.value = err;
+      endingSoonActivities.value = [];
+    } finally {
+      isEndingSoonLoading.value = false;
     }
   }
 
@@ -73,6 +112,21 @@ export const useActivityStore = defineStore('activity', () => {
     };
   }
 
+  async function fetchActivitiesPaged(page, pageSize, availability = 'all', search = '') {
+    const params = { page, pageSize };
+    if (availability === 'preOrder') params.isPreOrder = true;
+    else if (availability === 'inStock') params.isPreOrder = false;
+
+    const keyword = typeof search === 'string' ? search.trim() : '';
+    if (keyword) params.search = keyword;
+
+    const data = await getActivities(params);
+    return {
+      items: normalizeActivities(data?.items),
+      total: Math.max(0, Number(data?.totalCount) || 0)
+    };
+  }
+
   async function getOrFetchActivity(activityId) {
     const id = Number(activityId);
     if (!Number.isFinite(id) || id <= 0) return null;
@@ -94,6 +148,10 @@ export const useActivityStore = defineStore('activity', () => {
     error.value = null;
     popularActivities.value = [];
     works.value = [];
+    latestActivities.value = [];
+    isLatestLoading.value = false;
+    endingSoonActivities.value = [];
+    isEndingSoonLoading.value = false;
   }
 
   return {
@@ -103,10 +161,17 @@ export const useActivityStore = defineStore('activity', () => {
     error,
     popularActivities,
     works,
+    latestActivities,
+    isLatestLoading,
+    endingSoonActivities,
+    isEndingSoonLoading,
     fetchActivities,
     fetchPopularActivities,
+    fetchLatestActivities,
+    fetchEndingSoonActivities,
     fetchWorks,
     fetchActivitiesByWorkPaged,
+    fetchActivitiesPaged,
     getOrFetchActivity,
     reset
   };
