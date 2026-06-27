@@ -8,10 +8,35 @@
 .cart-list {
   display: grid;
   gap: 12px;
+}
+
+.cart-group {
+  display: grid;
+  gap: 12px;
   padding: 12px;
   border: 1px solid rgba(234, 216, 204, 0.74);
   border-radius: 8px;
   background: rgba(255, 253, 249, 0.72);
+}
+
+.cart-group__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 4px 10px;
+  border-bottom: 1px dashed rgba(234, 216, 204, 0.9);
+}
+
+.cart-group__header h2 {
+  min-width: 0;
+  margin: 0;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.cart-group__header .app-price {
+  flex: 0 0 auto;
 }
 
 @media (min-width: 860px) {

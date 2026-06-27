@@ -44,10 +44,15 @@
 
       <aside class="checkout__summary">
         <h2>{{ t('checkout.summary') }}</h2>
-        <div class="summary-row">
-          <span>{{ t('cart.activity') }}</span>
-          <strong>{{ cart.activityName }}</strong>
+        <div class="checkout__groups">
+          <div v-for="group in cart.groups" :key="group.activityId" class="summary-row checkout__group-row">
+            <span>{{ group.activityName || t('activity.unnamed') }}</span>
+            <AppPrice :value="group.subtotal" />
+          </div>
         </div>
+        <p v-if="cart.groups.length" class="checkout__notice">
+          {{ t('checkout.splitNotice', { count: cart.groups.length }) }}
+        </p>
         <div class="summary-row">
           <span>{{ t('cart.totalQuantity') }}</span>
           <strong>{{ cart.totalQuantity }}</strong>
@@ -182,25 +187,67 @@ async function placeOrder() {
 
   isSubmitting.value = true;
   try {
-    const order = await createOrderFromCartItems(cart.items, shipping);
-    cart.clearCart();
-    ui.showToast({
-      title: t('cart.toast.orderCreatedTitle'),
-      message: t('cart.toast.orderCreatedMessage', { orderNo: order.orderNo }),
-      actionLabel: t('order.viewOrders'),
-      actionTo: { name: ROUTE_NAMES.ORDER_LIST }
-    });
-    router.push({ name: ROUTE_NAMES.ORDER_LIST });
+    const result = await createOrderFromCartItems(cart.items, shipping);
+    const orders = Array.isArray(result?.orders) ? result.orders : [];
+    const failures = Array.isArray(result?.failures) ? result.failures : [];
+
+    if (orders.length > 0) {
+      ui.showToast({
+        title: t('cart.toast.orderCreatedTitle'),
+        message: t('cart.toast.ordersCreatedMessage', { count: orders.length }),
+        actionLabel: t('order.viewOrders'),
+        actionTo: { name: ROUTE_NAMES.ORDER_LIST }
+      });
+
+      if (failures.length > 0) {
+        showPartialFailureToast(failures, { queue: true });
+      }
+
+      await cart.hydrate();
+      router.push({ name: ROUTE_NAMES.ORDER_LIST });
+      return;
+    }
+
+    if (failures.length > 0) {
+      showPartialFailureToast(failures);
+    } else {
+      ui.showToast({
+        type: 'warning',
+        title: t('cart.toast.submitFailedTitle'),
+        message: t('cart.toast.submitFailedMessage')
+      });
+    }
+    await cart.hydrate();
+    router.push({ name: ROUTE_NAMES.CART });
   } catch (error) {
     if (error.message === 'PROFILE_INCOMPLETE') {
       ui.showToast({ title: t('member.profile'), message: t('member.completeProfileFirst') });
       router.replace({ name: ROUTE_NAMES.MEMBER_PROFILE });
       return;
     }
-    ui.showToast({ title: t('cart.toast.submitFailedTitle'), message: t('cart.toast.submitFailedMessage') });
+    await cart.hydrate();
+    ui.showToast({
+      type: 'warning',
+      title: t('cart.toast.submitFailedTitle'),
+      message: t('cart.toast.submitFailedMessage')
+    });
   } finally {
     isSubmitting.value = false;
   }
+}
+
+function showPartialFailureToast(failures, options = {}) {
+  const names = failures
+    .map((failure) => failure.activityName || failure.activityId || t('activity.unnamed'))
+    .join('、');
+
+  ui.showToast({
+    type: 'warning',
+    queue: Boolean(options.queue),
+    title: t('cart.toast.submitFailedTitle'),
+    message: t('checkout.partialFailureMessage', { names }),
+    duration: 5200
+  });
 }
 </script>
 
@@ -285,6 +332,26 @@ async function placeOrder() {
 .checkout__summary h2 {
   margin: 0;
   font-size: 1.05rem;
+}
+
+.checkout__groups {
+  display: grid;
+  gap: 2px;
+}
+
+.checkout__group-row span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.checkout__notice {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(184, 121, 22, 0.1);
+  color: $color-primary;
+  font-size: 0.9rem;
+  font-weight: 800;
 }
 
 .checkout__submit {

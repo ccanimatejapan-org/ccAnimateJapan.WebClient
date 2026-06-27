@@ -122,7 +122,7 @@ src/
 - 有獨立 `/checkout` route（`modules/checkout`）；沿用 `DefaultLayout`，沒有獨立 `CheckoutLayout`。
 - 沒有舊的 `order-form` 流程（`/activity/:activityId` 已移除）。
 - 沒有商品詳情 route；`/products` 會 redirect 回首頁。
-- 沒有多活動合併訂單；購物車一次只允許同一個活動的商品。
+- 購物車可跨活動加入商品；結帳時依活動拆單，一個活動一張訂單（採部分成功）。
 
 ## app/
 
@@ -569,8 +569,8 @@ src/modules/cart/
 
 MVP 限制：
 
-- 一次只允許同一個活動的商品在購物車中（由後端把關）。
-- 購物車送出後進入 `/checkout` 結帳流程（選物流方式 + 收件地址）再建立訂單（打後端 `POST /orders`）。
+- 購物車可跨活動加入商品；結帳時依活動拆單，一個活動一張訂單（由後端把關，採部分成功，失敗活動的商品保留在購物車）。
+- 購物車送出後進入 `/checkout` 結帳流程（選物流方式 + 收件地址）再建立訂單（打後端 `POST /orders`，回傳 `{ orders, failures }`）。
 
 ### modules/order/
 
@@ -893,4 +893,3 @@ npm run dev -- --host 127.0.0.1 --port 5174
 - 補上正式測試 script，例如 Vitest，讓現有 `*.test.js` 可由 CI 執行。
 - 補上端到端測試，覆蓋首頁、依作品逛、活動商品、加入購物車、送出訂單、訂單查詢與 LIFF 登入/好友檢查流程。
 - 考慮增加商品詳情頁面（目前 MVP 無此功能）。
-- 考慮支援跨活動購物車（目前 MVP 一次只允許同一活動的商品）。

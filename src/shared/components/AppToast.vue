@@ -1,8 +1,14 @@
 <template>
   <Teleport to="body">
     <Transition name="app-toast">
-      <aside v-if="ui.toast" class="app-toast" role="status" aria-live="polite">
-        <div class="app-toast__mark">✓</div>
+      <aside
+        v-if="ui.toast"
+        class="app-toast"
+        :class="{ 'app-toast--warning': ui.toast.type === 'warning' }"
+        role="status"
+        aria-live="polite"
+      >
+        <div class="app-toast__mark">{{ ui.toast.type === 'warning' ? '!' : '✓' }}</div>
         <div class="app-toast__body">
           <strong>{{ ui.toast.title }}</strong>
           <p>{{ ui.toast.message }}</p>
@@ -63,6 +69,14 @@ const ui = useUiStore();
   background: $color-accent;
   color: #fff;
   font-weight: 800;
+}
+
+.app-toast--warning {
+  border-color: rgba(192, 57, 43, 0.32);
+}
+
+.app-toast--warning .app-toast__mark {
+  background: #c0392b;
 }
 
 .app-toast__body {

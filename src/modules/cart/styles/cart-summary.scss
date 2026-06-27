@@ -10,6 +10,16 @@
   box-shadow: 0 16px 34px rgba(106, 73, 61, 0.08);
 }
 
+.cart-summary__notice {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(184, 121, 22, 0.1);
+  color: $color-primary;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
 @media (min-width: 860px) {
   .cart-summary {
     position: sticky;

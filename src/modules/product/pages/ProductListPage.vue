@@ -115,17 +115,10 @@ async function addToCart(payload) {
   });
 
   if (!result.ok) {
-    if (result.reason === 'mixedActivity') {
-      ui.showToast({
-        title: t('cart.toast.mixedActivityTitle'),
-        message: t('cart.toast.mixedActivityMessage')
-      });
-    } else {
-      ui.showToast({
-        title: t('cart.toast.addFailedTitle'),
-        message: t('cart.toast.addFailedMessage')
-      });
-    }
+    ui.showToast({
+      title: t('cart.toast.addFailedTitle'),
+      message: t('cart.toast.addFailedMessage')
+    });
     return;
   }
 

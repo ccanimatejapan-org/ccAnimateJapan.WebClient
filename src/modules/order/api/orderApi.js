@@ -16,11 +16,6 @@ export async function createOrderFromCartItems(items, shipping = {}) {
     throw new Error('cart.toast.submitFailedMessage');
   }
 
-  const activityIds = [...new Set(items.map((item) => Number(item.activityId)))];
-  if (activityIds.length !== 1) {
-    throw new Error('cart.toast.mixedActivityMessage');
-  }
-
   const payload = {
     items,
     deliveryTypeId: shipping.deliveryTypeId ?? null,

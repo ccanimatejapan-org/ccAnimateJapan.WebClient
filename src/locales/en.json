@@ -130,13 +130,13 @@
     "submitOrder": "Submit order",
     "submitting": "Submitting",
     "viewCart": "View cart",
+    "splitNotice": "This will be submitted as {count} orders",
     "toast": {
       "addedTitle": "Added to cart",
       "addedMessage": "“{name}” is now in your cart",
-      "mixedActivityTitle": "Cart has another activity",
-      "mixedActivityMessage": "The first MVP supports one activity per order. Please finish or clear the current cart first.",
       "orderCreatedTitle": "Order created",
       "orderCreatedMessage": "Order {orderNo} has been created",
+      "ordersCreatedMessage": "{count} orders have been created",
       "submitFailedTitle": "Submit failed",
       "submitFailedMessage": "Unable to create the order. Please try again later.",
       "addFailedTitle": "Add failed",
@@ -238,9 +238,11 @@
     "saveAsAddress": "Save as a frequent address",
     "recipientPhone": "Recipient phone",
     "summary": "Order summary",
+    "splitNotice": "{count} orders will be created",
     "placeOrder": "Place order",
     "submitting": "Submitting",
     "noAddressNeeded": "This delivery method needs no address",
-    "selectAddress": "Please select or enter a shipping address"
+    "selectAddress": "Please select or enter a shipping address",
+    "partialFailureMessage": "Activities \"{names}\" could not be created because inventory or product data changed, and remain in your cart."
   }
 }

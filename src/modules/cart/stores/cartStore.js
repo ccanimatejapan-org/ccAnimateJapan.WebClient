@@ -6,10 +6,9 @@ function normalizeNote(note) {
   return String(note || '').trim().slice(0, 80);
 }
 
-// Map a server cart payload ({ activityId, activityName, items:[...] }) to the store item shape.
+// Map a server cart payload ({ items:[...] }) to the store item shape.
 function mapServerCart(cart) {
   const serverItems = Array.isArray(cart?.items) ? cart.items : [];
-  const activityName = cart?.activityName || '';
 
   return serverItems
     .map((item) => {
@@ -17,7 +16,7 @@ function mapServerCart(cart) {
       return {
         id: item.id,
         activityId: Number(item.activityId),
-        activityName: item.activityName || activityName,
+        activityName: item.activityName || '',
         productId: Number(item.productId),
         productName: item.productName || '',
         imageUrl: item.imageUrl || '',
@@ -27,7 +26,7 @@ function mapServerCart(cart) {
         info: note
       };
     })
-    .filter((item) => Number.isFinite(item.productId));
+    .filter((item) => Number.isFinite(item.activityId) && Number.isFinite(item.productId));
 }
 
 export const useCartStore = defineStore('cart', () => {
@@ -41,13 +40,29 @@ export const useCartStore = defineStore('cart', () => {
     items.value.reduce((total, item) => total + item.price * item.quantity, 0)
   );
 
-  const activityId = computed(() => items.value[0]?.activityId || null);
-  const activityName = computed(() => items.value[0]?.activityName || '');
+  const groups = computed(() => {
+    const map = new Map();
 
-  function canAddActivity(nextActivityId) {
-    if (items.value.length === 0) return true;
-    return Number(activityId.value) === Number(nextActivityId);
-  }
+    for (const item of items.value) {
+      const key = Number(item.activityId);
+      if (!map.has(key)) {
+        map.set(key, {
+          activityId: key,
+          activityName: item.activityName || '',
+          items: [],
+          subtotal: 0,
+          totalQuantity: 0
+        });
+      }
+
+      const group = map.get(key);
+      group.items.push(item);
+      group.subtotal += item.price * item.quantity;
+      group.totalQuantity += item.quantity;
+    }
+
+    return [...map.values()];
+  });
 
   function applyServerCart(cart) {
     items.value = mapServerCart(cart);
@@ -64,7 +79,7 @@ export const useCartStore = defineStore('cart', () => {
 
   async function addItem(payload) {
     if (!payload || typeof payload !== 'object') {
-      return { ok: false, reason: 'invalidItem' };
+      return { ok: false, reason: 'error' };
     }
 
     const activity = payload.activity || {};
@@ -74,11 +89,7 @@ export const useCartStore = defineStore('cart', () => {
     const note = normalizeNote(payload.note ?? payload.info);
     const quantity = Math.max(1, Number(payload.quantity) || 1);
     if (!Number.isFinite(nextActivityId) || !Number.isFinite(nextProductId)) {
-      return { ok: false, reason: 'invalidItem' };
-    }
-
-    if (!canAddActivity(nextActivityId)) {
-      return { ok: false, reason: 'mixedActivity' };
+      return { ok: false, reason: 'error' };
     }
 
     try {
@@ -91,7 +102,7 @@ export const useCartStore = defineStore('cart', () => {
       applyServerCart(cart);
       return { ok: true };
     } catch {
-      return { ok: false, reason: 'addFailed' };
+      return { ok: false, reason: 'error' };
     }
   }
 
@@ -121,7 +132,7 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  // The server clears its cart when an order is created, so this only resets local state.
+  // Reset member-scoped local cart state.
   function clearCart() {
     items.value = [];
   }
@@ -133,9 +144,7 @@ export const useCartStore = defineStore('cart', () => {
     items,
     totalQuantity,
     subtotal,
-    activityId,
-    activityName,
-    canAddActivity,
+    groups,
     addItem,
     updateQuantity,
     removeItem,

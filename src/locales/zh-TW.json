@@ -130,13 +130,13 @@
     "submitOrder": "送出訂單",
     "submitting": "送出中",
     "viewCart": "查看購物車",
+    "splitNotice": "將分為 {count} 筆訂單送出",
     "toast": {
       "addedTitle": "已加入購物車",
       "addedMessage": "「{name}」已放進購物車",
-      "mixedActivityTitle": "購物車已有其他活動",
-      "mixedActivityMessage": "第一版一次只能送出同一個活動的商品，請先完成或清空目前購物車。",
       "orderCreatedTitle": "訂單已建立",
       "orderCreatedMessage": "訂單 {orderNo} 已建立",
+      "ordersCreatedMessage": "已建立 {count} 筆訂單",
       "submitFailedTitle": "送出失敗",
       "submitFailedMessage": "目前無法建立訂單，請稍後再試",
       "addFailedTitle": "加入失敗",
@@ -238,9 +238,11 @@
     "saveAsAddress": "存成常用地址",
     "recipientPhone": "收件電話",
     "summary": "訂單摘要",
+    "splitNotice": "將建立 {count} 筆訂單",
     "placeOrder": "送出訂單",
     "submitting": "送出中",
     "noAddressNeeded": "此物流方式不需填寫地址",
-    "selectAddress": "請選擇或填寫收件地址"
+    "selectAddress": "請選擇或填寫收件地址",
+    "partialFailureMessage": "活動「{names}」因庫存或商品異常未能建立，已保留在購物車"
   }
 }

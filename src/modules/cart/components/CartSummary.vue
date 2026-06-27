@@ -1,10 +1,9 @@
 <template>
   <aside class="cart-summary">
     <h2>{{ t('cart.summary') }}</h2>
-    <div class="summary-row">
-      <span>{{ t('cart.activity') }}</span>
-      <strong>{{ cart.activityName }}</strong>
-    </div>
+    <p v-if="cart.groups.length > 1" class="cart-summary__notice">
+      {{ t('cart.splitNotice', { count: cart.groups.length }) }}
+    </p>
     <div class="summary-row">
       <span>{{ t('cart.totalQuantity') }}</span>
       <strong>{{ cart.totalQuantity }}</strong>

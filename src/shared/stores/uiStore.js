@@ -6,7 +6,8 @@ export const useUiStore = defineStore('ui', {
   state: () => ({
     isGlobalLoading: false,
     modal: null,
-    toast: null
+    toast: null,
+    toastQueue: []
   }),
   actions: {
     setGlobalLoading(value) {
@@ -19,15 +20,28 @@ export const useUiStore = defineStore('ui', {
       this.modal = null;
     },
     showToast(payload) {
+      if (payload.queue && this.toast) {
+        this.toastQueue.push(payload);
+        return;
+      }
+      this.toastQueue = [];
+      this.presentToast(payload);
+    },
+    presentToast(payload) {
       window.clearTimeout(toastTimer);
       this.toast = payload;
       toastTimer = window.setTimeout(() => {
-        this.toast = null;
+        this.dismissToast();
       }, payload.duration ?? 3200);
     },
-    hideToast() {
+    dismissToast() {
       window.clearTimeout(toastTimer);
       this.toast = null;
+      const nextToast = this.toastQueue.shift();
+      if (nextToast) this.presentToast(nextToast);
+    },
+    hideToast() {
+      this.dismissToast();
     }
   }
 });

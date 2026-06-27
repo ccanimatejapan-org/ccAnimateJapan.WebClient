@@ -9,7 +9,13 @@
 
     <div v-if="cart.items.length" class="cart-layout">
       <div class="cart-list">
-        <CartItem v-for="item in cart.items" :key="item.id" :item="item" />
+        <section v-for="group in cart.groups" :key="group.activityId" class="cart-group">
+          <div class="cart-group__header">
+            <h2>{{ group.activityName || t('activity.unnamed') }}</h2>
+            <AppPrice :value="group.subtotal" />
+          </div>
+          <CartItem v-for="item in group.items" :key="item.id" :item="item" />
+        </section>
       </div>
       <CartSummary @submit="goCheckout" />
     </div>
@@ -26,6 +32,7 @@
 import { RouterLink, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import AppEmpty from '@/shared/components/AppEmpty.vue';
+import AppPrice from '@/shared/components/AppPrice.vue';
 import CartItem from '../components/CartItem.vue';
 import CartSummary from '../components/CartSummary.vue';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
