@@ -3,9 +3,6 @@
   display: grid;
   place-items: center;
   padding: 24px;
-  background:
-    linear-gradient(90deg, rgba(12, 18, 28, 0.78), rgba(12, 18, 28, 0.34)),
-    url('https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1600&q=80') center/cover;
 }
 
 .auth-panel {
@@ -15,9 +12,28 @@
   padding: 28px;
   border-radius: 8px;
   background: #fff;
+  box-shadow: 0 18px 40px rgba(45, 42, 36, 0.1);
 }
 
 .site-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #1f2937;
   font-weight: 800;
-  letter-spacing: 0;
+  text-decoration: none;
+}
+
+.site-header__logo {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: block;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.site-header__brand-name {
+  font-size: 1.05rem;
+  line-height: 1.2;
 }
