@@ -17,6 +17,7 @@
     "lineOfficial": "LINE Official Account",
     "lineCommunity": "LINE Community",
     "instagram": "Instagram",
+    "threads": "Threads",
     "purchaseNotice": "Purchase notice",
     "userGuide": "User guide",
     "privacy": "Privacy policy",
@@ -149,6 +150,8 @@
     }
   },
   "order": {
+    "searchLabel": "Search orders",
+    "searchPlaceholder": "Search order no or activity",
     "eyebrow": "Orders",
     "title": "Orders",
     "detail": "Order detail",
@@ -160,6 +163,26 @@
     "processStatusLabel": "Status",
     "loadFailed": "Failed to load orders",
     "notFound": "Order not found",
+    "deliveryMethod": "Delivery method",
+    "recipientAddress": "Recipient address",
+    "recipientPhone": "Recipient phone",
+    "orderNoLabel": "Order No: ",
+    "deliveryStatusLabel": "Delivery status",
+    "noShippingInfo": "No delivery info yet",
+    "section": {
+      "items": "Items",
+      "status": "Status",
+      "shipping": "Delivery info"
+    },
+    "deliveryStatus": {
+      "unprocessed": "Not yet processed",
+      "urlProvided": "Shipping URL provided",
+      "customerOrdered": "Logistics order placed",
+      "shipped": "Shipped",
+      "arrivedStore": "Arrived at store",
+      "pickedUp": "Picked up",
+      "unknown": "Unknown"
+    },
     "paymentStatus": {
       "paid": "Paid",
       "unpaid": "Unpaid"
@@ -247,5 +270,230 @@
     "noAddressNeeded": "This delivery method needs no address",
     "selectAddress": "Please select or enter a shipping address",
     "partialFailureMessage": "Activities \"{names}\" could not be created because inventory or product data changed, and remain in your cart."
+  },
+  "info": {
+    "common": {
+      "updatedLabel": "Last updated",
+      "backHome": "Back to home"
+    },
+    "purchaseNotice": {
+      "title": "Purchase notice",
+      "intro": "Thank you for shopping with CC Japan Anime Proxy. Please read these purchase notes before ordering; placing an order means you agree to them.",
+      "sections": [
+        {
+          "heading": "1. Product nature & pre-orders",
+          "items": [
+            "Most items are Japan proxy/pre-order goods, ordered from suppliers after you place your order rather than kept in stock.",
+            "Pre-order arrival times follow the supplier's shipping schedule and may change; an exact arrival date cannot be guaranteed.",
+            "Product photos and colors may vary slightly from the actual item shipped by the manufacturer."
+          ]
+        },
+        {
+          "heading": "2. Ordering & order confirmation",
+          "items": [
+            "After checkout, orders are split automatically by activity — one order per activity.",
+            "Submitting an order is a successful reservation; whether it proceeds depends on each activity's deadline and group status.",
+            "You may add more items before an activity ends; after it ends you can only browse."
+          ]
+        },
+        {
+          "heading": "3. Payment",
+          "items": [
+            "After an order is confirmed, please pay via the method and within the deadline stated by customer service or the confirmation message.",
+            "Orders left unpaid past the deadline may be canceled at our discretion."
+          ]
+        },
+        {
+          "heading": "4. Shipping & delivery",
+          "items": [
+            "Items are first consolidated from Japan to Taiwan, then shipped by your chosen method (home delivery / convenience-store pickup).",
+            "Shipping time is separate from the pre-order wait and may be delayed by customs, weather, or logistics volume."
+          ]
+        },
+        {
+          "heading": "5. Cancellation, returns & out-of-stock",
+          "items": [
+            "Once ordered from Japan, pre-order items generally cannot be canceled or returned without cause.",
+            "If an item arrives defective or incorrect, contact customer service as soon as possible and keep the packaging and receipt.",
+            "If goods are unavailable in Japan or an activity does not reach its group target, the affected item will be refunded."
+          ]
+        },
+        {
+          "heading": "6. Other",
+          "items": [
+            "For anything not covered here, each activity's announcement and customer service notes prevail.",
+            "For any questions, reach us via the \"Contact us\" links in the footer."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "CC Japan Anime Proxy (the \"Platform\") values your privacy. This policy explains how we collect, use, and protect your personal data.",
+      "sections": [
+        {
+          "heading": "1. Data we collect",
+          "items": [
+            "Account data: user ID, display name, and avatar obtained via LINE login.",
+            "Member data: name, email, phone, and delivery address you provide.",
+            "Transaction data: cart contents, order details, and payment status.",
+            "Usage data: necessary technical information such as device and browser type."
+          ]
+        },
+        {
+          "heading": "2. How we use data",
+          "items": [
+            "To handle LINE login, identity verification, and member services.",
+            "To create and process orders, arrange consolidation and shipping, and provide support and order notifications.",
+            "To maintain platform security and improve our service quality and experience."
+          ]
+        },
+        {
+          "heading": "3. Sharing & disclosure",
+          "items": [
+            "We do not sell your personal data.",
+            "We share data only as needed to complete proxy purchasing and shipping, or as required by law, with partner logistics/payment providers or authorities."
+          ]
+        },
+        {
+          "heading": "4. Cookies & local storage",
+          "items": [
+            "We use necessary local storage (e.g., localStorage) on your device to keep your login and cart.",
+            "You may clear it in your browser, but you may need to log in again or lose your cart contents."
+          ]
+        },
+        {
+          "heading": "5. Retention & security",
+          "items": [
+            "We retain your data only as long as necessary for the purposes above, and apply reasonable technical and organizational safeguards."
+          ]
+        },
+        {
+          "heading": "6. Your rights",
+          "items": [
+            "You may access, correct, or delete your personal data, or ask us to stop certain uses.",
+            "To exercise these rights or for any privacy question, reach us via the \"Contact us\" links in the footer."
+          ]
+        },
+        {
+          "heading": "7. Policy updates",
+          "items": [
+            "Any changes to this policy will be posted on this page; please review it periodically."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of service",
+      "intro": "Welcome to CC Japan Anime Proxy. By logging in and using the Platform, you confirm that you have read, understood, and agree to the following Terms of Service.",
+      "sections": [
+        {
+          "heading": "1. Services",
+          "items": [
+            "The Platform offers proxy/pre-order purchasing of Japanese anime goods, plus cart, checkout, and order tracking.",
+            "We may add, change, or suspend parts of the service at any time without individual notice."
+          ]
+        },
+        {
+          "heading": "2. Account & login",
+          "items": [
+            "Using the Platform requires logging in with LINE and adding our official account as a friend.",
+            "You are responsible for safeguarding your account and for all activity under it."
+          ]
+        },
+        {
+          "heading": "3. Orders",
+          "items": [
+            "Orders are split by activity; confirmation depends on each activity's deadline and group status.",
+            "Ensure your delivery and contact details are correct; you are responsible for failures caused by incorrect information."
+          ]
+        },
+        {
+          "heading": "4. Pricing & payment",
+          "items": [
+            "Prices, shipping, and related fees follow the activity page and checkout information at the time of ordering.",
+            "Please pay within the stated deadline, or we may cancel the order."
+          ]
+        },
+        {
+          "heading": "5. User conduct",
+          "items": [
+            "Do not use the Platform for illegal, fraudulent, disruptive, or rights-infringing activity.",
+            "We may suspend or terminate access for violations."
+          ]
+        },
+        {
+          "heading": "6. Intellectual property",
+          "items": [
+            "Trademarks, text, images, and UI design on the Platform are protected by law and may not be reproduced or used without authorization."
+          ]
+        },
+        {
+          "heading": "7. Limitation of liability",
+          "items": [
+            "To the extent permitted by law, we are not liable for delays or losses caused by events beyond our control (e.g., Japan stock shortages, ungrouped activities, international shipping delays, or force majeure)."
+          ]
+        },
+        {
+          "heading": "8. Changes & governing law",
+          "items": [
+            "These terms may be updated and posted on this page; continued use means acceptance of the updated terms.",
+            "These terms are governed by the laws of Taiwan (R.O.C.)."
+          ]
+        }
+      ]
+    },
+    "userGuide": {
+      "title": "User guide",
+      "intro": "New to CC Japan Anime Proxy? Follow these steps to go from login to checkout with ease.",
+      "sections": [
+        {
+          "heading": "Step 1: Log in & add friend",
+          "items": [
+            "Log in with LINE and add our official account as a friend to enter the shop."
+          ]
+        },
+        {
+          "heading": "Step 2: Browse activities & products",
+          "items": [
+            "The home page shows popular, latest, and ending-soon activities; you can also browse by series.",
+            "Tap an activity to see its purchasable products."
+          ]
+        },
+        {
+          "heading": "Step 3: Add to cart",
+          "items": [
+            "Tap \"Add to cart\" on a product to choose quantity and add notes (e.g., character or variant).",
+            "You can add products across different activities."
+          ]
+        },
+        {
+          "heading": "Step 4: Checkout & shipping",
+          "items": [
+            "In the cart, tap \"Go to checkout\", then choose a shipping method (home delivery / store pickup) and address.",
+            "Orders are split automatically by activity — one order per activity."
+          ]
+        },
+        {
+          "heading": "Step 5: Complete payment",
+          "items": [
+            "After your order is confirmed, pay via the method and deadline in the confirmation message or from customer service."
+          ]
+        },
+        {
+          "heading": "Step 6: Track orders & delivery",
+          "items": [
+            "Check order status and progress anytime under \"Orders\".",
+            "Pre-order items are consolidated from Japan to Taiwan before shipping — please be patient."
+          ]
+        },
+        {
+          "heading": "Need help?",
+          "items": [
+            "For any questions, reach us via the \"Contact us\" links in the footer."
+          ]
+        }
+      ]
+    }
   }
 }
