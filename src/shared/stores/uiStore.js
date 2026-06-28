@@ -5,13 +5,15 @@ let toastTimer;
 export const useUiStore = defineStore('ui', {
   state: () => ({
     isGlobalLoading: false,
+    globalLoadingKey: null,
     modal: null,
     toast: null,
     toastQueue: []
   }),
   actions: {
-    setGlobalLoading(value) {
+    setGlobalLoading(value, key = null) {
       this.isGlobalLoading = value;
+      this.globalLoadingKey = value ? key : null;
     },
     openModal(payload) {
       this.modal = payload;

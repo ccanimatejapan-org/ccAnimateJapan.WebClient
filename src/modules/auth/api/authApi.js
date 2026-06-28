@@ -4,7 +4,7 @@ import { unwrapApiResponse } from '@/shared/api/apiResponse';
 export async function loginWithLiff(accessToken) {
   // accessToken comes from liff.getAccessToken(); the backend verifies it with LINE
   // and upserts the member, returning our own session token in `data.accessToken`.
-  const response = await httpClient.post('/auth/line/login', { accessToken }, { skipAuthHandling: true });
+  const response = await httpClient.post('/auth/line/login', { accessToken }, { skipAuthHandling: true, timeout: 30000 });
   return unwrapApiResponse(response, 'auth.loginFailed');
 }
 

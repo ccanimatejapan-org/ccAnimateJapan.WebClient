@@ -208,6 +208,7 @@
     "login": "Login",
     "lineLogin": "Sign in with LINE",
     "processingLine": "Processing LINE login",
+    "wakingServer": "Waking up the server. The first connection can take about 30-60s, please wait.",
     "loginFailed": "Login failed, please try again",
     "loginFailedTitle": "Login failed",
     "backToLogin": "Back to login",

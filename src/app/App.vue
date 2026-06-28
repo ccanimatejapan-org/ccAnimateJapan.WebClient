@@ -1,5 +1,5 @@
 <template>
-  <AppLoading v-if="ui.isGlobalLoading" :label="t('auth.processingLine')" />
+  <AppLoading v-if="ui.isGlobalLoading" :label="t(ui.globalLoadingKey || 'auth.processingLine')" />
   <RouterView v-else />
   <AppToast />
 </template>

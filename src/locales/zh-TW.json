@@ -208,6 +208,7 @@
     "login": "登入",
     "lineLogin": "使用 LINE 登入",
     "processingLine": "正在處理 LINE 登入",
+    "wakingServer": "伺服器啟動中，首次連線約需 30-60 秒，請稍候…",
     "loginFailed": "登入失敗，請重新嘗試",
     "loginFailedTitle": "登入失敗",
     "backToLogin": "返回登入",

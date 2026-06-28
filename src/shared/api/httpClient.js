@@ -95,3 +95,53 @@ httpClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+const HEALTH_PATH = '/db/health';
+const WARMUP_FIRST_TIMEOUT = 8000;
+const WARMUP_POLL_TIMEOUT = 12000;
+const WARMUP_POLL_INTERVAL = 4000;
+const WARMUP_TOTAL_BUDGET = 90000;
+const WARM_CACHE_MS = 60000;
+
+let warmUpPromise = null;
+let lastWarmAt = 0;
+
+function delay(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+function pingHealth(timeout) {
+  return httpClient.get(HEALTH_PATH, { skipAuthHandling: true, timeout });
+}
+
+export async function ensureServerAwake() {
+  if (lastWarmAt && Date.now() - lastWarmAt < WARM_CACHE_MS) return true;
+  if (warmUpPromise) return warmUpPromise;
+
+  warmUpPromise = (async () => {
+    try {
+      await pingHealth(WARMUP_FIRST_TIMEOUT);
+      lastWarmAt = Date.now();
+      return true;
+    } catch {}
+
+    const deadline = Date.now() + WARMUP_TOTAL_BUDGET;
+    while (Date.now() < deadline) {
+      await delay(WARMUP_POLL_INTERVAL);
+      try {
+        await pingHealth(WARMUP_POLL_TIMEOUT);
+        lastWarmAt = Date.now();
+        return true;
+      } catch {}
+    }
+    return false;
+  })();
+
+  try {
+    return await warmUpPromise;
+  } finally {
+    warmUpPromise = null;
+  }
+}

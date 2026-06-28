@@ -13,6 +13,7 @@ import infoRoutes from '@/modules/info/routes';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { useAuthStore } from '@/modules/auth/stores/authStore';
 import { useUiStore } from '@/shared/stores/uiStore';
+import { ensureServerAwake } from '@/shared/api/httpClient';
 import {
   ensureLiffReady,
   getAccessToken,
@@ -101,6 +102,11 @@ router.beforeEach(async (to) => {
 
   const ui = useUiStore();
   ui.setGlobalLoading(true);
+  const warmUp = ensureServerAwake();
+  const coldTimer = setTimeout(() => {
+    ui.setGlobalLoading(true, 'auth.wakingServer');
+  }, 2500);
+  warmUp.finally(() => clearTimeout(coldTimer));
   try {
     await ensureLiffReady();
 
@@ -118,6 +124,7 @@ router.beforeEach(async (to) => {
       return { name: ROUTE_NAMES.LINE_ADD_FRIEND };
     }
 
+    await warmUp;
     await auth.signInWithLiff(getAccessToken());
     return true;
   } catch (error) {
@@ -126,6 +133,7 @@ router.beforeEach(async (to) => {
     }
     return { name: ROUTE_NAMES.LOGIN, query: { error: 'liff' } };
   } finally {
+    clearTimeout(coldTimer);
     ui.setGlobalLoading(false);
   }
 });
