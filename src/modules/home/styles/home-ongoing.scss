@@ -12,8 +12,16 @@
 }
 
 .home-ongoing__title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin: 0;
   font-size: 1.15rem;
+}
+
+.home-ongoing__title-icon {
+  flex-shrink: 0;
+  color: $color-primary;
 }
 
 .home-ongoing__more {

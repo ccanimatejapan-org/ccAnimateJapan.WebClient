@@ -12,8 +12,16 @@
 }
 
 .home-ending-soon__title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin: 0;
   font-size: 1.15rem;
+}
+
+.home-ending-soon__title-icon {
+  flex-shrink: 0;
+  color: $color-primary;
 }
 
 .home-ending-soon__more {
