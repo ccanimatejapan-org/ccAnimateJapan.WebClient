@@ -9,6 +9,7 @@ import checkoutRoutes from '@/modules/checkout/routes';
 import orderRoutes from '@/modules/order/routes';
 import authRoutes from '@/modules/auth/routes';
 import memberRoutes from '@/modules/member/routes';
+import infoRoutes from '@/modules/info/routes';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { useAuthStore } from '@/modules/auth/stores/authStore';
 import { useUiStore } from '@/shared/stores/uiStore';
@@ -25,7 +26,11 @@ import {
 const PUBLIC_ROUTE_NAMES = new Set([
   ROUTE_NAMES.LOGIN,
   ROUTE_NAMES.LINE_CALLBACK,
-  ROUTE_NAMES.LINE_ADD_FRIEND
+  ROUTE_NAMES.LINE_ADD_FRIEND,
+  ROUTE_NAMES.PURCHASE_NOTICE,
+  ROUTE_NAMES.PRIVACY_POLICY,
+  ROUTE_NAMES.TERMS,
+  ROUTE_NAMES.USER_GUIDE
 ]);
 
 const routes = [
@@ -39,7 +44,8 @@ const routes = [
       ...cartRoutes,
       ...checkoutRoutes,
       ...orderRoutes,
-      ...memberRoutes
+      ...memberRoutes,
+      ...infoRoutes
     ]
   },
   {

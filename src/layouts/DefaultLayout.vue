@@ -117,8 +117,13 @@
       <RouterView />
     </main>
 
+    <div id="site-page-foot"></div>
+
     <footer class="site-footer">
-      <div class="site-footer__brand">ccAnimateJapan</div>
+      <div class="site-footer__top">
+        <div class="site-footer__brand">ccAnimateJapan</div>
+        <p class="site-footer__tagline">{{ t('footer.copy') }}</p>
+      </div>
       <div class="site-footer__groups">
         <div class="site-footer__group">
           <h2 class="site-footer__heading">{{ t('footer.contactGroup') }}</h2>
@@ -131,22 +136,25 @@
           <a :href="externalLinks.instagram" target="_blank" rel="noopener">
             {{ t('footer.instagram') }}
           </a>
+          <a :href="externalLinks.threads" target="_blank" rel="noopener">
+            {{ t('footer.threads') }}
+          </a>
         </div>
         <div class="site-footer__group">
           <h2 class="site-footer__heading">{{ t('footer.shopGroup') }}</h2>
-          <a :href="externalLinks.purchaseNotice" target="_blank" rel="noopener">
+          <RouterLink :to="{ name: ROUTE_NAMES.PURCHASE_NOTICE }">
             {{ t('footer.purchaseNotice') }}
-          </a>
-          <a :href="externalLinks.userGuide" target="_blank" rel="noopener">
+          </RouterLink>
+          <RouterLink :to="{ name: ROUTE_NAMES.USER_GUIDE }">
             {{ t('footer.userGuide') }}
-          </a>
+          </RouterLink>
         </div>
       </div>
       <div class="site-footer__bottom">
         <span>© ccAnimateJapan</span>
         <span class="site-footer__legal">
-          <a href="#">{{ t('footer.privacy') }}</a>
-          <a href="#">{{ t('footer.terms') }}</a>
+          <RouterLink :to="{ name: ROUTE_NAMES.PRIVACY_POLICY }">{{ t('footer.privacy') }}</RouterLink>
+          <RouterLink :to="{ name: ROUTE_NAMES.TERMS }">{{ t('footer.terms') }}</RouterLink>
         </span>
       </div>
     </footer>

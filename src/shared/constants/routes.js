@@ -13,5 +13,9 @@ export const ROUTE_NAMES = {
   LINE_CALLBACK: 'line-callback',
   LINE_ADD_FRIEND: 'line-add-friend',
   MEMBER_PROFILE: 'member-profile',
-  MEMBER_ADDRESS_BOOK: 'member-address-book'
+  MEMBER_ADDRESS_BOOK: 'member-address-book',
+  PURCHASE_NOTICE: 'purchase-notice',
+  PRIVACY_POLICY: 'privacy-policy',
+  TERMS: 'terms',
+  USER_GUIDE: 'user-guide'
 };
