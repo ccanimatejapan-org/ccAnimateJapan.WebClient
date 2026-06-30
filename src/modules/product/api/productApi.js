@@ -10,13 +10,22 @@ function normalizeActivityProducts(products, activityId) {
       const stock = Number(product.stock ?? product.amount);
       const info = product.info ?? product.note ?? '';
 
+      const rawImageUrls = Array.isArray(product.imageUrls) ? product.imageUrls : [];
+      const imageUrls = rawImageUrls
+        .filter((url) => typeof url === 'string' && url.trim())
+        .map((url) => url.trim());
+      const imageUrl = product.imageUrl || imageUrls[0] || '';
+      const normalizedImageUrls = imageUrls.length > 0 ? imageUrls : imageUrl ? [imageUrl] : [];
+
       return {
         ...product,
         activityId: Number(product.activityId ?? activityId),
         productTypeName: product.productTypeName || '',
         stock: Number.isFinite(stock) ? stock : null,
         note: product.note ?? info,
-        description: product.description ?? info
+        description: product.description ?? info,
+        imageUrl,
+        imageUrls: normalizedImageUrls
       };
     });
 }

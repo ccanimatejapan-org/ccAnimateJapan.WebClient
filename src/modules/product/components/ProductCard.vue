@@ -1,6 +1,6 @@
 <template>
   <article v-if="product" class="product-card">
-    <img :src="product.imageUrl" :alt="product.name" loading="lazy" />
+    <ProductImageCarousel :images="product.imageUrls" :alt="product.name" />
     <div class="product-card__body">
       <p v-if="product.productTypeName">{{ product.productTypeName }}</p>
       <h3>{{ product.name }}</h3>
@@ -18,6 +18,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppButton from '@/shared/components/AppButton.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
+import ProductImageCarousel from './ProductImageCarousel.vue';
 
 const props = defineProps({
   product: {

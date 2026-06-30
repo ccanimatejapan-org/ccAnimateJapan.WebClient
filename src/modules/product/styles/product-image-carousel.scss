@@ -1,0 +1,166 @@
+@use '@/styles/variables' as *;
+
+.product-image-carousel {
+  position: relative;
+  width: 100%;
+}
+
+.product-image-carousel__viewport {
+  position: relative;
+  width: 100%;
+}
+
+.product-image-carousel__track {
+  display: flex;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  background: #fff;
+  -webkit-overflow-scrolling: touch;
+
+  // 隱藏原生捲軸（改用小圓點 / 滑動操作）
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.product-image-carousel__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  scroll-snap-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image-carousel__slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  // 完整顯示整張圖、不裁切（非 4:3 會留中性底色邊）
+  object-fit: contain;
+}
+
+.product-image-carousel__placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #fff;
+}
+
+.product-image-carousel__zoom {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(45, 42, 36, 0.5);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.product-image-carousel__zoom:hover {
+  background: rgba(45, 42, 36, 0.72);
+}
+
+.product-image-carousel__zoom-icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+// 左右切換鈕：只在桌機 / 網頁版（有滑鼠、非觸控）顯示，手機維持滑動操作
+.product-image-carousel__nav {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .product-image-carousel__nav {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid $color-border;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: $color-ink;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(120, 100, 30, 0.16);
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+
+  .product-image-carousel:hover .product-image-carousel__nav,
+  .product-image-carousel__nav:focus-visible {
+    opacity: 1;
+  }
+
+  .product-image-carousel__nav:hover {
+    background: $color-primary;
+    color: #fff;
+  }
+
+  .product-image-carousel__nav--prev {
+    left: 8px;
+  }
+
+  .product-image-carousel__nav--next {
+    right: 8px;
+  }
+}
+
+.product-image-carousel__nav-icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.product-image-carousel__dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  padding: 8px 0 2px;
+}
+
+.product-image-carousel__dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(45, 42, 36, 0.24);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.product-image-carousel__dot.is-active {
+  background: $color-primary;
+  transform: scale(1.25);
+}

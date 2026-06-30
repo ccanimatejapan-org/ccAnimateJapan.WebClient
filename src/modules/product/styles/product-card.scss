@@ -15,12 +15,6 @@
   box-shadow: 0 20px 42px rgba(43, 55, 84, 0.12);
 }
 
-.product-card img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-}
-
 .product-card__body {
   display: grid;
   gap: 10px;

@@ -6,8 +6,12 @@
   >
     <div v-if="product" class="product-add-dialog">
       <div class="product-add-dialog__product">
-        <img :src="product.imageUrl" :alt="product.name" />
-        <div>
+        <ProductImageCarousel
+          class="product-add-dialog__gallery"
+          :images="product.imageUrls"
+          :alt="product.name"
+        />
+        <div class="product-add-dialog__heading">
           <p v-if="activity?.name">{{ activity.name }}</p>
           <h3>{{ product.name }}</h3>
           <AppPrice :value="product.price" />
@@ -63,6 +67,7 @@ import { useI18n } from 'vue-i18n';
 import AppButton from '@/shared/components/AppButton.vue';
 import AppModal from '@/shared/components/AppModal.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
+import ProductImageCarousel from './ProductImageCarousel.vue';
 
 const props = defineProps({
   modelValue: {

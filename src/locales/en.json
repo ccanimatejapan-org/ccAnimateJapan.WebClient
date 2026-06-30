@@ -111,6 +111,13 @@
     "activityEnded": "Activity ended",
     "addedToCart": "Added",
     "notFound": "Product not found",
+    "gallery": {
+      "goToImage": "View image {index}",
+      "zoom": "Zoom image",
+      "close": "Close",
+      "prev": "Previous",
+      "next": "Next"
+    },
     "addDialog": {
       "title": "Add to cart",
       "quantity": "Quantity",
