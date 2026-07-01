@@ -121,6 +121,7 @@
     "addDialog": {
       "title": "加入購物車",
       "quantity": "數量",
+      "maxQuantityHint": "單筆最多可購買 {count} 件",
       "note": "備註",
       "notePlaceholder": "可填角色、款式或其他需求",
       "subtotal": "小計",

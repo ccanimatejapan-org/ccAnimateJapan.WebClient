@@ -121,6 +121,7 @@
     "addDialog": {
       "title": "Add to cart",
       "quantity": "Quantity",
+      "maxQuantityHint": "Up to {count} per order",
       "note": "Note",
       "notePlaceholder": "Character, option, or other request",
       "subtotal": "Subtotal",

@@ -71,6 +71,13 @@
   font-weight: 900;
 }
 
+.product-add-dialog__hint {
+  margin: 0;
+  color: $color-muted;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
 .product-add-dialog__field textarea {
   width: 100%;
   resize: vertical;

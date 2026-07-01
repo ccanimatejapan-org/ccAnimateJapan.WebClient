@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <label class="product-add-dialog__field">
+      <div class="product-add-dialog__field">
         <span>{{ t('product.addDialog.quantity') }}</span>
         <div class="product-add-dialog__quantity">
           <button type="button" @click="setQuantity(quantity - 1)">-</button>
@@ -32,7 +32,10 @@
           />
           <button type="button" @click="setQuantity(quantity + 1)">+</button>
         </div>
-      </label>
+        <p v-if="showMaxQuantityHint" class="product-add-dialog__hint">
+          {{ t('product.addDialog.maxQuantityHint', { count: maxQuantity }) }}
+        </p>
+      </div>
 
       <label class="product-add-dialog__field">
         <span>{{ t('product.addDialog.note') }}</span>
@@ -67,6 +70,7 @@ import { useI18n } from 'vue-i18n';
 import AppButton from '@/shared/components/AppButton.vue';
 import AppModal from '@/shared/components/AppModal.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
+import { MAX_ORDER_QUANTITY } from '@/shared/constants/quantity';
 import ProductImageCarousel from './ProductImageCarousel.vue';
 
 const props = defineProps({
@@ -89,7 +93,7 @@ const { t } = useI18n();
 const quantity = ref(1);
 const note = ref('');
 
-const MAX_QUANTITY = 999;
+const MAX_QUANTITY = MAX_ORDER_QUANTITY;
 const ACTIVITY_STATUS_ENDED = 4;
 
 const isActivityEnded = computed(() => props.activity?.status === ACTIVITY_STATUS_ENDED);
@@ -105,6 +109,10 @@ const maxQuantity = computed(() => {
   if (!Number.isFinite(stock)) return MAX_QUANTITY;
   return Math.min(MAX_QUANTITY, Math.max(0, stock));
 });
+
+const showMaxQuantityHint = computed(
+  () => maxQuantity.value > 0 && quantity.value >= maxQuantity.value
+);
 
 watch(
   () => [props.modelValue, props.product?.id],

@@ -5,6 +5,7 @@
       :value="modelValue"
       type="number"
       min="1"
+      :max="MAX_ORDER_QUANTITY"
       @input="emitValue(Number($event.target.value))"
     />
     <button type="button" @click="emitValue(modelValue + 1)">+</button>
@@ -12,6 +13,8 @@
 </template>
 
 <script setup>
+import { MAX_ORDER_QUANTITY, clampQuantity } from '@/shared/constants/quantity';
+
 const props = defineProps({
   modelValue: {
     type: Number,
@@ -22,7 +25,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 
 function emitValue(value) {
-  emit('update:modelValue', Math.max(1, Math.floor(value) || 1));
+  emit('update:modelValue', clampQuantity(value));
 }
 </script>
 
