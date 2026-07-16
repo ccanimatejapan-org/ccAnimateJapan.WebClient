@@ -51,6 +51,10 @@
     "featuredEyebrow": "活動推薦",
     "featuredTitle": "精選活動",
     "viewProducts": "看商品",
+    "groupBuyRemaining": "還差 {count} 件成團",
+    "groupBuyReached": "已達成團標準",
+    "groupBuyProgressPercent": "成團進度 {percent}%",
+    "groupBuyFormed": "已成團",
     "workCount": "{count} 檔",
     "chips": {
       "all": "全部",

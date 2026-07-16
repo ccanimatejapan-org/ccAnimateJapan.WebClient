@@ -51,6 +51,10 @@
     "featuredEyebrow": "Event picks",
     "featuredTitle": "Featured activities",
     "viewProducts": "View goods",
+    "groupBuyRemaining": "{count} more to form the group",
+    "groupBuyReached": "Group target reached",
+    "groupBuyProgressPercent": "{percent}% to group",
+    "groupBuyFormed": "Group formed",
     "workCount": "{count} events",
     "chips": {
       "all": "All",

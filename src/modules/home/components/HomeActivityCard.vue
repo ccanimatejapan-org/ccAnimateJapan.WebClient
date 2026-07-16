@@ -36,7 +36,13 @@
       </span>
       <h3 class="home-activity-card__name">{{ activity.name || t('activity.unnamed') }}</h3>
       <p class="home-activity-card__date">{{ dateRange }}</p>
-      <span class="home-activity-card__action">{{ t('home.viewProducts') }} ›</span>
+      <div v-if="showGroupBuyProgress" class="home-activity-card__progress">
+        <div class="home-activity-card__progress-track">
+          <div class="home-activity-card__progress-fill" :style="{ width: progressPercent + '%' }"></div>
+        </div>
+        <span class="home-activity-card__progress-label">{{ progressLabel }}</span>
+      </div>
+      <span v-else-if="isGroupFormed" class="home-activity-card__formed">🎉 {{ t('home.groupBuyFormed') }}</span>
     </div>
   </RouterLink>
 </template>
@@ -100,6 +106,26 @@ const dateRange = computed(() => {
   if (end) return end;
 
   return t('activity.datePending');
+});
+
+const showGroupBuyProgress = computed(() =>
+  props.activity.isPreOrder &&
+  props.activity.groupBuyStatus === 'Recruiting' &&
+  props.activity.groupBuyProgressPercent != null
+);
+
+const isGroupFormed = computed(() => props.activity.groupBuyStatus === 'Formed');
+
+const progressPercent = computed(() =>
+  Math.max(0, Math.min(100, Number(props.activity.groupBuyProgressPercent) || 0))
+);
+
+const progressLabel = computed(() => {
+  if (props.activity.shippingMode === 'FreeOverAmount') {
+    return t('home.groupBuyProgressPercent', { percent: progressPercent.value });
+  }
+  const remaining = Number(props.activity.groupBuyRemainingQuantity) || 0;
+  return remaining > 0 ? t('home.groupBuyRemaining', { count: remaining }) : t('home.groupBuyReached');
 });
 </script>
 

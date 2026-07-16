@@ -121,6 +121,37 @@
   font-weight: 800;
 }
 
+.home-activity-card__progress {
+  display: grid;
+  gap: 4px;
+}
+
+.home-activity-card__progress-track {
+  height: 6px;
+  border-radius: 999px;
+  background: $color-border;
+  overflow: hidden;
+}
+
+.home-activity-card__progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: $color-primary;
+  transition: width 0.3s ease;
+}
+
+.home-activity-card__progress-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: $color-primary;
+}
+
+.home-activity-card__formed {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: $color-primary;
+}
+
 .home-activity-card--featured .home-activity-card__media img,
 .home-activity-card--featured .home-activity-card__placeholder {
   aspect-ratio: 16 / 9;
