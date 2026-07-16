@@ -168,6 +168,8 @@
     "createdAt": "建立時間",
     "total": "總計",
     "paymentStatusLabel": "付款狀態",
+    "shippingFeeLabel": "顧客自行補運費",
+    "shippingPaymentStatusLabel": "補運費付款狀態",
     "processStatusLabel": "處理狀態",
     "loadFailed": "訂單資料讀取失敗",
     "notFound": "找不到訂單",
@@ -194,6 +196,10 @@
     "paymentStatus": {
       "paid": "已付款",
       "unpaid": "待付款"
+    },
+    "shippingPaymentStatus": {
+      "paid": "已付款自行運費",
+      "unpaid": "未付款自行運費"
     },
     "status": {
       "customerOrdered": "顧客已下單",

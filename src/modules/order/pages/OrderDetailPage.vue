@@ -18,6 +18,10 @@
             <AppPrice :value="item.price * item.quantity" />
           </article>
         </div>
+        <div v-if="order.shippingFee > 0" class="summary-row">
+          <span>{{ t('order.shippingFeeLabel') }}</span>
+          <AppPrice :value="order.shippingFee" />
+        </div>
         <div class="summary-row order-detail__total">
           <span>{{ t('order.total') }}</span>
           <AppPrice :value="order.total" />
@@ -34,6 +38,13 @@
           <StatusBadge
             :variant="order.paymentStatus === 'paid' ? 'paid' : 'pending'"
             :label="t(paymentStatusLabelKey)"
+          />
+        </div>
+        <div v-if="order.shippingFee > 0" class="summary-row">
+          <span>{{ t('order.shippingPaymentStatusLabel') }}</span>
+          <StatusBadge
+            :variant="order.shippingPaymentStatus === 'paid' ? 'paid' : 'pending'"
+            :label="t(shippingPaymentStatusLabelKey)"
           />
         </div>
         <div class="summary-row">
@@ -99,6 +110,12 @@ const paymentStatusLabelKey = computed(() =>
   order.value?.paymentStatus === 'paid'
     ? 'order.paymentStatus.paid'
     : 'order.paymentStatus.unpaid'
+);
+
+const shippingPaymentStatusLabelKey = computed(() =>
+  order.value?.shippingPaymentStatus === 'paid'
+    ? 'order.shippingPaymentStatus.paid'
+    : 'order.shippingPaymentStatus.unpaid'
 );
 
 onMounted(async () => {

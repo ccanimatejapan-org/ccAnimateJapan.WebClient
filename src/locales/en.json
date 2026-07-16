@@ -168,6 +168,8 @@
     "createdAt": "Created at",
     "total": "Total",
     "paymentStatusLabel": "Payment",
+    "shippingFeeLabel": "Customer Shipping Top-up",
+    "shippingPaymentStatusLabel": "Top-up Payment Status",
     "processStatusLabel": "Status",
     "loadFailed": "Failed to load orders",
     "notFound": "Order not found",
@@ -192,6 +194,10 @@
       "unknown": "Unknown"
     },
     "paymentStatus": {
+      "paid": "Paid",
+      "unpaid": "Unpaid"
+    },
+    "shippingPaymentStatus": {
       "paid": "Paid",
       "unpaid": "Unpaid"
     },
