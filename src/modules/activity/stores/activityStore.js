@@ -55,31 +55,35 @@ export const useActivityStore = defineStore('activity', () => {
       popularActivities.value = normalizeActivities(await getPopularActivities(limit));
     } catch (err) {
       error.value = err;
-      popularActivities.value = [];
+      // 靜默刷新失敗時保留現有清單，避免把已顯示的資料清空。
+      if (!popularActivities.value.length) popularActivities.value = [];
     }
   }
 
   async function fetchLatestActivities(limit = 6) {
-    isLatestLoading.value = true;
+    // 只有首次（清單為空）才顯示 loading；重訪時靜默刷新、保留現有資料避免閃爍跳版。
+    const isInitialLoad = !latestActivities.value.length;
+    if (isInitialLoad) isLatestLoading.value = true;
     try {
       latestActivities.value = normalizeActivities(await getLatestActivities(limit));
     } catch (err) {
       error.value = err;
-      latestActivities.value = [];
+      if (isInitialLoad) latestActivities.value = [];
     } finally {
-      isLatestLoading.value = false;
+      if (isInitialLoad) isLatestLoading.value = false;
     }
   }
 
   async function fetchEndingSoonActivities(limit = 6) {
-    isEndingSoonLoading.value = true;
+    const isInitialLoad = !endingSoonActivities.value.length;
+    if (isInitialLoad) isEndingSoonLoading.value = true;
     try {
       endingSoonActivities.value = normalizeActivities(await getEndingSoonActivities(limit));
     } catch (err) {
       error.value = err;
-      endingSoonActivities.value = [];
+      if (isInitialLoad) endingSoonActivities.value = [];
     } finally {
-      isEndingSoonLoading.value = false;
+      if (isInitialLoad) isEndingSoonLoading.value = false;
     }
   }
 

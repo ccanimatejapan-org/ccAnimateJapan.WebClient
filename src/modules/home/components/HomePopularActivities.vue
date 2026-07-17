@@ -36,9 +36,8 @@ const activityStore = useActivityStore();
 const { popularActivities } = storeToRefs(activityStore);
 
 onMounted(() => {
-  if (!popularActivities.value.length) {
-    activityStore.fetchPopularActivities(5);
-  }
+  // 每次進首頁都重抓，確保下單後成團進度即時反映（重訪靜默刷新、不清空現有清單）。
+  activityStore.fetchPopularActivities(5);
 });
 </script>
 
