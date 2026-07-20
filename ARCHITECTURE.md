@@ -595,10 +595,12 @@ src/modules/order/
 
 - `api/orderApi.js`：封裝訂單列表、訂單詳情與 `createOrderFromCartItems()`，打後端 `GET /orders`、`GET /orders/{id}`、`POST /orders`（皆需登入帶 token）。
 - `pages/OrderListPage.vue`：訂單列表頁。
-- `pages/OrderDetailPage.vue`：訂單詳情簡版，接收 `id` route param。
-- `components/OrderCard.vue`：訂單摘要卡片，顯示訂單編號、活動名稱、總金額、付款狀態、處理狀態、建立時間。
+- `pages/OrderDetailPage.vue`：訂單詳情簡版，接收 `id` route param。有補運費時另列「補運費」一行；訂單總額顯示後端算好的 `order.grandTotal`。
+- `components/OrderCard.vue`：訂單摘要卡片，顯示訂單編號、活動名稱、總金額、付款狀態、處理狀態、建立時間。**總金額用後端 `grandTotal`（= 商品 `total` + 補運費 `shippingFee`），前端不自行加總。**
 - `components/OrderStatusBadge.vue`：訂單狀態 badge，搭配 `shared/constants/orderStatus.js`。
 - `routes.js`：定義 `/orders` 與 `/orders/:id`。
+
+> 訂單金額欄位：後端 `OrderResult` 回傳 `total`（商品）、`shippingFee`（補運費）、`shippingPaymentStatus`（none/unpaid/paid）與計算好的 `grandTotal`（= total + shippingFee）。前端一律顯示 `grandTotal`，衍生加總在後端完成。
 
 ### modules/auth/
 

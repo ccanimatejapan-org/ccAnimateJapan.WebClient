@@ -24,7 +24,7 @@
         </div>
         <div class="summary-row order-detail__total">
           <span>{{ t('order.total') }}</span>
-          <AppPrice :value="order.total" />
+          <AppPrice :value="order.grandTotal" />
         </div>
       </AppAccordion>
 

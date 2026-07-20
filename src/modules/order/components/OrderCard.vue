@@ -7,7 +7,7 @@
     </div>
     <div class="order-card__total">
       <span>{{ t('order.total') }}</span>
-      <AppPrice :value="order.total" />
+      <AppPrice :value="order.grandTotal" />
     </div>
     <RouterLink
       class="app-button app-button--secondary order-card__detail"
