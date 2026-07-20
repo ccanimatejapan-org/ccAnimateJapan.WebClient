@@ -2,12 +2,16 @@
   <AppLoading v-if="isLoading" :label="t('common.loading')" />
   <section v-else-if="order" class="section narrow-section">
     <p class="eyebrow">{{ t('order.detail') }}</p>
-    <h1>{{ t('order.orderNoLabel') }}{{ order.orderNo || `#${order.id}` }}</h1>
+    <div class="order-detail__heading">
+      <h1>{{ t('order.orderNoLabel') }}{{ order.orderNo || `#${order.id}` }}</h1>
+      <OrderStatusBadge :order-status="order.orderStatus" />
+    </div>
     <p class="order-detail__activity">{{ order.activityName }}</p>
     <p class="order-detail__created">{{ t('order.createdAt') }} · {{ formatDateTime(order.createdAt) }}</p>
 
     <div class="order-detail__sections">
-      <AppAccordion :title="t('order.section.items')">
+      <section class="order-detail__block">
+        <h2 class="order-detail__block-title">{{ t('order.section.items') }}</h2>
         <div class="order-detail__items">
           <article v-for="item in order.items" :key="item.productId" class="order-detail__item">
             <div>
@@ -26,9 +30,10 @@
           <span>{{ t('order.total') }}</span>
           <AppPrice :value="order.grandTotal" />
         </div>
-      </AppAccordion>
+      </section>
 
-      <AppAccordion :title="t('order.section.status')">
+      <section class="order-detail__block">
+        <h2 class="order-detail__block-title">{{ t('order.section.status') }}</h2>
         <div class="summary-row">
           <span>{{ t('order.processStatusLabel') }}</span>
           <OrderStatusBadge :order-status="order.orderStatus" />
@@ -54,9 +59,10 @@
             :label="t(getDeliveryStatusLabelKey(order.deliveryStatus))"
           />
         </div>
-      </AppAccordion>
+      </section>
 
-      <AppAccordion :title="t('order.section.shipping')">
+      <section class="order-detail__block">
+        <h2 class="order-detail__block-title">{{ t('order.section.shipping') }}</h2>
         <div v-if="order.deliveryTypeName" class="summary-row">
           <span>{{ t('order.deliveryMethod') }}</span>
           <span>{{ order.deliveryTypeName }}</span>
@@ -72,7 +78,7 @@
         <p v-if="!order.deliveryTypeName && !order.address && !order.recipientPhone" class="order-detail__empty-hint">
           {{ t('order.noShippingInfo') }}
         </p>
-      </AppAccordion>
+      </section>
     </div>
   </section>
   <AppEmpty v-else :message="t(loadFailed ? 'order.loadFailed' : 'order.notFound')" />
@@ -81,7 +87,6 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppAccordion from '@/shared/components/AppAccordion.vue';
 import AppEmpty from '@/shared/components/AppEmpty.vue';
 import AppLoading from '@/shared/components/AppLoading.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
@@ -143,9 +148,37 @@ onMounted(async () => {
   font-size: 0.85rem;
 }
 
+.order-detail__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.order-detail__heading h1 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.order-detail__heading .status-badge {
+  flex-shrink: 0;
+}
+
 .order-detail__sections {
   display: grid;
   gap: 12px;
+}
+
+.order-detail__block {
+  padding: 16px;
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.order-detail__block-title {
+  margin: 0 0 12px;
+  font-size: 1rem;
 }
 
 .order-detail__total {

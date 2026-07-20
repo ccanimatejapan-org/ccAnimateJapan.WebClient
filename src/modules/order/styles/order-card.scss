@@ -21,6 +21,21 @@
   min-width: 0;
 }
 
+.order-card__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.order-card__heading p {
+  min-width: 0;
+}
+
+.order-card__heading .status-badge {
+  flex-shrink: 0;
+}
+
 .order-card__main p,
 .order-card__main h3,
 .order-card__main span,

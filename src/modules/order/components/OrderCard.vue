@@ -1,7 +1,10 @@
 <template>
   <article class="order-card">
     <div class="order-card__main">
-      <p>{{ order.orderNo || `#${order.id}` }}</p>
+      <div class="order-card__heading">
+        <p>{{ order.orderNo || `#${order.id}` }}</p>
+        <OrderStatusBadge :order-status="order.orderStatus" />
+      </div>
       <h3>{{ order.activityName }}</h3>
       <span>{{ formatDateTime(order.createdAt) }}</span>
     </div>
@@ -24,6 +27,7 @@ import { useI18n } from 'vue-i18n';
 import AppPrice from '@/shared/components/AppPrice.vue';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { formatDateTime } from '@/shared/utils/date';
+import OrderStatusBadge from './OrderStatusBadge.vue';
 
 defineProps({
   order: {
