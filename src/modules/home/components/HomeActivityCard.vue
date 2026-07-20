@@ -52,6 +52,7 @@ import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
+import { GROUP_BUY_STATUS, SHIPPING_MODE } from '@/shared/constants/groupBuy';
 
 const props = defineProps({
   activity: {
@@ -110,18 +111,18 @@ const dateRange = computed(() => {
 
 const showGroupBuyProgress = computed(() =>
   props.activity.isPreOrder &&
-  props.activity.groupBuyStatus === 'Recruiting' &&
+  props.activity.groupBuyStatus === GROUP_BUY_STATUS.RECRUITING &&
   props.activity.groupBuyProgressPercent != null
 );
 
-const isGroupFormed = computed(() => props.activity.groupBuyStatus === 'Formed');
+const isGroupFormed = computed(() => props.activity.groupBuyStatus === GROUP_BUY_STATUS.FORMED);
 
 const progressPercent = computed(() =>
   Math.max(0, Math.min(100, Number(props.activity.groupBuyProgressPercent) || 0))
 );
 
 const progressLabel = computed(() => {
-  if (props.activity.shippingMode === 'FreeOverAmount') {
+  if (props.activity.shippingMode === SHIPPING_MODE.FREE_OVER_AMOUNT) {
     return t('home.groupBuyProgressPercent', { percent: progressPercent.value });
   }
   const remaining = Number(props.activity.groupBuyRemainingQuantity) || 0;
