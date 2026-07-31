@@ -52,7 +52,7 @@ import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
-import { GROUP_BUY_STATUS, SHIPPING_MODE } from '@/shared/constants/groupBuy';
+import { GROUP_BUY_STATUS } from '@/shared/constants/groupBuy';
 
 const props = defineProps({
   activity: {
@@ -121,13 +121,12 @@ const progressPercent = computed(() =>
   Math.max(0, Math.min(100, Number(props.activity.groupBuyProgressPercent) || 0))
 );
 
-const progressLabel = computed(() => {
-  if (props.activity.shippingMode === SHIPPING_MODE.FREE_OVER_AMOUNT) {
-    return t('home.groupBuyProgressPercent', { percent: progressPercent.value });
-  }
-  const remaining = Number(props.activity.groupBuyRemainingQuantity) || 0;
-  return remaining > 0 ? t('home.groupBuyRemaining', { count: remaining }) : t('home.groupBuyReached');
-});
+// 一律以百分比呈現（件數模式與滿額免運都用 %）；達 100% 顯示「已達成團標準」。
+const progressLabel = computed(() =>
+  progressPercent.value >= 100
+    ? t('home.groupBuyReached')
+    : t('home.groupBuyProgressPercent', { percent: progressPercent.value })
+);
 </script>
 
 <style scoped lang="scss">
