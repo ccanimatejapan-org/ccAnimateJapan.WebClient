@@ -1,5 +1,7 @@
 # ccAnimateJapan.WebClient Architecture
 
+> **狀態碼 / 開團**：狀態值權威在後端 [`../ccAnimateJapan.AdminAPI/docs/STATUS_CODES.md`](../ccAnimateJapan.AdminAPI/docs/STATUS_CODES.md)、運作見 [`GROUP_BUY.md`](../ccAnimateJapan.AdminAPI/docs/GROUP_BUY.md)；本 repo 的狀態鏡像檔清單見 [`CLAUDE.md`](CLAUDE.md) 的「狀態碼 / 開團」段。
+
 本文件說明 `ccAnimateJapan.WebClient` 目前前台商城的架構、資料夾責任、資料流與開發規則。此專案是 ccAnimateJapan 面向一般使用者的 Web 前台，主要使用情境是手機瀏覽器、LINE 官方帳號與 LIFF WebView。
 
 資料一律從正式後端 `ccAnimateJapan.WebAPI` 取得（活動／商品／購物車／訂單／作品），**前端已移除所有 mock／假資料切換**，永遠打真 API。進站需 **LINE LIFF 登入＋加官方好友**；本地開發可設 `VITE_DEV_AUTO_LOGIN=true` 改走後端 `POST /auth/dev-login` 快速登入。購物流程如下：
