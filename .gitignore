@@ -13,3 +13,6 @@ vite-dev*.err
 
 # Superpowers brainstorm companion
 .superpowers/
+
+# 本地環境變數，勿進版控
+.env
