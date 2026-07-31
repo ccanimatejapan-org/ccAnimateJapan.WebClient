@@ -26,7 +26,6 @@ import HomeEndingSoonActivities from '../components/HomeEndingSoonActivities.vue
 const activityStore = useActivityStore();
 
 onMounted(() => {
-  // 每次進首頁都重抓，確保下單後成團進度即時反映（store 只在首次載入才顯示 loading，重訪靜默刷新）。
   // 「最新活動」資料由後端套用「過去兩週到今天」時間區間後回傳。
   activityStore.fetchLatestActivities();
   // 「快結束活動」資料由後端套用「今天到一週後」時間區間後回傳。

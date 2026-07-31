@@ -55,13 +55,11 @@ export const useActivityStore = defineStore('activity', () => {
       popularActivities.value = normalizeActivities(await getPopularActivities(limit));
     } catch (err) {
       error.value = err;
-      // 靜默刷新失敗時保留現有清單，避免把已顯示的資料清空。
       if (!popularActivities.value.length) popularActivities.value = [];
     }
   }
 
   async function fetchLatestActivities(limit = 6) {
-    // 只有首次（清單為空）才顯示 loading；重訪時靜默刷新、保留現有資料避免閃爍跳版。
     const isInitialLoad = !latestActivities.value.length;
     if (isInitialLoad) isLatestLoading.value = true;
     try {
