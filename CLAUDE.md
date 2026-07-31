@@ -30,6 +30,10 @@ ccAnimateJapan 的前台商城，技術棧為 **Vue 3（Composition API）+ Vite
 - **不要自動 commit**：所有調整完成後，僅將變更留在工作目錄（unstaged）即可，
   不要執行 `git add` / `git commit` / `git push`。由使用者自行做最後檢查後再 commit、push。
 
+## 文件同步規則（改功能就改文件）
+
+新增或修改功能時，**必須同步更新相關文件**，並與程式碼一起 commit（不要事後補）：架構 / 模組邊界 → [`ARCHITECTURE.md`](ARCHITECTURE.md)；狀態值 → 同步各鏡像檔並確認與後端 [`STATUS_CODES.md`](../ccAnimateJapan.AdminAPI/docs/STATUS_CODES.md) 一致；開團 / 運費行為 → 後端 [`GROUP_BUY.md`](../ccAnimateJapan.AdminAPI/docs/GROUP_BUY.md)。
+
 ## 常用指令
 
 ```bash
