@@ -225,7 +225,7 @@
       "customerPaid": "顧客已付款",
       "preOrderCompleted": "預購已完成",
       "stocked": "商品已入庫",
-      "shippedToCustomer": "已出貨給顧客",
+      "shippedToCustomer": "已聯絡顧客出貨事項",
       "completed": "訂單已完成",
       "canceled": "訂單已取消",
       "unknown": "未知"
