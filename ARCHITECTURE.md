@@ -323,7 +323,8 @@ src/shared/components/
 ├─ AppLoading.vue
 ├─ AppModal.vue
 ├─ AppPrice.vue
-└─ AppToast.vue
+├─ AppToast.vue
+└─ OfficialShippingCard.vue
 ```
 
 - `AppButton`：共用按鈕元件。
@@ -333,6 +334,7 @@ src/shared/components/
 - `AppModal`：共用 modal 元件，目前被商品加入購物車 dialog 使用。
 - `AppPrice`：金額顯示元件。
 - `AppToast`：全站 toast 顯示容器，搭配 `shared/stores/uiStore.js`。
+- `OfficialShippingCard`：統一顯示預購活動的官方出貨時程，支援完整與 compact 版型。
 
 ### shared/composables/
 
@@ -386,14 +388,18 @@ src/shared/styles/
 
 ```text
 src/shared/utils/
+├─ activityOrderable.js
 ├─ date.js
 ├─ money.js
+├─ officialShipping.js
 ├─ storage.js
 └─ validation.js
 ```
 
+- `activityOrderable.js`：`isActivityOrderable(activity)` 僅在活動 `status === 3` 時回傳可下單。
 - `date.js`：日期與日期時間格式化 helper。
 - `money.js`：金額格式化 helper。
+- `officialShipping.js`：`getOfficialShippingDisplay({ isPreOrder, startTime, endTime }, locale)` 回傳 `hidden` / `pending` / `ready`，並固定以 `Asia/Taipei` 格式化日期。
 - `storage.js`：localStorage/sessionStorage 讀寫封裝。
 - `validation.js`：表單驗證 helper，例如必填、email 格式。
 
@@ -746,6 +752,32 @@ CartPage
   -> cartStore.clearCart()
   -> /orders
 ```
+
+官方出貨時程資料流：
+
+```text
+Activity API
+  -> GET /api/activities（含 /popular /latest /ending-soon /animateTypeId）
+  -> 直接回傳 officialShippingStartTime / officialShippingEndTime
+
+Cart API
+  -> GET /cart
+  -> cartMapper 透過 item/group 轉換保留 activityIsPreOrder
+  -> 同步保留 officialShippingStartTime / officialShippingEndTime
+
+Order API
+  -> GET /orders、GET /orders/{id}
+  -> 透過 JOIN 以 activities 最新值補齊官方出貨欄位
+  -> 不使用 orders/orderProducts 快照欄位
+```
+
+官方出貨顯示規則：
+
+- `ProductListPage` 與 `OrderDetailPage` 顯示完整版。
+- `ProductAddDialog`、`CheckoutPage` 與 `OrderCard` 顯示 compact 版。
+- `HomeActivityCard` 與 `CartPage` 不顯示。
+- 現貨活動隱藏；預購活動同時有 start/end 時為 `ready`，缺漏時為 `pending`。
+- 日期統一以 `Asia/Taipei` 格式化。
 
 常見模式：
 

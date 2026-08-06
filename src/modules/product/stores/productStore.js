@@ -61,12 +61,8 @@ export const useProductStore = defineStore('product', () => {
     }
   }
 
-  async function fetchProductsByActivityPaged(activityId, page, pageSize) {
-    const data = await getProductsByActivity(activityId, { page, pageSize });
-    return {
-      items: normalizeProducts(data?.items),
-      total: Math.max(0, Number(data?.totalCount) || 0)
-    };
+  async function fetchProductsByActivity(activityId) {
+    return normalizeProducts(await getProductsByActivity(activityId));
   }
 
   function reset() {
@@ -84,7 +80,7 @@ export const useProductStore = defineStore('product', () => {
     isLoading,
     error,
     getOrFetchActivity,
-    fetchProductsByActivityPaged,
+    fetchProductsByActivity,
     reset
   };
 });

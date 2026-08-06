@@ -18,6 +18,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppButton from '@/shared/components/AppButton.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
+import { isActivityOrderable } from '@/shared/utils/activityOrderable.js';
 import ProductImageCarousel from './ProductImageCarousel.vue';
 
 const props = defineProps({
@@ -34,12 +35,10 @@ const props = defineProps({
 defineEmits(['add']);
 
 const { t } = useI18n();
-const ACTIVITY_STATUS_ENDED = 4;
-
-const isActivityEnded = computed(() => props.activity?.status === ACTIVITY_STATUS_ENDED);
-const isAddDisabled = computed(() => Boolean(props.product?.isOutStock || isActivityEnded.value));
+const isActivityAvailable = computed(() => isActivityOrderable(props.activity));
+const isAddDisabled = computed(() => Boolean(props.product?.isOutStock || !isActivityAvailable.value));
 const addButtonLabel = computed(() => {
-  if (isActivityEnded.value) return t('product.activityEnded');
+  if (!isActivityAvailable.value) return t('product.activityUnavailable');
   return props.product?.isOutStock ? t('product.soldOut') : t('product.addToCart');
 });
 </script>

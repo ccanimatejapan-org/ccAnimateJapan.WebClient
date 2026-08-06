@@ -7,6 +7,13 @@
       </div>
       <h3>{{ order.activityName }}</h3>
       <span>{{ formatDateTime(order.createdAt) }}</span>
+      <OfficialShippingCard
+        class="order-card__shipping"
+        :is-pre-order="order.activityIsPreOrder"
+        :start-time="order.officialShippingStartTime"
+        :end-time="order.officialShippingEndTime"
+        variant="compact"
+      />
     </div>
     <div class="order-card__total">
       <span>{{ t('order.total') }}</span>
@@ -25,6 +32,7 @@
 import { RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import AppPrice from '@/shared/components/AppPrice.vue';
+import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { formatDateTime } from '@/shared/utils/date';
 import OrderStatusBadge from './OrderStatusBadge.vue';
@@ -41,4 +49,8 @@ const { t } = useI18n();
 
 <style scoped lang="scss">
 @use '../styles/order-card';
+
+.order-card__shipping {
+  margin-top: 6px;
+}
 </style>

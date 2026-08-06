@@ -13,19 +13,26 @@
     <AppEmpty
       v-else-if="products.length === 0"
       :message="t('product.emptyForActivity')"
-    />
+           />
+    <div v-else>
+      <OfficialShippingCard
+        class="product-list__shipping"
+        :is-pre-order="productStore.activity?.isPreOrder"
+        :start-time="productStore.activity?.officialShippingStartTime"
+        :end-time="productStore.activity?.officialShippingEndTime"
+        variant="full"
+           />
 
-    <div v-else class="product-grid">
-      <ProductCard
-        v-for="product in products"
-        :key="product.id"
-        :product="product"
-        :activity="productStore.activity"
-        @add="openAddDialog"
-      />
+      <div class="product-grid">
+        <ProductCard
+          v-for="product in products"
+          :key="product.id"
+          :product="product"
+          :activity="productStore.activity"
+          @add="openAddDialog"
+          />
+      </div>
     </div>
-    <AppPagination :page="page" :total-pages="totalPages" @update:page="goTo" />
-
     <ProductAddDialog
       v-model="isAddDialogOpen"
       :activity="productStore.activity"
@@ -40,13 +47,13 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppEmpty from '@/shared/components/AppEmpty.vue';
 import AppLoading from '@/shared/components/AppLoading.vue';
-import AppPagination from '@/shared/components/AppPagination.vue';
-import { useServerPagination } from '@/shared/composables/useServerPagination';
+import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { useCartStore } from '@/modules/cart/stores/cartStore';
 import { useUiStore } from '@/shared/stores/uiStore';
 import ProductAddDialog from '../components/ProductAddDialog.vue';
 import ProductCard from '../components/ProductCard.vue';
+import { useActivityProducts } from '../composables/useActivityProducts';
 import { useProductStore } from '../stores/productStore';
 
 const props = defineProps({
@@ -68,23 +75,15 @@ const isAddDialogOpen = computed({
   }
 });
 
-const {
-  page,
-  items: products,
-  isLoading,
-  loadFailed,
-  totalPages,
-  load,
-  goTo,
-  reset
-} = useServerPagination(
-  (p, ps) => productStore.fetchProductsByActivityPaged(props.activityId, p, ps),
-  12
-);
+const { products, isLoading, loadFailed, load } = useActivityProducts(productStore.fetchProductsByActivity);
+
+function loadProducts() {
+  load(props.activityId);
+}
 
 onMounted(() => {
   productStore.getOrFetchActivity(props.activityId);
-  load(1);
+  loadProducts();
 });
 
 watch(
@@ -92,9 +91,8 @@ watch(
   (activityId) => {
     selectedProduct.value = null;
     productStore.reset();
-    reset();
     productStore.getOrFetchActivity(activityId);
-    load(1);
+    load(activityId);
   }
 );
 
@@ -137,4 +135,8 @@ async function addToCart(payload) {
 
 <style scoped lang="scss">
 @use '../styles/product-grid';
+
+.product-list__shipping {
+  margin-bottom: 12px;
+}
 </style>

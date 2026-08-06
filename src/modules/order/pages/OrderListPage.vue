@@ -39,6 +39,7 @@
           </div>
         </div>
       </div>
+      <OrderStageTabs v-model="orderStage" class="order-list__tabs" />
     </div>
 
     <AppLoading v-if="isLoading" :label="t('common.loading')" />
@@ -47,7 +48,6 @@
     <div v-else class="order-list">
       <OrderCard v-for="order in items" :key="order.id" :order="order" />
     </div>
-    <AppPagination :page="page" :total-pages="totalPages" @update:page="goTo" />
   </section>
 </template>
 
@@ -56,15 +56,25 @@ import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppEmpty from '@/shared/components/AppEmpty.vue';
 import AppLoading from '@/shared/components/AppLoading.vue';
-import AppPagination from '@/shared/components/AppPagination.vue';
-import { useServerPagination } from '@/shared/composables/useServerPagination';
 import OrderCard from '../components/OrderCard.vue';
+import OrderStageTabs from '../components/OrderStageTabs.vue';
+import {
+  buildOrderListQuery,
+  DEFAULT_ORDER_STAGE
+} from '../utils/orderStages';
 import { getOrders } from '../api/orderApi';
 
 const { t } = useI18n();
 const searchInput = ref('');
 const searchOpen = ref(false);
 const searchField = ref(null);
+const orderStage = ref(DEFAULT_ORDER_STAGE);
+const items = ref([]);
+const isLoading = ref(false);
+const loadFailed = ref(false);
+
+let requestId = 0;
+let searchTimer = null;
 
 function openSearch() {
   searchOpen.value = true;
@@ -77,39 +87,67 @@ function onSearchBlur() {
   }
 }
 
-const {
-  page,
-  items,
-  isLoading,
-  loadFailed,
-  totalPages,
-  load,
-  goTo,
-  reset
-} = useServerPagination(
-  (p, ps) => {
-    const params = { page: p, pageSize: ps };
-    const keyword = searchInput.value.trim();
-    if (keyword) params.search = keyword;
-    return getOrders(params).then((data) => ({ items: data.items, total: data.totalCount }));
-  },
-  10
-);
+function normalizeItems(result) {
+  if (Array.isArray(result)) {
+    return result;
+  }
 
-let searchTimer = null;
-watch(searchInput, () => {
-  if (searchTimer) clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => {
-    reset();
-    load(1);
-  }, 350);
-});
+  return result?.items ?? [];
+}
+
+async function loadOrders() {
+  const currentRequestId = ++requestId;
+  isLoading.value = true;
+  loadFailed.value = false;
+
+  try {
+    const query = buildOrderListQuery({
+      search: searchInput.value,
+      orderStage: orderStage.value
+    });
+    const response = await getOrders(query);
+
+    if (currentRequestId !== requestId) {
+      return;
+    }
+
+    items.value = normalizeItems(response);
+  } catch (error) {
+    if (currentRequestId !== requestId) {
+      return;
+    }
+
+    loadFailed.value = true;
+    items.value = [];
+    console.error(error);
+  } finally {
+    if (currentRequestId === requestId) {
+      isLoading.value = false;
+    }
+  }
+}
+
+function scheduleSearch() {
+  if (searchTimer) {
+    clearTimeout(searchTimer);
+  }
+
+  searchTimer = setTimeout(loadOrders, 350);
+}
+
+watch(orderStage, () => loadOrders());
+
+watch(searchInput, scheduleSearch);
 
 onBeforeUnmount(() => {
-  if (searchTimer) clearTimeout(searchTimer);
+  if (searchTimer) {
+    clearTimeout(searchTimer);
+  }
 });
 
-onMounted(() => load(1));
+onMounted(() => {
+  loadOrders();
+});
 </script>
 
 <style scoped lang="scss">

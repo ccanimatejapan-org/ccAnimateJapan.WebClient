@@ -18,6 +18,14 @@
         </div>
       </div>
 
+      <OfficialShippingCard
+        class="product-add-dialog__shipping"
+        :is-pre-order="activity?.isPreOrder"
+        :start-time="activity?.officialShippingStartTime"
+        :end-time="activity?.officialShippingEndTime"
+        variant="compact"
+      />
+
       <div class="product-add-dialog__field">
         <span>{{ t('product.addDialog.quantity') }}</span>
         <div class="product-add-dialog__quantity">
@@ -71,6 +79,8 @@ import AppButton from '@/shared/components/AppButton.vue';
 import AppModal from '@/shared/components/AppModal.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
 import { MAX_ORDER_QUANTITY } from '@/shared/constants/quantity';
+import { isActivityOrderable } from '@/shared/utils/activityOrderable.js';
+import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
 import ProductImageCarousel from './ProductImageCarousel.vue';
 
 const props = defineProps({
@@ -94,13 +104,13 @@ const quantity = ref(1);
 const note = ref('');
 
 const MAX_QUANTITY = MAX_ORDER_QUANTITY;
-const ACTIVITY_STATUS_ENDED = 4;
+const isActivityAvailable = computed(() => isActivityOrderable(props.activity));
 
-const isActivityEnded = computed(() => props.activity?.status === ACTIVITY_STATUS_ENDED);
-const isSoldOut = computed(() => Boolean(props.product?.isOutStock || isActivityEnded.value));
+const isSoldOut = computed(() => Boolean(props.product?.isOutStock || !isActivityAvailable.value));
 const confirmButtonLabel = computed(() => {
-  if (isActivityEnded.value) return t('product.activityEnded');
-  return isSoldOut.value ? t('product.soldOut') : t('product.addDialog.confirm');
+  if (!isActivityAvailable.value) return t('product.activityUnavailable');
+  if (props.product?.isOutStock) return t('product.soldOut');
+  return t('product.addDialog.confirm');
 });
 
 const maxQuantity = computed(() => {

@@ -1,33 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { addCartItem, getCart, removeCartItem, updateCartItem } from '../api/cartApi';
-
-function normalizeNote(note) {
-  return String(note || '').trim().slice(0, 80);
-}
-
-// Map a server cart payload ({ items:[...] }) to the store item shape.
-function mapServerCart(cart) {
-  const serverItems = Array.isArray(cart?.items) ? cart.items : [];
-
-  return serverItems
-    .map((item) => {
-      const note = normalizeNote(item.note ?? item.info);
-      return {
-        id: item.id,
-        activityId: Number(item.activityId),
-        activityName: item.activityName || '',
-        productId: Number(item.productId),
-        productName: item.productName || '',
-        imageUrl: item.imageUrl || '',
-        price: Number(item.price) || 0,
-        quantity: Math.max(1, Number(item.quantity) || 1),
-        note,
-        info: note
-      };
-    })
-    .filter((item) => Number.isFinite(item.activityId) && Number.isFinite(item.productId));
-}
+import { mapCartGroups, mapServerCart } from '../utils/cartMapper';
 
 export const useCartStore = defineStore('cart', () => {
   const items = ref([]);
@@ -40,29 +14,7 @@ export const useCartStore = defineStore('cart', () => {
     items.value.reduce((total, item) => total + item.price * item.quantity, 0)
   );
 
-  const groups = computed(() => {
-    const map = new Map();
-
-    for (const item of items.value) {
-      const key = Number(item.activityId);
-      if (!map.has(key)) {
-        map.set(key, {
-          activityId: key,
-          activityName: item.activityName || '',
-          items: [],
-          subtotal: 0,
-          totalQuantity: 0
-        });
-      }
-
-      const group = map.get(key);
-      group.items.push(item);
-      group.subtotal += item.price * item.quantity;
-      group.totalQuantity += item.quantity;
-    }
-
-    return [...map.values()];
-  });
+  const groups = computed(() => mapCartGroups(items.value));
 
   function applyServerCart(cart) {
     items.value = mapServerCart(cart);
@@ -86,7 +38,7 @@ export const useCartStore = defineStore('cart', () => {
     const product = payload.product || payload;
     const nextActivityId = Number(payload.activityId ?? activity?.id ?? product?.activityId);
     const nextProductId = Number(payload.productId ?? product?.id);
-    const note = normalizeNote(payload.note ?? payload.info);
+    const note = String(payload.note ?? payload.info ?? '').trim().slice(0, 80);
     const quantity = Math.max(1, Number(payload.quantity) || 1);
     if (!Number.isFinite(nextActivityId) || !Number.isFinite(nextProductId)) {
       return { ok: false, reason: 'error' };

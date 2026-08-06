@@ -115,6 +115,7 @@
     "activityEnded": "Activity ended",
     "addedToCart": "Added",
     "notFound": "Product not found",
+    "activityUnavailable": "This activity is currently unavailable for checkout.",
     "gallery": {
       "goToImage": "View image {index}",
       "zoom": "Zoom image",
@@ -131,6 +132,11 @@
       "subtotal": "Subtotal",
       "confirm": "Add to cart"
     }
+  },
+  "officialShipping": {
+    "title": "Official shipping period",
+    "pending": "Official shipping dates have not been announced yet.",
+    "description": "This is the Japanese official shipping period. After leaving Japan, shipping to Taiwan usually takes about 2 to 3 weeks; our customer service will contact you individually about the delivery after the products arrive in Taiwan."
   },
   "cart": {
     "eyebrow": "Ready to order",
@@ -166,6 +172,14 @@
     "searchPlaceholder": "Search order no or activity",
     "eyebrow": "Orders",
     "title": "Orders",
+    "tabsTitle": "Order status",
+    "tabs": {
+      "customerOrdered": "Not completed yet",
+      "awaitingPayment": "Awaiting payment",
+      "awaitingShipment": "Awaiting shipment",
+      "arrivedTaiwan": "Arrived in Taiwan",
+      "completed": "Completed"
+    },
     "detail": "Order detail",
     "empty": "No orders yet",
     "viewOrders": "View orders",

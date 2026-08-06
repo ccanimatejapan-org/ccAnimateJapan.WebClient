@@ -9,6 +9,13 @@
     <p class="order-detail__activity">{{ order.activityName }}</p>
     <p class="order-detail__created">{{ t('order.createdAt') }} · {{ formatDateTime(order.createdAt) }}</p>
 
+    <OfficialShippingCard
+      class="order-detail__shipping"
+      :is-pre-order="order.activityIsPreOrder"
+      :start-time="order.officialShippingStartTime"
+      :end-time="order.officialShippingEndTime"
+      variant="full"
+    />
     <div class="order-detail__sections">
       <section class="order-detail__block">
         <h2 class="order-detail__block-title">{{ t('order.section.items') }}</h2>
@@ -89,6 +96,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppEmpty from '@/shared/components/AppEmpty.vue';
 import AppLoading from '@/shared/components/AppLoading.vue';
+import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
 import {
   getDeliveryStatusBadgeVariant,
@@ -162,6 +170,10 @@ onMounted(async () => {
 
 .order-detail__heading .status-badge {
   flex-shrink: 0;
+}
+
+.order-detail__shipping {
+  margin: 12px 0 2px;
 }
 
 .order-detail__sections {

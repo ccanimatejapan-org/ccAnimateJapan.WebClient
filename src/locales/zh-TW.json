@@ -115,6 +115,7 @@
     "activityEnded": "活動已結束",
     "addedToCart": "已加入",
     "notFound": "找不到商品",
+    "activityUnavailable": "此活動目前無法下單",
     "gallery": {
       "goToImage": "看第 {index} 張圖片",
       "zoom": "放大圖片",
@@ -131,6 +132,11 @@
       "subtotal": "小計",
       "confirm": "加入購物車"
     }
+  },
+  "officialShipping": {
+    "title": "官方出貨期間",
+    "pending": "官方出貨時間待公告",
+    "description": "此為日本官方出貨期間，出貨後還須經過約2~3周運送至台灣，商品抵台後官方客服會再個別聯絡出貨事宜喔。"
   },
   "cart": {
     "eyebrow": "準備送出",
@@ -166,6 +172,14 @@
     "searchPlaceholder": "搜尋訂單編號或活動名稱",
     "eyebrow": "訂單紀錄",
     "title": "訂單查詢",
+    "tabsTitle": "訂單狀態",
+    "tabs": {
+      "customerOrdered": "尚未結單",
+      "awaitingPayment": "尚未付款",
+      "awaitingShipment": "官方尚未出貨",
+      "arrivedTaiwan": "商品已抵台",
+      "completed": "已完成"
+    },
     "detail": "訂單明細",
     "empty": "目前沒有訂單",
     "viewOrders": "查看訂單",

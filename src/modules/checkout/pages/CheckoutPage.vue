@@ -45,9 +45,22 @@
       <aside class="checkout__summary">
         <h2>{{ t('checkout.summary') }}</h2>
         <div class="checkout__groups">
-          <div v-for="group in cart.groups" :key="group.activityId" class="summary-row checkout__group-row">
-            <span>{{ group.activityName || t('activity.unnamed') }}</span>
-            <AppPrice :value="group.subtotal" />
+          <div
+            v-for="group in cart.groups"
+            :key="group.activityId"
+            class="checkout__group"
+          >
+            <div class="summary-row checkout__group-row">
+              <span>{{ group.activityName || t("activity.unnamed") }}</span>
+              <AppPrice :value="group.subtotal" />
+            </div>
+            <OfficialShippingCard
+              class="checkout__group-shipping"
+              :is-pre-order="group.activityIsPreOrder"
+              :start-time="group.officialShippingStartTime"
+              :end-time="group.officialShippingEndTime"
+              variant="compact"
+            />
           </div>
         </div>
         <p v-if="cart.groups.length" class="checkout__notice">
@@ -77,6 +90,7 @@ import { useI18n } from 'vue-i18n';
 import AppButton from '@/shared/components/AppButton.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
 import AppLoading from '@/shared/components/AppLoading.vue';
+import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { ADDRESS_KIND, requiresAddress } from '@/shared/constants/addressKind';
 import { useUiStore } from '@/shared/stores/uiStore';
@@ -336,7 +350,21 @@ function showPartialFailureToast(failures, options = {}) {
 
 .checkout__groups {
   display: grid;
-  gap: 2px;
+  gap: 12px;
+}
+
+.checkout__group {
+  display: grid;
+  gap: 8px;
+}
+
+.checkout__group-row span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.checkout__group-shipping {
+  align-self: start;
 }
 
 .checkout__group-row span {
