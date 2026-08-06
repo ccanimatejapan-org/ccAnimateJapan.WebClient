@@ -14,6 +14,12 @@
             <h2>{{ group.activityName || t('activity.unnamed') }}</h2>
             <AppPrice :value="group.subtotal" />
           </div>
+          <OfficialShippingCard
+            :is-pre-order="group.activityIsPreOrder"
+            :start-time="group.officialShippingStartTime"
+            :end-time="group.officialShippingEndTime"
+            variant="compact"
+          />
           <CartItem v-for="item in group.items" :key="item.id" :item="item" />
         </section>
       </div>
@@ -33,6 +39,7 @@ import { RouterLink, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import AppEmpty from '@/shared/components/AppEmpty.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
+import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
 import CartItem from '../components/CartItem.vue';
 import CartSummary from '../components/CartSummary.vue';
 import { ROUTE_NAMES } from '@/shared/constants/routes';

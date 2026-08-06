@@ -2,6 +2,7 @@
   <AppModal
     :model-value="modelValue"
     :title="t('product.addDialog.title')"
+    fit-content
     @update:model-value="$emit('update:modelValue', $event)"
   >
     <div v-if="product" class="product-add-dialog">
@@ -17,14 +18,6 @@
           <AppPrice :value="product.price" />
         </div>
       </div>
-
-      <OfficialShippingCard
-        class="product-add-dialog__shipping"
-        :is-pre-order="activity?.isPreOrder"
-        :start-time="activity?.officialShippingStartTime"
-        :end-time="activity?.officialShippingEndTime"
-        variant="compact"
-      />
 
       <div class="product-add-dialog__field">
         <span>{{ t('product.addDialog.quantity') }}</span>
@@ -80,7 +73,6 @@ import AppModal from '@/shared/components/AppModal.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
 import { MAX_ORDER_QUANTITY } from '@/shared/constants/quantity';
 import { isActivityOrderable } from '@/shared/utils/activityOrderable.js';
-import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
 import ProductImageCarousel from './ProductImageCarousel.vue';
 
 const props = defineProps({
