@@ -228,7 +228,7 @@ src/router/
 - 匯入各 module 的 `routes.js`，再依 layout 分組。
 - 設定萬用路由 `/:pathMatch(.*)*`，未知路徑導回首頁。
 - 設定 `scrollBehavior()`，換頁時回到頁面頂端；若有 hash 會平滑捲動到目標區塊。
-- `router.beforeEach` 守衛集中整個登入流程：已有 session 放行；本地 dev-login 分支（`import.meta.env.DEV && VITE_DEV_AUTO_LOGIN`）；否則走 LIFF 流程（`ensureLiffReady` → `isLoggedIn` → `getFriendFlag` → `signInWithLiff`），未配置 `VITE_LIFF_ID` 時降級到 `/auth/login`。
+- `router.beforeEach` 守衛集中整個登入流程：已有 session 放行（並在背景節流刷新 LINE profile）；本地 dev-login 分支（`import.meta.env.DEV && VITE_DEV_AUTO_LOGIN`）；否則走 LIFF 流程（`ensureLiffReady` → `isLoggedIn` → `getFriendFlag` → `signInWithLiff`），未配置 `VITE_LIFF_ID` 時降級到 `/auth/login`。
 
 目前路由分組：
 
@@ -624,7 +624,7 @@ src/modules/auth/
 資料夾功能：
 
 - `api/authApi.js`：`loginWithLiff(accessToken)` → `POST /auth/line/login`（LIFF 登入）、`devLogin()` → `POST /auth/dev-login`（本地開發專用）。
-- `stores/authStore.js`：管理登入 session（`accessToken` + `user`），持久化於 localStorage `ccAnimateJapan.auth`；提供 `signInWithLiff(accessToken)`、`signInWithDev()`、`signOut()`。
+- `stores/authStore.js`：管理登入 session（`accessToken` + `user`），持久化於 localStorage `ccAnimateJapan.auth`；提供 `signInWithLiff(accessToken)`、`renewSession()`（401 靜默續期）、`refreshProfileInBackground()`（進站背景節流刷新 LINE profile）、`signInWithDev()`、`signOut()`。
 - `pages/LoginPage.vue`：登入頁／重試入口（LIFF 流程主要由 router guard 驅動）。
 - `pages/LineCallbackPage.vue`：LINE callback 防呆頁（LIFF 不走 OAuth callback，僅作降級導回）。
 - `pages/AddFriendPage.vue`：非官方帳號好友時的加好友頁，連到 `VITE_LINE_ADD_FRIEND_URL`。
@@ -667,7 +667,7 @@ src/modules/member/
 
 進站（除登入相關路由外）需 LIFF 登入，邏輯集中在 `src/router/index.js` 的 `router.beforeEach`，能力由 `src/shared/composables/liffClient.js` 提供：
 
-1. 已有 session（localStorage `ccAnimateJapan.auth` 有 `accessToken`）→ 放行。
+1. 已有 session（localStorage `ccAnimateJapan.auth` 有 `accessToken`）→ 放行；同時在背景呼叫 `authStore.refreshProfileInBackground()`（節流每 10 分鐘一次、不阻塞導頁、失敗不影響現有 session），重打 `POST /auth/line/login` 觸發後端 upsert，讓 `members.displayName`/`pictureUrl` 不會因 session 未過期而長期停在舊值（例如顧客換頭像後 DB 存的舊網址會 404）。
 2. **本地 dev-login**：`import.meta.env.DEV && VITE_DEV_AUTO_LOGIN === 'true'` 時，呼叫 `authStore.signInWithDev()`（打 `POST /auth/dev-login`，用 DB 第一筆有效會員發真實 JWT）直接進站。此分支只在 dev build 存在（正式 build 被 tree-shake 移除），後端非 Development 也回 404。
 3. **LIFF 流程**：未設 `VITE_LIFF_ID` → 導 `/auth/login`；否則 `ensureLiffReady()` → 若 `!isLoggedIn()`：在 LINE app 內（`isInClient()`）改導登入頁避免卡白畫面，否則 `login(redirectUri)` 導向 LINE → `getFriendFlag()` 為 false（或後端 body 403）導 `/auth/add-friend` → `authStore.signInWithLiff(getAccessToken())` 換後端 session。
 
