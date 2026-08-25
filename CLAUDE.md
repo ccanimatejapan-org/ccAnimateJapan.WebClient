@@ -18,7 +18,7 @@ ccAnimateJapan 的前台商城，技術棧為 **Vue 3（Composition API）+ Vite
 
 - 權威登記表：[`../ccAnimateJapan.AdminAPI/docs/STATUS_CODES.md`](../ccAnimateJapan.AdminAPI/docs/STATUS_CODES.md)（顧客端子集見 [`../ccAnimateJapan.WebAPI/docs/STATUS_CODES.md`](../ccAnimateJapan.WebAPI/docs/STATUS_CODES.md)）
 - 開團 / 運費 / 補運費怎麼運作：[`../ccAnimateJapan.AdminAPI/docs/GROUP_BUY.md`](../ccAnimateJapan.AdminAPI/docs/GROUP_BUY.md)
-- 本 repo 鏡像檔：`src/shared/constants/groupBuy.js`（開團狀態 / 運費模式）、`orderStatus.js`、`deliveryStatus.js`、`addressKind.js`；活動已結束碼 `ACTIVITY_STATUS_ENDED` 在 `src/modules/home/components/HomeActivityCard.vue`；付款 / 補運費標籤在 `src/locales/zh-TW.json`。
+- 本 repo 鏡像檔：`src/shared/constants/groupBuy.js`（開團狀態 / 運費模式）、`orderStatus.js`、`addressKind.js`；活動已結束碼 `ACTIVITY_STATUS_ENDED` 在 `src/modules/home/components/HomeActivityCard.vue`；付款 / 補運費標籤在 `src/locales/zh-TW.json`。
 
 ## 工作流程規範（重要）
 

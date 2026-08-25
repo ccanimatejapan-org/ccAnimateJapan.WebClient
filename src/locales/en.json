@@ -195,21 +195,11 @@
     "recipientAddress": "Recipient address",
     "recipientPhone": "Recipient phone",
     "orderNoLabel": "Order No: ",
-    "deliveryStatusLabel": "Delivery status",
     "noShippingInfo": "No delivery info yet",
     "section": {
       "items": "Items",
       "status": "Status",
       "shipping": "Delivery info"
-    },
-    "deliveryStatus": {
-      "unprocessed": "Not yet processed",
-      "urlProvided": "Shipping URL provided",
-      "customerOrdered": "Logistics order placed",
-      "shipped": "Shipped",
-      "arrivedStore": "Arrived at store",
-      "pickedUp": "Picked up",
-      "unknown": "Unknown"
     },
     "paymentStatus": {
       "paid": "Paid",

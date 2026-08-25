@@ -59,13 +59,6 @@
             :label="t(shippingPaymentStatusLabelKey)"
           />
         </div>
-        <div class="summary-row">
-          <span>{{ t('order.deliveryStatusLabel') }}</span>
-          <StatusBadge
-            :variant="getDeliveryStatusBadgeVariant(order.deliveryStatus)"
-            :label="t(getDeliveryStatusLabelKey(order.deliveryStatus))"
-          />
-        </div>
       </section>
 
       <section class="order-detail__block">
@@ -98,10 +91,6 @@ import AppEmpty from '@/shared/components/AppEmpty.vue';
 import AppLoading from '@/shared/components/AppLoading.vue';
 import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
-import {
-  getDeliveryStatusBadgeVariant,
-  getDeliveryStatusLabelKey
-} from '@/shared/constants/deliveryStatus';
 import { formatDateTime } from '@/shared/utils/date';
 import OrderStatusBadge from '../components/OrderStatusBadge.vue';
 import StatusBadge from '../components/StatusBadge.vue';

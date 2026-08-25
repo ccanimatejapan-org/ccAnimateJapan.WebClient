@@ -195,21 +195,11 @@
     "recipientAddress": "收件地址",
     "recipientPhone": "收件電話",
     "orderNoLabel": "訂單編號：",
-    "deliveryStatusLabel": "物流狀態",
     "noShippingInfo": "尚無物流資訊",
     "section": {
       "items": "商品明細",
       "status": "訂單狀態",
       "shipping": "物流資訊"
-    },
-    "deliveryStatus": {
-      "unprocessed": "尚未處理物流",
-      "urlProvided": "賣貨便網址已提供",
-      "customerOrdered": "顧客已完成物流下單",
-      "shipped": "商品已寄出",
-      "arrivedStore": "商品已到店",
-      "pickedUp": "顧客已取貨",
-      "unknown": "未知"
     },
     "paymentStatus": {
       "paid": "已付款",
