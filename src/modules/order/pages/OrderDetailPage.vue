@@ -55,8 +55,8 @@
         <div v-if="order.shippingFee > 0" class="summary-row">
           <span>{{ t('order.shippingPaymentStatusLabel') }}</span>
           <StatusBadge
-            :variant="order.shippingPaymentStatus === 'paid' ? 'paid' : 'pending'"
-            :label="t(shippingPaymentStatusLabelKey)"
+            :variant="shippingPaymentStatus.variant"
+            :label="t(shippingPaymentStatus.labelKey)"
           />
         </div>
       </section>
@@ -92,6 +92,7 @@ import AppLoading from '@/shared/components/AppLoading.vue';
 import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
 import { formatDateTime } from '@/shared/utils/date';
+import { mapShippingPaymentStatus } from '../utils/shippingPaymentStatus';
 import OrderStatusBadge from '../components/OrderStatusBadge.vue';
 import StatusBadge from '../components/StatusBadge.vue';
 import { getOrderById } from '../api/orderApi';
@@ -114,11 +115,7 @@ const paymentStatusLabelKey = computed(() =>
     : 'order.paymentStatus.unpaid'
 );
 
-const shippingPaymentStatusLabelKey = computed(() =>
-  order.value?.shippingPaymentStatus === 'paid'
-    ? 'order.shippingPaymentStatus.paid'
-    : 'order.shippingPaymentStatus.unpaid'
-);
+const shippingPaymentStatus = computed(() => mapShippingPaymentStatus(order.value?.shippingPaymentStatus));
 
 onMounted(async () => {
   try {

@@ -16,8 +16,17 @@ export async function createOrderFromCartItems(items, shipping = {}) {
     throw new Error('cart.toast.submitFailedMessage');
   }
 
+  const checkoutItems = items.map((item) => ({
+    cartItemId: Number(item?.id),
+    quantity: Number(item?.quantity)
+  }));
+
+  if (checkoutItems.some((item) => !Number.isInteger(item.cartItemId) || item.cartItemId <= 0 || !Number.isInteger(item.quantity) || item.quantity <= 0)) {
+    throw new Error('cart.toast.submitFailedMessage');
+  }
+
   const payload = {
-    items,
+    items: checkoutItems,
     deliveryTypeId: shipping.deliveryTypeId ?? null,
     addressId: shipping.addressId ?? null,
     saveAddress: Boolean(shipping.saveAddress),

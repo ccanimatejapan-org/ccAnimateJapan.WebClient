@@ -29,7 +29,8 @@
 }
 
 .status-badge--canceled,
-.status-badge--unknown {
+.status-badge--unknown,
+.status-badge--neutral {
   background: #f3f4f6;
   color: #4b5563;
 }
