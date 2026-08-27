@@ -447,8 +447,8 @@ src/modules/activity/
 資料夾功能：
 
 - `api/activityApi.js`：封裝活動與作品 API——`getActivities({ animateTypeId, limit })`（打 `/activities`，`animateTypeId` 用於作品 drill-down）、`getPopularActivities(limit)`（打 `/activities/popular`）、`getWorks(limit)`（打 `/works`，回作品 `{id,name,imageUrl,activityCount}`）。
-- `stores/activityStore.js`：管理 `activities`、`popularActivities`、`works` 狀態與載入／錯誤狀態，提供 `fetchActivities()`、`fetchPopularActivities()`、`fetchWorks(limit)` 與 `fetchActivitiesByWork(animateTypeId)`。
-- `pages/WorkListPage.vue`：作品列表頁，路由 `/works`，使用 `works`。
+- `stores/activityStore.js`：管理 `activities`、`popularActivities`，以及由 `useWorksCatalog` 分離的 `homeWorks`（preview）／`allWorks`（完整清單）狀態；兩者有獨立 cache、loaded/loading/error 與 request sequence，提供 `fetchHomeWorks(10)`、`fetchAllWorks()`。
+- `pages/WorkListPage.vue`：作品列表頁，路由 `/works`，只使用 `allWorksLoaded`／`allWorks`，空陣列代表已載入但沒有資料。
 - `pages/WorkActivitiesPage.vue`：特定作品底下的活動，路由 `/works/:animateTypeId`，使用 `fetchActivitiesByWork()`。
 - `routes.js`：定義 `/works` 與 `/works/:animateTypeId`。
 
@@ -485,7 +485,7 @@ src/modules/home/
 - `components/HomeBannerCarousel.vue`：輪播 banner（資料來自 `config/homeBanners.js`）。
 - `components/HomeCategoryChips.vue`：可用狀態篩選 chip。
 - `components/HomePopularActivities.vue`：「熱門活動」區塊，mount 時 `fetchPopularActivities(5)`。
-- `components/HomeAnimateTypeRow.vue`：「依作品逛」區塊，mount 時 `fetchWorks(10)`，可 drill-down 到 `/works/:animateTypeId`。圈圈為作品圖片圓形頭像＋名稱＋活動檔數徽章（`work.imageUrl`，無圖退回名稱首字），`WorkListPage` 同款。
+- `components/HomeAnimateTypeRow.vue`：「依作品逛」區塊，mount 時 `fetchHomeWorks(10)`；完整作品頁另以 `fetchAllWorks()` 取資料，不共用 preview cache。圈圈為作品圖片圓形頭像＋名稱＋活動檔數徽章（`work.imageUrl`，無圖退回名稱首字），`WorkListPage` 同款。
 - `components/HomeOngoingActivities.vue`：進行中活動列表，由 HomePage 傳入篩選後的活動。
 - `components/HomeActivityCard.vue`：首頁活動卡片（含作品標籤、預購／現貨 badge、排名），由熱門、進行中、作品頁共用。
 - `config/homeBanners.js`：首頁輪播 banner 設定。
@@ -518,7 +518,7 @@ src/modules/product/
 - `stores/productStore.js`：管理目前活動、活動商品清單、載入狀態、錯誤狀態與分類狀態。
 - `pages/ProductListPage.vue`：活動商品頁，路由為 `/activities/:activityId/products`。
 - `components/ProductCard.vue`：商品卡片，顯示圖片、分類、名稱、價格、簡短備註與加入購物車按鈕。
-- `components/ProductAddDialog.vue`：加入購物車 dialog，可選數量、填備註，確認後交給 cart store。
+- `components/ProductAddDialog.vue`：加入購物車 dialog，可選數量、填備註，確認後交給 cart store；`isAdding` pending 時立即 disabled 且 confirm early-return。
 - `routes.js`：定義活動商品頁；舊 `/products` route 會 redirect 回首頁。
 
 模組定位：
@@ -550,7 +550,7 @@ src/modules/cart/
 
 資料夾功能：
 
-- `stores/cartStore.js`：管理購物車品項、總數量、小計、活動限制、加入/更新/移除/清空，透過 `cart/api/cartApi.js` 與後端同步，操作後以伺服器回傳的購物車覆蓋本地（**伺服器為準**）。
+- `stores/cartStore.js`：管理購物車品項、總數量、小計、活動限制、加入/更新/移除/清空，透過 `cart/api/cartApi.js` 與後端同步，操作後以伺服器回傳的購物車覆蓋本地（**伺服器為準**）。初始載入不在 store setup 隱式執行；由 `DefaultLayout` 作為唯一 lifecycle owner 呼叫 `ensureHydrated()`，該方法以 shared promise single-flight，`hydrate()` 保留為明確強制 refresh，`clearCart()` 會失效舊回覆。
 - `api/cartApi.js`：購物車 4 支端點封裝（`GET /cart`、`POST /cart/items`、`PUT/DELETE /cart/items/{id}`）。
 - `pages/CartPage.vue`：購物車頁。送出時呼叫 `order/api/createOrderFromCartItems()`（打 `POST /orders`），成功後清空購物車並導向 `/orders`。
 - `components/CartItem.vue`：單筆購物車項目，顯示商品名稱、活動名稱、單價、數量、備註、小計與刪除。
@@ -662,7 +662,8 @@ src/modules/member/
 - `pages/ProfilePage.vue`：會員資料頁。
 - `pages/AddressBookPage.vue`：會員地址簿頁。
 - `components/ProfileForm.vue`：會員資料表單。
-- `components/AddressForm.vue`：地址表單。
+- `components/AddressForm.vue`：地址表單。`useAddressDraft` 只在明確成功 reset token 後清空，API failure 保留完整輸入並保留目前物流方式。
+- `components/AddressPanel.vue`：地址 mutation 共用 `useAddressBook` lock；save/default/delete 成功後以 GET reconciliation，mutation 開始即讓舊 reload response 失效。
 - `routes.js`：定義 `/member/profile` 與 `/member/addresses`。
 
 模組定位：
@@ -723,7 +724,8 @@ shared
 HomePage
   -> HomeOngoingActivities  -> activityStore.fetchActivities()        -> activityApi.getActivities()       -> GET /api/activities
   -> HomePopularActivities  -> activityStore.fetchPopularActivities() -> activityApi.getPopularActivities()-> GET /api/activities/popular
-  -> HomeAnimateTypeRow     -> activityStore.fetchWorks(10)           -> activityApi.getWorks(10)          -> GET /api/works
+  -> HomeAnimateTypeRow     -> activityStore.fetchHomeWorks(10)        -> activityApi.getWorks(10)          -> GET /api/works?limit=10
+  -> WorkListPage           -> activityStore.fetchAllWorks()           -> activityApi.getWorks()             -> GET /api/works
 ```
 
 作品 drill-down 與活動商品資料流：
@@ -743,7 +745,7 @@ ProductListPage
 
 ```text
 ProductAddDialog
-  -> cartStore.addItem()
+  -> single-flight addToCart -> cartStore.addItem()
   -> cartApi.addCartItem() -> POST /cart/items（以伺服器回傳覆蓋本地）
 
 CartPage
@@ -770,6 +772,8 @@ Order API
   -> 透過 JOIN 以 activities 最新值補齊官方出貨欄位
   -> 不使用 orders/orderProducts 快照欄位
 ```
+
+購物車初始 hydration 只由 `DefaultLayout` 擁有；`ensureHydrated()` 共享同一個 pending promise，登出／`clearCart()` 會使舊會員的延遲回覆不能寫回。完整 mutation queue、Checkout flush／等待仍屬 P1-4/P1-5，未由本項宣稱解決。
 
 官方出貨顯示規則：
 
