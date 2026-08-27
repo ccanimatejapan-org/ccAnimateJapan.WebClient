@@ -37,6 +37,8 @@
       v-model="isAddDialogOpen"
       :activity="productStore.activity"
       :product="selectedProduct"
+      :cart-quantity="cartQuantityForProduct"
+      :is-adding="isAdding"
       @confirm="addToCart"
     />
   </section>
@@ -51,6 +53,7 @@ import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { useCartStore } from '@/modules/cart/stores/cartStore';
 import { useUiStore } from '@/shared/stores/uiStore';
+import { useSingleFlight } from '@/shared/composables/useSingleFlight';
 import ProductAddDialog from '../components/ProductAddDialog.vue';
 import ProductCard from '../components/ProductCard.vue';
 import { useActivityProducts } from '../composables/useActivityProducts';
@@ -76,6 +79,15 @@ const isAddDialogOpen = computed({
 });
 
 const { products, isLoading, loadFailed, load } = useActivityProducts(productStore.fetchProductsByActivity);
+const cartQuantityForProduct = computed(() => {
+  const productId = selectedProduct.value?.id;
+  if (!productId) return 0;
+  return cart.items.reduce(
+    (total, item) => total + (item.productId === productId ? item.quantity : 0),
+    0
+  );
+});
+const { isPending: isAdding, run: runAdd } = useSingleFlight();
 
 function loadProducts() {
   load(props.activityId);
@@ -102,33 +114,43 @@ function openAddDialog(product) {
 }
 
 async function addToCart(payload) {
-  const product = selectedProduct.value;
-  const activity = productStore.activity;
-  if (!product?.id || !activity?.id) return;
+  return runAdd(async () => {
+    const product = selectedProduct.value;
+    const activity = productStore.activity;
+    if (!product?.id || !activity?.id) return;
 
-  const result = await cart.addItem({
-    activity,
-    product,
-    quantity: payload.quantity,
-    note: payload.note
-  });
-
-  if (!result.ok) {
-    ui.showToast({
-      title: t('cart.toast.addFailedTitle'),
-      message: t('cart.toast.addFailedMessage')
+    const result = await cart.addItem({
+      activity,
+      product,
+      quantity: payload.quantity,
+      note: payload.note
     });
-    return;
-  }
 
-  ui.showToast({
-    title: t('cart.toast.addedTitle'),
-    message: t('cart.toast.addedMessage', { name: product.name }),
-    actionLabel: t('cart.viewCart'),
-    actionTo: { name: ROUTE_NAMES.CART }
+    if (!result.ok) {
+      if (result.reason === 'quantityLimit') {
+        ui.showToast({
+          title: t('cart.toast.quantityLimitTitle'),
+          message: t('cart.toast.quantityLimitMessage')
+        });
+        return;
+      }
+      ui.showToast({
+        title: t('cart.toast.addFailedTitle'),
+        message: t('cart.toast.addFailedMessage')
+      });
+      return;
+    }
+
+    const isLastInStock = activity.isPreOrder === false && Number(product.stock) === 1;
+    ui.showToast({
+      title: t('cart.toast.addedTitle'),
+      message: t(isLastInStock ? 'cart.toast.addedLastStockMessage' : 'cart.toast.addedMessage', { name: product.name }),
+      actionLabel: t('cart.viewCart'),
+      actionTo: { name: ROUTE_NAMES.CART }
+    });
+
+    selectedProduct.value = null;
   });
-
-  selectedProduct.value = null;
 }
 
 </script>

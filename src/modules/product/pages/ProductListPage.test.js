@@ -30,3 +30,11 @@ test('product store unpaged products fetches by activityId only', () => {
   assert.equal(productStoreSource.includes('page'), false);
   assert.equal(productStoreSource.includes('pageSize'), false);
 });
+
+test('add-to-cart confirmation is single-flight and dialog blocks pending confirmation', () => {
+  assert.equal(source.includes('useSingleFlight'), true);
+  assert.equal(source.includes(':is-adding="isAdding"'), true);
+  const dialogSource = fs.readFileSync(new URL('../components/ProductAddDialog.vue', import.meta.url), 'utf8');
+  assert.equal(dialogSource.includes('props.isAdding'), true);
+  assert.equal(dialogSource.includes('isSoldOut || isAdding'), true);
+});

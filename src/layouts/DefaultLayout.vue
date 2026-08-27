@@ -220,6 +220,7 @@ watch(isMenuOpen, async (menuOpen) => {
 });
 
 onMounted(() => {
+  cart.ensureHydrated();
   window.addEventListener('keydown', closeMenuOnEscape);
 });
 

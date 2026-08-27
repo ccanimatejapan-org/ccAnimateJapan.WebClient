@@ -1,4 +1,4 @@
-export const MAX_ORDER_QUANTITY = 50;
+export const MAX_ORDER_QUANTITY = 10;
 
 export function clampQuantity(value, max = MAX_ORDER_QUANTITY) {
   const next = Math.floor(Number(value) || 1);

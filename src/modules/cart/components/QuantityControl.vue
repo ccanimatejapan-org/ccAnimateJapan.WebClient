@@ -5,7 +5,7 @@
       :value="modelValue"
       type="number"
       min="1"
-      :max="MAX_ORDER_QUANTITY"
+      :max="max"
       @input="emitValue(Number($event.target.value))"
     />
     <button type="button" @click="emitValue(modelValue + 1)">+</button>
@@ -19,13 +19,18 @@ const props = defineProps({
   modelValue: {
     type: Number,
     default: 1
+  },
+  max: {
+    type: Number,
+    default: MAX_ORDER_QUANTITY
   }
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'limit-reached']);
 
 function emitValue(value) {
-  emit('update:modelValue', clampQuantity(value));
+  if (Number(value) > props.max) emit('limit-reached');
+  emit('update:modelValue', clampQuantity(value, props.max));
 }
 </script>
 

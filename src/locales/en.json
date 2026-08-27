@@ -127,6 +127,9 @@
       "title": "Add to cart",
       "quantity": "Quantity",
       "maxQuantityHint": "Up to {count} per order",
+      "maxOrderQuantityHint": "Up to {count} of the same product per order",
+      "stockQuantityHint": "The API currently shows {count} in-stock item(s) available. The cart does not reserve stock; checkout availability is authoritative.",
+      "limitReached": "Purchase limit reached",
       "note": "Note",
       "notePlaceholder": "Character, option, or other request",
       "subtotal": "Subtotal",
@@ -156,6 +159,9 @@
     "toast": {
       "addedTitle": "Added to cart",
       "addedMessage": "“{name}” is now in your cart",
+      "addedLastStockMessage": "“{name}” was added to your cart. The API currently shows only the last 1 in-stock item. Adding to cart does not reserve stock; checkout availability is authoritative.",
+      "quantityLimitTitle": "Purchase limit reached",
+      "quantityLimitMessage": "You can purchase up to 10 of the same product per order.",
       "orderCreatedTitle": "Order created",
       "orderCreatedMessage": "Order {orderNo} has been created",
       "ordersCreatedMessage": "{count} orders have been created",
@@ -207,7 +213,9 @@
     },
     "shippingPaymentStatus": {
       "paid": "Paid",
-      "unpaid": "Unpaid"
+      "unpaid": "Unpaid",
+      "none": "Not applicable",
+      "unknown": "Unknown"
     },
     "status": {
       "customerOrdered": "Customer ordered",

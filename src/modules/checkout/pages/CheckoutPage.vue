@@ -141,6 +141,8 @@ watch(selectedMethodId, () => {
 });
 
 onMounted(async () => {
+  await cart.ensureHydrated();
+
   if (!cart.items.length) {
     router.replace({ name: ROUTE_NAMES.CART });
     return;

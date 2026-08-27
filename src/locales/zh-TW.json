@@ -127,6 +127,9 @@
       "title": "加入購物車",
       "quantity": "數量",
       "maxQuantityHint": "單筆最多可購買 {count} 件",
+      "maxOrderQuantityHint": "單一商品每筆訂單最多購買 {count} 件",
+      "stockQuantityHint": "目前顯示可購現貨 {count} 件；購物車不保留庫存，實際庫存以結帳時為準。",
+      "limitReached": "已達購買上限",
       "note": "備註",
       "notePlaceholder": "可填角色、款式或其他需求",
       "subtotal": "小計",
@@ -156,6 +159,9 @@
     "toast": {
       "addedTitle": "已加入購物車",
       "addedMessage": "「{name}」已放進購物車",
+      "addedLastStockMessage": "「{name}」已加入購物車，目前顯示僅剩最後 1 件現貨。加入購物車不代表保留庫存，實際庫存以結帳時為準。",
+      "quantityLimitTitle": "已達購買上限",
+      "quantityLimitMessage": "單一商品每筆訂單最多購買 10 件。",
       "orderCreatedTitle": "訂單已建立",
       "orderCreatedMessage": "訂單 {orderNo} 已建立",
       "ordersCreatedMessage": "已建立 {count} 筆訂單",
@@ -207,7 +213,9 @@
     },
     "shippingPaymentStatus": {
       "paid": "已付款自行運費",
-      "unpaid": "未付款自行運費"
+      "unpaid": "未付款自行運費",
+      "none": "不適用",
+      "unknown": "未知"
     },
     "status": {
       "customerOrdered": "顧客已下單",

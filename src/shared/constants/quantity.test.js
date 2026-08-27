@@ -4,14 +4,14 @@ import { clampQuantity, MAX_ORDER_QUANTITY } from './quantity.js';
 
 describe('clampQuantity', () => {
   it('caps values above the frontend maximum', () => {
-    assert.equal(clampQuantity(51), MAX_ORDER_QUANTITY);
+    assert.equal(clampQuantity(11), MAX_ORDER_QUANTITY);
     assert.equal(clampQuantity(999), MAX_ORDER_QUANTITY);
   });
 
   it('keeps values within range unchanged', () => {
     assert.equal(clampQuantity(1), 1);
-    assert.equal(clampQuantity(50), 50);
-    assert.equal(clampQuantity(12), 12);
+    assert.equal(clampQuantity(10), 10);
+    assert.equal(clampQuantity(9), 9);
   });
 
   it('floors to at least 1 for invalid or low values', () => {

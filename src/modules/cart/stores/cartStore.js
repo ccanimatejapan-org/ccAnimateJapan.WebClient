@@ -2,9 +2,20 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { addCartItem, getCart, removeCartItem, updateCartItem } from '../api/cartApi';
 import { mapCartGroups, mapServerCart } from '../utils/cartMapper';
+import { MAX_ORDER_QUANTITY } from '@/shared/constants/quantity';
+import { createCartHydrationCoordinator } from './cartHydration';
+
+const MAX_PRODUCT_QUANTITY_ERROR = 'MAX_PRODUCT_QUANTITY_EXCEEDED';
 
 export const useCartStore = defineStore('cart', () => {
   const items = ref([]);
+
+  function productQuantity(productId, excludeId = null) {
+    return items.value.reduce((total, item) => {
+      if (item.productId !== productId || item.id === excludeId) return total;
+      return total + item.quantity;
+    }, 0);
+  }
 
   const totalQuantity = computed(() =>
     items.value.reduce((total, item) => total + item.quantity, 0)
@@ -21,13 +32,8 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   // Pull the authoritative cart from the server.
-  async function hydrate() {
-    try {
-      applyServerCart(await getCart());
-    } catch {
-      // Keep whatever we have; the next successful call will reconcile.
-    }
-  }
+  const hydration = createCartHydrationCoordinator(getCart, applyServerCart);
+  let memberSessionEpoch = 0;
 
   async function addItem(payload) {
     if (!payload || typeof payload !== 'object') {
@@ -44,6 +50,12 @@ export const useCartStore = defineStore('cart', () => {
       return { ok: false, reason: 'error' };
     }
 
+    if (productQuantity(nextProductId) + quantity > MAX_ORDER_QUANTITY) {
+      return { ok: false, reason: 'quantityLimit' };
+    }
+
+    const requestEpoch = memberSessionEpoch;
+
     try {
       const cart = await addCartItem({
         activityId: nextActivityId,
@@ -51,9 +63,14 @@ export const useCartStore = defineStore('cart', () => {
         quantity,
         note
       });
-      applyServerCart(cart);
+      if (requestEpoch === memberSessionEpoch) applyServerCart(cart);
       return { ok: true };
-    } catch {
+    } catch (error) {
+      if (requestEpoch !== memberSessionEpoch) return { ok: true };
+      if (error?.message === MAX_PRODUCT_QUANTITY_ERROR) {
+        await hydration.hydrate();
+        return { ok: false, reason: 'quantityLimit' };
+      }
       return { ok: false, reason: 'error' };
     }
   }
@@ -61,36 +78,47 @@ export const useCartStore = defineStore('cart', () => {
   let updateSeq = 0;
   async function updateQuantity(id, quantity) {
     const nextQuantity = Math.max(1, Math.floor(Number(quantity)) || 1);
+    const currentItem = items.value.find((item) => item.id === id);
+    if (currentItem && productQuantity(currentItem.productId, id) + nextQuantity > MAX_ORDER_QUANTITY) {
+      return { ok: false, reason: 'quantityLimit' };
+    }
     const seq = ++updateSeq;
+    const requestEpoch = memberSessionEpoch;
 
     try {
       const cart = await updateCartItem(id, nextQuantity);
-      if (seq === updateSeq) applyServerCart(cart);
+      if (seq === updateSeq && requestEpoch === memberSessionEpoch) applyServerCart(cart);
       return { ok: true };
-    } catch {
-      if (seq !== updateSeq) return { ok: true };
-      await hydrate();
-      return { ok: false, reason: 'updateFailed' };
+    } catch (error) {
+      if (seq !== updateSeq || requestEpoch !== memberSessionEpoch) return { ok: true };
+      await hydration.hydrate();
+      return {
+        ok: false,
+        reason: error?.message === MAX_PRODUCT_QUANTITY_ERROR ? 'quantityLimit' : 'updateFailed'
+      };
     }
   }
 
   async function removeItem(id) {
+    const requestEpoch = memberSessionEpoch;
+
     try {
-      applyServerCart(await removeCartItem(id));
+      const cart = await removeCartItem(id);
+      if (requestEpoch === memberSessionEpoch) applyServerCart(cart);
       return { ok: true };
     } catch {
-      await hydrate();
+      if (requestEpoch !== memberSessionEpoch) return { ok: true };
+      await hydration.hydrate();
       return { ok: false, reason: 'removeFailed' };
     }
   }
 
-  // Reset member-scoped local cart state.
   function clearCart() {
+    memberSessionEpoch += 1;
+    updateSeq += 1;
+    hydration.clear();
     items.value = [];
   }
-
-  // Load the server cart on first use (badge count, cart page, etc.).
-  hydrate();
 
   return {
     items,
@@ -101,6 +129,8 @@ export const useCartStore = defineStore('cart', () => {
     updateQuantity,
     removeItem,
     clearCart,
-    hydrate
+    hydrate: hydration.hydrate,
+    ensureHydrated: hydration.ensureHydrated,
+    isHydrated: hydration.isHydrated
   };
 });

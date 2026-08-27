@@ -34,7 +34,10 @@
           <button type="button" @click="setQuantity(quantity + 1)">+</button>
         </div>
         <p v-if="showMaxQuantityHint" class="product-add-dialog__hint">
-          {{ t('product.addDialog.maxQuantityHint', { count: maxQuantity }) }}
+          {{ t('product.addDialog.maxOrderQuantityHint', { count: MAX_QUANTITY }) }}
+        </p>
+        <p v-if="showStockQuantityHint" class="product-add-dialog__hint">
+          {{ t('product.addDialog.stockQuantityHint', { count: stockQuantity }) }}
         </p>
       </div>
 
@@ -57,7 +60,7 @@
         <AppButton variant="secondary" @click="$emit('update:modelValue', false)">
           {{ t('common.cancel') }}
         </AppButton>
-        <AppButton :disabled="isSoldOut" @click="confirm">
+        <AppButton :disabled="isSoldOut || isAdding" @click="confirm">
           {{ confirmButtonLabel }}
         </AppButton>
       </div>
@@ -87,6 +90,14 @@ const props = defineProps({
   activity: {
     type: Object,
     default: null
+  },
+  cartQuantity: {
+    type: Number,
+    default: 0
+  },
+  isAdding: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -97,23 +108,43 @@ const note = ref('');
 
 const MAX_QUANTITY = MAX_ORDER_QUANTITY;
 const isActivityAvailable = computed(() => isActivityOrderable(props.activity));
+const orderRemaining = computed(() => Math.max(0, MAX_QUANTITY - props.cartQuantity));
 
-const isSoldOut = computed(() => Boolean(props.product?.isOutStock || !isActivityAvailable.value));
+const isSoldOut = computed(() => Boolean(
+  props.product?.isOutStock
+  || !isActivityAvailable.value
+  || orderRemaining.value <= 0
+  || (!props.activity?.isPreOrder && stockRemaining.value !== null && stockRemaining.value <= 0)
+));
 const confirmButtonLabel = computed(() => {
   if (!isActivityAvailable.value) return t('product.activityUnavailable');
+  if (orderRemaining.value <= 0) return t('product.addDialog.limitReached');
+  if (!props.activity?.isPreOrder && stockRemaining.value !== null && stockRemaining.value <= 0) {
+    return t('product.soldOut');
+  }
   if (props.product?.isOutStock) return t('product.soldOut');
   return t('product.addDialog.confirm');
 });
 
-const maxQuantity = computed(() => {
-  if (props.activity?.isPreOrder) return MAX_QUANTITY;
+const stockQuantity = computed(() => {
   const stock = Number(props.product?.stock);
-  if (!Number.isFinite(stock)) return MAX_QUANTITY;
-  return Math.min(MAX_QUANTITY, Math.max(0, stock));
+  return Number.isFinite(stock) ? Math.max(0, stock) : null;
+});
+const stockRemaining = computed(() => (
+  stockQuantity.value === null
+    ? null
+    : Math.max(0, stockQuantity.value - props.cartQuantity)
+));
+const maxQuantity = computed(() => {
+  if (props.activity?.isPreOrder || stockQuantity.value === null) return orderRemaining.value;
+  return Math.min(orderRemaining.value, stockRemaining.value);
 });
 
 const showMaxQuantityHint = computed(
-  () => maxQuantity.value > 0 && quantity.value >= maxQuantity.value
+  () => orderRemaining.value > 0 && quantity.value >= maxQuantity.value
+);
+const showStockQuantityHint = computed(
+  () => !props.activity?.isPreOrder && stockQuantity.value !== null && stockQuantity.value < MAX_QUANTITY
 );
 
 watch(
@@ -128,11 +159,11 @@ watch(
 function setQuantity(value) {
   const nextValue = Math.max(1, Math.floor(Number(value) || 1));
   const cap = maxQuantity.value;
-  quantity.value = cap > 0 ? Math.min(cap, nextValue) : nextValue;
+  quantity.value = cap > 0 ? Math.min(cap, nextValue) : 1;
 }
 
 function confirm() {
-  if (isSoldOut.value) return;
+  if (isSoldOut.value || props.isAdding) return;
   setQuantity(quantity.value);
   if (!props.product?.id) {
     emit('update:modelValue', false);

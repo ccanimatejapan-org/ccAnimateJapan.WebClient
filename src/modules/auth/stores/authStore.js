@@ -9,11 +9,6 @@ const AUTH_STORAGE_KEY = 'ccAnimateJapan.auth';
 export const useAuthStore = defineStore('auth', () => {
   const session = ref(getStorageItem(AUTH_STORAGE_KEY, null));
 
-  async function hydrateMemberCart() {
-    const { useCartStore } = await import('@/modules/cart/stores/cartStore');
-    await useCartStore().hydrate();
-  }
-
   async function resetMemberScopedStores() {
     const [{ useCartStore }, { useProductStore }, { useActivityStore }] = await Promise.all([
       import('@/modules/cart/stores/cartStore'),
@@ -25,10 +20,9 @@ export const useAuthStore = defineStore('auth', () => {
     useActivityStore().reset();
   }
 
-  async function signInWithLiff(accessToken, { hydrateCart = true } = {}) {
+  async function signInWithLiff(accessToken) {
     session.value = await loginWithLiff(accessToken);
     setStorageItem(AUTH_STORAGE_KEY, session.value);
-    if (hydrateCart) await hydrateMemberCart();
   }
 
   function isSessionValid() {
@@ -41,7 +35,7 @@ export const useAuthStore = defineStore('auth', () => {
       if (!isLiffConfigured()) return false;
       await ensureLiffReady();
       if (!isLoggedIn()) return false;
-      await signInWithLiff(getAccessToken(), { hydrateCart: false });
+      await signInWithLiff(getAccessToken());
       return true;
     } catch {
       return false;
@@ -52,7 +46,6 @@ export const useAuthStore = defineStore('auth', () => {
   async function signInWithDev() {
     session.value = await devLogin();
     setStorageItem(AUTH_STORAGE_KEY, session.value);
-    await hydrateMemberCart();
   }
 
   function signOut() {

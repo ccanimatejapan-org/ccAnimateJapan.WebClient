@@ -14,7 +14,12 @@
         <AppPrice :value="item.price * localQty" />
       </div>
     </div>
-    <QuantityControl :model-value="localQty" @update:model-value="onQty" />
+    <QuantityControl
+      :model-value="localQty"
+      :max="maxQuantity"
+      @update:model-value="onQty"
+      @limit-reached="showQuantityLimitToast"
+    />
     <button type="button" class="text-button" @click="onRemove">
       {{ t('common.remove') }}
     </button>
@@ -22,11 +27,12 @@
 </template>
 
 <script setup>
-import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppPrice from '@/shared/components/AppPrice.vue';
 import { debounce } from '@/shared/utils/debounce';
 import { useUiStore } from '@/shared/stores/uiStore';
+import { MAX_ORDER_QUANTITY } from '@/shared/constants/quantity';
 import QuantityControl from './QuantityControl.vue';
 import { useCartStore } from '../stores/cartStore';
 
@@ -41,6 +47,13 @@ const { t } = useI18n();
 const cart = useCartStore();
 const ui = useUiStore();
 const localQty = ref(props.item.quantity);
+const maxQuantity = computed(() => {
+  const otherQuantity = cart.items.reduce((total, item) => {
+    if (item.productId !== props.item.productId || item.id === props.item.id) return total;
+    return total + item.quantity;
+  }, 0);
+  return Math.max(1, MAX_ORDER_QUANTITY - otherQuantity);
+});
 let pending = false;
 let editSeq = 0;
 
@@ -51,11 +64,19 @@ function showActionFailedToast() {
   });
 }
 
+function showQuantityLimitToast() {
+  ui.showToast({
+    title: t('cart.toast.quantityLimitTitle'),
+    message: t('cart.toast.quantityLimitMessage')
+  });
+}
+
 const sync = debounce(async (id, quantity, seq) => {
   const result = await cart.updateQuantity(id, quantity);
 
   if (!result.ok) {
-    showActionFailedToast();
+    if (result.reason === 'quantityLimit') showQuantityLimitToast();
+    else showActionFailedToast();
   }
 
   if (seq === editSeq) {
