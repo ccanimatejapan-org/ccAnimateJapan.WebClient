@@ -1,6 +1,10 @@
 <template>
-  <AppLoading v-if="ui.isGlobalLoading" :label="t(ui.globalLoadingKey || 'auth.processingLine')" />
-  <RouterView v-else />
+  <RouterView />
+  <AppLoading
+    v-if="ui.isGlobalLoading"
+    class="app-loading--global"
+    :label="t(ui.globalLoadingKey || 'common.loading')"
+  />
   <AppToast />
 </template>
 

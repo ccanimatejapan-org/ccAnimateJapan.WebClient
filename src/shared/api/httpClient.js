@@ -1,9 +1,63 @@
 import axios from 'axios';
+import { getActivePinia } from 'pinia';
 import { getStorageItem, removeStorageItem } from '@/shared/utils/storage';
 import { isLiffConfigured } from '@/shared/composables/liffClient';
+import { useUiStore } from '@/shared/stores/uiStore';
 import { ApiResponseError } from './apiResponse';
 
 const AUTH_STORAGE_KEY = 'ccAnimateJapan.auth';
+const API_LOADING_MIN_DURATION = 1000;
+const LOADING_TRACKED_KEY = '__globalLoadingTracked';
+
+let pendingApiRequests = 0;
+let loadingCycle = 0;
+let loadingStartedAt = 0;
+let loadingHideTimer = null;
+
+function getUiStore() {
+  const pinia = getActivePinia();
+  return pinia ? useUiStore(pinia) : null;
+}
+
+function startGlobalLoading(config) {
+  if (config?.[LOADING_TRACKED_KEY]) return;
+
+  config[LOADING_TRACKED_KEY] = true;
+
+  if (loadingHideTimer !== null) {
+    window.clearTimeout(loadingHideTimer);
+    loadingHideTimer = null;
+  }
+
+  if (pendingApiRequests === 0) {
+    loadingCycle += 1;
+    loadingStartedAt = Date.now();
+    getUiStore()?.setGlobalLoading(true, 'common.loading');
+  }
+
+  pendingApiRequests += 1;
+}
+
+function finishGlobalLoading(config) {
+  if (!config?.[LOADING_TRACKED_KEY]) return;
+
+  config[LOADING_TRACKED_KEY] = false;
+  pendingApiRequests = Math.max(0, pendingApiRequests - 1);
+  if (pendingApiRequests > 0) return;
+
+  const cycle = loadingCycle;
+  const remaining = Math.max(
+    0,
+    API_LOADING_MIN_DURATION - (Date.now() - loadingStartedAt)
+  );
+
+  loadingHideTimer = window.setTimeout(() => {
+    loadingHideTimer = null;
+    if (pendingApiRequests === 0 && cycle === loadingCycle) {
+      getUiStore()?.setGlobalLoading(false);
+    }
+  }, remaining);
+}
 
 export const httpClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
@@ -16,6 +70,7 @@ export const httpClient = axios.create({
 // Attach the LINE-issued JWT (if logged in) so the backend resolves the real member.
 // Without a (valid) token the backend's protected endpoints return 401 (handled below).
 httpClient.interceptors.request.use((config) => {
+  startGlobalLoading(config);
   const session = getStorageItem(AUTH_STORAGE_KEY, null);
   const token = session?.accessToken;
   if (token) {
@@ -23,6 +78,9 @@ httpClient.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
+}, async (error) => {
+  await finishGlobalLoading(error?.config);
+  return Promise.reject(error);
 });
 
 let renewPromise = null;
@@ -77,22 +135,31 @@ async function handleUnauthorized(config) {
 }
 
 httpClient.interceptors.response.use(
-  (response) => {
+  async (response) => {
     const body = response.data;
     if (!response.config?.skipAuthHandling && body && typeof body === 'object' && body.status === '401') {
-      return handleUnauthorized(response.config).then((retried) => {
+      try {
+        const retried = await handleUnauthorized(response.config);
         if (retried) return retried;
         throw new ApiResponseError(body.message || 'Unauthorized', '401');
-      });
+      } finally {
+        await finishGlobalLoading(response.config);
+      }
     }
+
+    await finishGlobalLoading(response.config);
     return body;
   },
   async (error) => {
-    if (error?.response?.status === 401 && !error.config?.skipAuthHandling) {
-      const retried = await handleUnauthorized(error.config);
-      if (retried) return retried;
+    try {
+      if (error?.response?.status === 401 && !error.config?.skipAuthHandling) {
+        const retried = await handleUnauthorized(error.config);
+        if (retried) return retried;
+      }
+      return Promise.reject(error);
+    } finally {
+      await finishGlobalLoading(error?.config);
     }
-    return Promise.reject(error);
   }
 );
 
