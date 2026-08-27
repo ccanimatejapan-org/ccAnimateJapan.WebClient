@@ -6,13 +6,17 @@ import { useUiStore } from '@/shared/stores/uiStore';
 import { ApiResponseError } from './apiResponse';
 
 const AUTH_STORAGE_KEY = 'ccAnimateJapan.auth';
-const API_LOADING_MIN_DURATION = 1000;
+// Only reveal the full-screen overlay if a request is genuinely slow. Fast requests
+// (add-to-cart, quantity change, navigation fetches) finish before the delay and
+// never flash the overlay; when the last request finishes we hide immediately with
+// no forced minimum. Pass `skipGlobalLoading: true` on background/high-frequency
+// requests (health pings etc.) to opt them out entirely.
+const API_LOADING_SHOW_DELAY = 400;
 const LOADING_TRACKED_KEY = '__globalLoadingTracked';
 
 let pendingApiRequests = 0;
-let loadingCycle = 0;
-let loadingStartedAt = 0;
-let loadingHideTimer = null;
+let loadingShown = false;
+let loadingShowTimer = null;
 
 function getUiStore() {
   const pinia = getActivePinia();
@@ -20,22 +24,20 @@ function getUiStore() {
 }
 
 function startGlobalLoading(config) {
-  if (config?.[LOADING_TRACKED_KEY]) return;
+  if (!config || config.skipGlobalLoading || config[LOADING_TRACKED_KEY]) return;
 
   config[LOADING_TRACKED_KEY] = true;
-
-  if (loadingHideTimer !== null) {
-    window.clearTimeout(loadingHideTimer);
-    loadingHideTimer = null;
-  }
-
-  if (pendingApiRequests === 0) {
-    loadingCycle += 1;
-    loadingStartedAt = Date.now();
-    getUiStore()?.setGlobalLoading(true, 'common.loading');
-  }
-
   pendingApiRequests += 1;
+
+  if (pendingApiRequests === 1 && !loadingShown && loadingShowTimer === null) {
+    loadingShowTimer = window.setTimeout(() => {
+      loadingShowTimer = null;
+      if (pendingApiRequests > 0) {
+        loadingShown = true;
+        getUiStore()?.setGlobalLoading(true, 'common.loading');
+      }
+    }, API_LOADING_SHOW_DELAY);
+  }
 }
 
 function finishGlobalLoading(config) {
@@ -45,18 +47,14 @@ function finishGlobalLoading(config) {
   pendingApiRequests = Math.max(0, pendingApiRequests - 1);
   if (pendingApiRequests > 0) return;
 
-  const cycle = loadingCycle;
-  const remaining = Math.max(
-    0,
-    API_LOADING_MIN_DURATION - (Date.now() - loadingStartedAt)
-  );
-
-  loadingHideTimer = window.setTimeout(() => {
-    loadingHideTimer = null;
-    if (pendingApiRequests === 0 && cycle === loadingCycle) {
-      getUiStore()?.setGlobalLoading(false);
-    }
-  }, remaining);
+  if (loadingShowTimer !== null) {
+    window.clearTimeout(loadingShowTimer);
+    loadingShowTimer = null;
+  }
+  if (loadingShown) {
+    loadingShown = false;
+    getUiStore()?.setGlobalLoading(false);
+  }
 }
 
 export const httpClient = axios.create({
@@ -180,7 +178,7 @@ function delay(ms) {
 }
 
 function pingHealth(timeout) {
-  return httpClient.get(HEALTH_PATH, { skipAuthHandling: true, timeout });
+  return httpClient.get(HEALTH_PATH, { skipAuthHandling: true, skipGlobalLoading: true, timeout });
 }
 
 export async function ensureServerAwake() {
