@@ -27,7 +27,14 @@ export function useAddressBook({ getAddresses, createAddress, updateAddress, set
     requestSequence += 1;
     try {
       await action();
-      await reload();
+      // The write already succeeded on the server. A failed refresh must NOT be
+      // reported as a mutation failure — that would prompt the user to retry and
+      // create a duplicate. The list reconciles on the next reload.
+      try {
+        await reload();
+      } catch {
+        error.value = null;
+      }
       return true;
     } finally { isMutating.value = false; }
   }

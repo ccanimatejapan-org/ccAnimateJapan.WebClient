@@ -17,6 +17,22 @@ test('mutation lock prevents duplicate save/default/delete calls', async () => {
   assert.equal(book.isMutating.value, false);
 });
 
+test('successful write is reported as success even if the follow-up reload fails', async () => {
+  let creates = 0;
+  const book = useAddressBook({
+    getAddresses: async () => { throw new Error('network'); },
+    createAddress: async () => { creates += 1; },
+    updateAddress: async () => {},
+    setDefaultAddress: async () => {},
+    deleteAddress: async () => {}
+  });
+  const result = await book.save(null, {});
+  assert.equal(result, true);
+  assert.equal(creates, 1);
+  assert.equal(book.isMutating.value, false);
+  assert.equal(book.error.value, null);
+});
+
 test('reload started before mutation cannot overwrite post-mutation reload', async () => {
   const oldReload = deferred();
   const newReload = deferred();
