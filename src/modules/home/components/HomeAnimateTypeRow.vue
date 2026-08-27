@@ -1,5 +1,5 @@
 <template>
-  <section v-if="works.length" class="home-works">
+  <section v-if="homeWorks.length" class="home-works">
     <div class="home-works__head">
       <h2 class="home-works__title">{{ t('home.animateType.title') }}</h2>
       <RouterLink class="home-works__more" :to="{ name: ROUTE_NAMES.WORK_LIST }">
@@ -9,7 +9,7 @@
 
     <AppCarousel :gap="16">
       <RouterLink
-        v-for="work in works"
+        v-for="work in homeWorks"
         :key="work.id"
         class="home-works__chip"
         :to="{ name: ROUTE_NAMES.WORK_ACTIVITIES, params: { animateTypeId: work.id } }"
@@ -42,11 +42,11 @@ import { ROUTE_NAMES } from '@/shared/constants/routes';
 
 const { t } = useI18n();
 const activityStore = useActivityStore();
-const { works } = storeToRefs(activityStore);
+const { homeWorks } = storeToRefs(activityStore);
 
 onMounted(() => {
-  if (!works.value.length) {
-    activityStore.fetchWorks(10);
+  if (!homeWorks.value.length) {
+    activityStore.fetchHomeWorks(10);
   }
 });
 </script>

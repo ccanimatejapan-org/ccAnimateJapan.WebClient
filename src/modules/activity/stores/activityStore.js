@@ -8,6 +8,7 @@ import {
   getEndingSoonActivities,
   getWorks
 } from '../api/activityApi';
+import { useWorksCatalog } from '../composables/useWorksCatalog';
 
 function normalizeActivities(value) {
   if (!Array.isArray(value)) return [];
@@ -23,7 +24,7 @@ export const useActivityStore = defineStore('activity', () => {
 
   // 人氣活動與作品改由專屬 API 取得（後端 /activities/popular、/works）。
   const popularActivities = ref([]);
-  const works = ref([]);
+  const worksCatalog = useWorksCatalog(getWorks);
 
   // 最新活動：後端已套用「過去兩週到今天」的時間區間（/activities/latest），前端只負責顯示。
   const latestActivities = ref([]);
@@ -85,26 +86,6 @@ export const useActivityStore = defineStore('activity', () => {
     }
   }
 
-  async function fetchWorks(limit) {
-    try {
-      const list = await getWorks(limit);
-      // 後端回 { id, name, imageUrl, activityCount }；對應前端模板使用的 { id, name, imageUrl, count }。
-      works.value = Array.isArray(list)
-        ? list
-            .filter((work) => work?.id != null)
-            .map((work) => ({
-              id: work.id,
-              name: work.name,
-              imageUrl: work.imageUrl || '',
-              count: work.activityCount ?? 0
-            }))
-        : [];
-    } catch (err) {
-      error.value = err;
-      works.value = [];
-    }
-  }
-
   // 作品頁 drill-down：分頁取某作品底下的活動，回傳結果（不覆蓋首頁 activities）。
   async function fetchActivitiesByWorkPaged(animateTypeId, page, pageSize) {
     const data = await getActivities({ animateTypeId, page, pageSize });
@@ -149,7 +130,7 @@ export const useActivityStore = defineStore('activity', () => {
     isLoading.value = false;
     error.value = null;
     popularActivities.value = [];
-    works.value = [];
+    worksCatalog.reset();
     latestActivities.value = [];
     isLatestLoading.value = false;
     endingSoonActivities.value = [];
@@ -162,7 +143,13 @@ export const useActivityStore = defineStore('activity', () => {
     isLoading,
     error,
     popularActivities,
-    works,
+    homeWorks: worksCatalog.homeWorks,
+    allWorks: worksCatalog.allWorks,
+    homeWorksLoaded: worksCatalog.homeIsLoaded,
+    allWorksLoaded: worksCatalog.allIsLoaded,
+    homeWorksLoading: worksCatalog.homeIsLoading,
+    allWorksLoading: worksCatalog.allIsLoading,
+    allWorksError: worksCatalog.allError,
     latestActivities,
     isLatestLoading,
     endingSoonActivities,
@@ -171,7 +158,8 @@ export const useActivityStore = defineStore('activity', () => {
     fetchPopularActivities,
     fetchLatestActivities,
     fetchEndingSoonActivities,
-    fetchWorks,
+    fetchHomeWorks: worksCatalog.fetchHomeWorks,
+    fetchAllWorks: worksCatalog.fetchAllWorks,
     fetchActivitiesByWorkPaged,
     fetchActivitiesPaged,
     getOrFetchActivity,
