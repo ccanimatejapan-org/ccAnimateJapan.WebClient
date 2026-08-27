@@ -1,11 +1,44 @@
 <template>
   <form class="form-grid address-form" @submit.prevent="submit">
-    <label class="form-grid__full">
+    <div class="address-form__field form-grid__full">
       <span>{{ t('member.deliveryMethod') }}</span>
-      <select v-model.number="form.deliveryTypeId" required>
-        <option v-for="type in usableTypes" :key="type.id" :value="type.id">{{ type.name }}</option>
-      </select>
-    </label>
+      <div ref="deliveryPicker" class="address-form__delivery-picker">
+        <button
+          ref="deliveryTrigger"
+          type="button"
+          class="address-form__delivery-trigger"
+          :disabled="saving || !usableTypes.length"
+          :aria-expanded="isDeliveryMenuOpen"
+          aria-haspopup="listbox"
+          :aria-label="t('member.deliveryMethod')"
+          @click="toggleDeliveryMenu"
+          @keydown="handleDeliveryTriggerKeydown"
+        >
+          <span class="address-form__delivery-value">{{ selectedDeliveryType?.name || t('common.loading') }}</span>
+          <span class="address-form__delivery-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div
+          v-if="isDeliveryMenuOpen"
+          class="address-form__delivery-menu"
+          role="listbox"
+          :aria-label="t('member.deliveryMethod')"
+        >
+          <button
+            v-for="(type, index) in usableTypes"
+            :key="type.id"
+            type="button"
+            class="address-form__delivery-option"
+            :class="{ 'is-selected': type.id === form.deliveryTypeId }"
+            role="option"
+            :aria-selected="type.id === form.deliveryTypeId"
+            @click="selectDeliveryType(type.id)"
+            @keydown="handleDeliveryOptionKeydown($event, index)"
+          >
+            {{ type.name }}
+          </button>
+        </div>
+      </div>
+    </div>
     <label class="form-grid__full">
       <span>{{ t('member.label') }}</span>
       <input v-model="form.addressName" :placeholder="labelPlaceholder" />
@@ -20,7 +53,7 @@
     </label>
     <div class="address-form__buttons form-grid__full">
       <AppButton type="submit" :disabled="saving">{{ submitLabel }}</AppButton>
-      <button v-if="props.address" type="button" class="address-form__cancel" @click="$emit('cancel')">
+      <button v-if="props.address" type="button" class="address-form__cancel" :disabled="saving" @click="$emit('cancel')">
         {{ t('common.cancel') }}
       </button>
     </div>
@@ -28,10 +61,11 @@
 </template>
 
 <script setup>
-import { computed, reactive, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppButton from '@/shared/components/AppButton.vue';
 import { ADDRESS_KIND, requiresAddress } from '@/shared/constants/addressKind';
+import { useAddressDraft } from '../composables/useAddressDraft';
 
 const props = defineProps({
   deliveryTypes: {
@@ -45,6 +79,10 @@ const props = defineProps({
   saving: {
     type: Boolean,
     default: false
+  },
+  resetToken: {
+    type: Number,
+    default: 0
   }
 });
 
@@ -53,16 +91,16 @@ const { t } = useI18n();
 
 const usableTypes = computed(() => props.deliveryTypes.filter((type) => requiresAddress(type.addressKind)));
 
-function blankForm() {
-  return {
-    deliveryTypeId: props.address?.deliveryTypeId ?? usableTypes.value[0]?.id ?? null,
-    addressName: props.address?.addressName ?? '',
-    address: props.address?.address ?? '',
-    isDefault: props.address?.isDefault ?? false
-  };
-}
+const deliveryPicker = ref(null);
+const deliveryTrigger = ref(null);
+const isDeliveryMenuOpen = ref(false);
 
-const form = reactive(blankForm());
+const draft = useAddressDraft(props.address, usableTypes.value[0]?.id ?? null);
+const { form } = draft;
+
+const selectedDeliveryType = computed(() =>
+  usableTypes.value.find((type) => type.id === form.deliveryTypeId) ?? usableTypes.value[0] ?? null
+);
 
 watch(usableTypes, (types) => {
   if (!form.deliveryTypeId && types.length) {
@@ -72,8 +110,16 @@ watch(usableTypes, (types) => {
 
 watch(
   () => props.address,
-  () => Object.assign(form, blankForm())
+  (address) => draft.setAddress(address)
 );
+
+watch(() => props.resetToken, (token, previousToken) => {
+  if (token !== previousToken) draft.resetAfterSuccess();
+});
+
+onMounted(() => document.addEventListener('click', closeDeliveryMenuOnOutsideClick));
+
+onBeforeUnmount(() => document.removeEventListener('click', closeDeliveryMenuOnOutsideClick));
 
 const selectedKind = computed(
   () => usableTypes.value.find((type) => type.id === form.deliveryTypeId)?.addressKind ?? ADDRESS_KIND.HOME_DELIVERY
@@ -89,20 +135,62 @@ const labelPlaceholder = computed(() =>
 
 const submitLabel = computed(() => (props.address ? t('common.save') : t('member.addAddress')));
 
-function submit() {
-  if (props.saving) return;
-  emit('submit', {
-    deliveryTypeId: form.deliveryTypeId,
-    addressName: form.addressName,
-    address: form.address,
-    isDefault: form.isDefault
-  });
+function openDeliveryMenu() {
+  if (props.saving || !usableTypes.value.length) return;
+  isDeliveryMenuOpen.value = true;
+}
 
-  if (!props.address) {
-    const keepDeliveryTypeId = form.deliveryTypeId;
-    Object.assign(form, blankForm());
-    form.deliveryTypeId = keepDeliveryTypeId;
+function closeDeliveryMenu() {
+  isDeliveryMenuOpen.value = false;
+}
+
+function closeDeliveryMenuOnOutsideClick(event) {
+  if (!deliveryPicker.value?.contains(event.target)) closeDeliveryMenu();
+}
+
+function toggleDeliveryMenu() {
+  if (isDeliveryMenuOpen.value) {
+    closeDeliveryMenu();
+  } else {
+    openDeliveryMenu();
   }
+}
+
+function selectDeliveryType(id) {
+  form.deliveryTypeId = id;
+  closeDeliveryMenu();
+  deliveryTrigger.value?.focus();
+}
+
+function handleDeliveryTriggerKeydown(event) {
+  if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    openDeliveryMenu();
+  }
+}
+
+function handleDeliveryOptionKeydown(event, index) {
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    closeDeliveryMenu();
+    deliveryTrigger.value?.focus();
+    return;
+  }
+
+  if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'Home' && event.key !== 'End') return;
+
+  event.preventDefault();
+  const nextIndex = event.key === 'Home'
+    ? 0
+    : event.key === 'End'
+      ? usableTypes.value.length - 1
+      : (index + (event.key === 'ArrowDown' ? 1 : -1) + usableTypes.value.length) % usableTypes.value.length;
+  nextTick(() => deliveryPicker.value?.querySelectorAll('[role="option"]')[nextIndex]?.focus());
+}
+
+function submit() {
+  if (props.saving || !form.deliveryTypeId) return;
+  emit('submit', draft.toPayload());
 }
 </script>
 
