@@ -80,8 +80,12 @@ onBeforeUnmount(() => lockBodyScroll(false));
 }
 
 .app-modal__panel--fit-content {
-  max-height: none;
-  overflow: visible;
+  // Keep fit-content dialogs within the viewport. The content can still be
+  // reached by scrolling when a small screen cannot show every field at once.
+  max-height: min(calc(100vh - 16px), 600px);
+  max-height: min(calc(100dvh - 16px), 600px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .app-modal__header {
@@ -117,7 +121,14 @@ onBeforeUnmount(() => lockBodyScroll(false));
 
   .app-modal__panel {
     width: min(520px, 100%);
+    max-height: min(calc(100vh - 48px), 600px);
+    max-height: min(calc(100dvh - 48px), 600px);
     border-radius: 8px;
+  }
+
+  .app-modal__panel--fit-content {
+    max-height: min(calc(100vh - 48px), 600px);
+    max-height: min(calc(100dvh - 48px), 600px);
   }
 }
 </style>
