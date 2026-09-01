@@ -82,7 +82,12 @@ router.beforeEach(async (to) => {
   if (PUBLIC_ROUTE_NAMES.has(to.name)) return true;
 
   const auth = useAuthStore();
-  if (auth.isSessionValid()) return true;
+  if (auth.isSessionValid()) {
+    // Session 還有效就不重新登入，但仍在背景（節流、不阻塞）刷新 LINE profile，
+    // 讓 members 的 displayName / pictureUrl 不會停在舊資料。
+    auth.refreshProfileInBackground();
+    return true;
+  }
 
   // Dev only：本地略過 LINE/LIFF（callback URL 設定在正式環境），改向後端 Development-only 的
   // POST /auth/dev-login 取 DB 第一筆會員的真實 session 直接進站。整段被包在
