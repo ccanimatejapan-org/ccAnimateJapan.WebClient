@@ -2,7 +2,6 @@
   <AppModal
     :model-value="modelValue"
     :title="t('product.addDialog.title')"
-    fit-content
     @update:model-value="$emit('update:modelValue', $event)"
   >
     <div v-if="product" class="product-add-dialog">

@@ -75,3 +75,10 @@
 .order-list__tabs {
   margin-top: 12px;
 }
+
+@media (min-width: 761px) {
+  .order-list__tabs {
+    flex: 1 1 0;
+    margin-top: 0;
+  }
+}
