@@ -3,6 +3,7 @@
     "products": "活動",
     "orders": "訂單",
     "member": "會員中心",
+    "wishPool": "許願池",
     "cart": "購物車",
     "cartWithCount": "購物車（{count} 件）",
     "menu": "開啟選單",
@@ -29,6 +30,7 @@
     "next": "下一步",
     "save": "儲存",
     "cancel": "取消",
+    "retry": "重試",
     "loading": "載入中",
     "close": "關閉提示",
     "scrollPrev": "向左捲動",
@@ -102,6 +104,64 @@
     "unnamed": "未命名活動",
     "endedDivider": "已結束活動",
     "viewProducts": "查看活動商品"
+  },
+  "wishPool": {
+    "eyebrow": "一起許願",
+    "title": "許願池",
+    "description": "留下想買的商品，讓大家一起支持開團。",
+    "addWish": "新增許願",
+    "loadFailed": "許願資料讀取失敗",
+    "empty": "目前還沒有許願",
+    "form": {
+      "title": "新增許願",
+      "animateType": "動漫",
+      "animateTypePlaceholder": "請選擇動漫",
+      "animateTypesLoadFailed": "動漫選項載入失敗",
+      "activityName": "活動名稱",
+      "activityNamePlaceholder": "請輸入想要的活動名稱",
+      "productUrl": "商品連結（選填）",
+      "productUrlPlaceholder": "https://example.com/item",
+      "productUrlHint": "僅接受 http 或 https 連結",
+      "image": "商品圖片（選填）",
+      "imageHint": "支援 JPG、PNG、WebP、GIF，檔案上限 5 MB",
+      "imagePreview": "商品圖片預覽",
+      "submitting": "送出中",
+      "submit": "送出許願"
+    },
+    "validation": {
+      "animateTypeRequired": "請選擇動漫",
+      "activityNameRequired": "請輸入活動名稱",
+      "activityNameTooLong": "活動名稱最多 200 字",
+      "productUrlInvalid": "請輸入 2048 字以內的有效 http 或 https 連結",
+      "imageTooLarge": "圖片檔案不可超過 5 MB",
+      "imageEmpty": "圖片檔案不可為空",
+      "imageTypeInvalid": "圖片格式必須是 JPG、PNG、WebP 或 GIF"
+    },
+    "card": {
+      "imageEmpty": "沒有商品圖片",
+      "viewProduct": "查看商品連結",
+      "createdAt": "建立時間",
+      "reactionCount": "{count} 人支持"
+    },
+    "reaction": {
+      "support": "支持開團"
+    },
+    "decision": {
+      "pending": "尚未回覆",
+      "opened": "已開團",
+      "notOpened": "不開團",
+      "unknown": "狀態待確認"
+    },
+    "toast": {
+      "createSuccess": "許願已送出",
+      "createSuccessMessage": "感謝你的許願",
+      "createFailed": "送出失敗",
+      "createFailedMessage": "目前無法新增許願，請稍後再試",
+      "reactionFailed": "操作失敗",
+      "reactionFailedMessage": "目前無法更新支持狀態，請稍後再試",
+      "reactionForbiddenMessage": "目前沒有權限支持這筆許願",
+      "dailyLimitMessage": "每人每天只能許願一次，請明天再來"
+    }
   },
   "product": {
     "eyebrow": "慢慢挑選",

@@ -111,7 +111,8 @@ src/
 /works/:animateTypeId         特定作品底下的活動列表
 /cart                         購物車，可修改數量、刪除商品、送出訂單
 /orders                       我的訂單列表
-/orders/:id                   訂單詳情簡版
+  /orders/:id                   訂單詳情簡版
+  /wish-pool                    許願池（需 LINE 登入與加官方好友）
 /auth/login                   LINE 登入導向頁（LIFF 未配置時的降級頁）
 /auth/line/callback           LINE callback 防呆頁（LIFF 流程不走 OAuth callback）
 /auth/add-friend              非官方帳號好友時的加好友頁
@@ -245,6 +246,7 @@ src/router/
   /orders/:id                  -> order detail
   /member/profile              -> member profile
   /member/addresses            -> member address book
+  /wish-pool                   -> wish pool（需 LINE 登入與加官方好友）
 
 /auth                          -> AuthLayout
   /auth/login
@@ -323,6 +325,7 @@ src/shared/components/
 ├─ AppLoading.vue
 ├─ AppModal.vue
 ├─ AppPrice.vue
+├─ CustomSelect.vue
 ├─ AppToast.vue
 └─ OfficialShippingCard.vue
 ```
@@ -333,6 +336,7 @@ src/shared/components/
 - `AppLoading`：載入狀態元件。
 - `AppModal`：共用 modal 元件，目前被商品加入購物車 dialog 使用。
 - `AppPrice`：金額顯示元件。
+- `CustomSelect`：下拉控制項 shared shell，提供 listbox/option、鍵盤導航與外部點擊關閉語義。
 - `AppToast`：全站 toast 顯示容器，搭配 `shared/stores/uiStore.js`。
 - `OfficialShippingCard`：統一顯示預購活動的官方出貨時程，支援完整與 compact 版型。
 
@@ -413,6 +417,7 @@ src/modules/
 ├─ home/
 ├─ member/
 ├─ order/
+├─ wishPool/
 └─ product/
 ```
 
@@ -426,6 +431,42 @@ src/modules/
 - `utils/`：該 module 私有的純函式或業務規則。
 - `styles/`：該 module 的 SCSS。
 - `routes.js`：該 module 對外提供的路由設定。
+
+### modules/wishPool/
+
+```text
+src/modules/wishPool/
+├─ api/
+│  └─ wishPoolApi.js
+├─ components/
+│  ├─ WishPoolForm.vue
+│  ├─ WishPoolImagePicker.vue
+│  └─ WishPoolCard.vue
+├─ pages/
+│  └─ WishPoolPage.vue
+├─ routes.js
+├─ stores/
+│  └─ wishPoolStore.js
+├─ styles/
+│  ├─ wish-pool-card.scss
+│  ├─ wish-pool-form.scss
+│  └─ wish-pool-page.scss
+└─ utils/
+   ├─ wishPoolPayload.js
+   ├─ wishPoolPayload.test.js
+   ├─ wishPoolRules.js
+   └─ wishPoolRules.test.js
+```
+
+資料夾功能：
+
+- `api/wishPoolApi.js`：封裝 `GET /wish-pools`、`GET /wish-pools/animate-types`、`POST /wish-pools` 與 `POST /wish-pools/{id}/reaction`，所有回應先經 `unwrapApiResponse()`；新增使用原生 `FormData`，欄位為 `AnimateTypeId`、`ActivityName`、`ProductUrl`、可選的 `ImageFile`。
+- `stores/wishPoolStore.js`：以 `useServerPagination` 管理每頁 12 筆許願，使用 `useSingleFlight` 防止重複新增，reaction 以 item id 管理 pending，成功只套用 API 回傳的 `reacted` 與 `reactionCount`。
+- `components/WishPoolForm.vue`、`WishPoolImagePicker.vue`、`WishPoolCard.vue`：`WishPoolForm` 負責許願欄位狀態與表單送出，`WishPoolImagePicker` 負責圖片選擇與預覽 tile，`WishPoolCard` 負責單筆許願呈現。前端不顯示許願者資訊、留言串或子留言，不推論開團狀態。
+- `pages/WishPoolPage.vue`、`routes.js`：提供 `/wish-pool`，掛在 `DefaultLayout`，沿用 router 的 LINE／LIFF 登入與加好友守衛。
+- `utils/`：純函式驗證表單、商品連結、圖片格式／大小、開團決策 mapping、reaction guard 與 multipart payload；以 Node 內建測試覆蓋這些契約規則。
+
+功能邊界：清單的 `canReact`、`hasReacted`、`reactionCount` 與 `groupBuyDecision` 以 API 回傳為準；未知決策顯示中性狀態。前端不建立 mock、不自行建立活動或商品，也不保存或渲染 memberId、姓名、LINE 暱稱與頭像。
 
 ### modules/activity/
 
@@ -807,6 +848,7 @@ src/modules/cart/api/cartApi.js
 src/modules/member/api/memberApi.js
 src/modules/order/api/orderApi.js
 src/modules/product/api/productApi.js
+src/modules/wishPool/api/wishPoolApi.js
 ```
 
 規則：
@@ -829,6 +871,7 @@ src/modules/activity/stores/activityStore.js
 src/modules/auth/stores/authStore.js
 src/modules/cart/stores/cartStore.js
 src/modules/product/stores/productStore.js
+src/modules/wishPool/stores/wishPoolStore.js
 src/shared/stores/appStore.js
 src/shared/stores/uiStore.js
 ```

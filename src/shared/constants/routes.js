@@ -9,6 +9,7 @@ export const ROUTE_NAMES = {
   CHECKOUT: 'checkout',
   ORDER_LIST: 'order-list',
   ORDER_DETAIL: 'order-detail',
+  WISH_POOL: 'wish-pool',
   LOGIN: 'login',
   LINE_CALLBACK: 'line-callback',
   LINE_ADD_FRIEND: 'line-add-friend',

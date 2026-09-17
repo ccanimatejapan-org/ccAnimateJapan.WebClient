@@ -18,6 +18,9 @@
         <RouterLink :to="{ name: ROUTE_NAMES.MEMBER_PROFILE }">
           {{ t('nav.member') }}
         </RouterLink>
+        <RouterLink :to="{ name: ROUTE_NAMES.WISH_POOL }">
+          {{ t('nav.wishPool') }}
+        </RouterLink>
       </nav>
       <div class="site-header__actions">
         <LanguageSwitcher class="site-header__lang" />
@@ -108,6 +111,14 @@
           @click="closeMenu"
         >
           <span>{{ t('nav.member') }}</span>
+          <span aria-hidden="true">›</span>
+        </RouterLink>
+        <RouterLink
+          class="site-mobile-menu__item"
+          :to="{ name: ROUTE_NAMES.WISH_POOL }"
+          @click="closeMenu"
+        >
+          <span>{{ t('nav.wishPool') }}</span>
           <span aria-hidden="true">›</span>
         </RouterLink>
       </nav>

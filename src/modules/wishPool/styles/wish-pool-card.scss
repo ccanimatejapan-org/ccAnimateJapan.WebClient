@@ -1,0 +1,148 @@
+@use '@/styles/variables' as *;
+
+.wish-pool-card {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  overflow: hidden;
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.wish-pool-card__image-wrap {
+  display: grid;
+  place-items: center;
+  background: $color-surface;
+}
+
+.wish-pool-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wish-pool-card__image-empty {
+  color: $color-muted;
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 8px;
+}
+
+.wish-pool-card__body {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  align-content: center;
+  min-width: 0;
+}
+
+.wish-pool-card__heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.wish-pool-card__animate-type {
+  color: $color-muted;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wish-pool-card h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wish-pool-card a {
+  color: $color-primary;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.wish-pool-card__date {
+  color: $color-muted;
+  font-size: 0.72rem;
+}
+
+.wish-pool-card__decision {
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: $color-border;
+  color: $color-ink;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.wish-pool-card__decision--opened {
+  background: #d9efd9;
+  color: #176b32;
+}
+
+.wish-pool-card__decision--not-opened {
+  background: #f4e0e0;
+  color: #8d3434;
+}
+
+// Heart reaction button
+.wish-pool-card__heart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 52px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: $color-muted;
+  cursor: pointer;
+  transition: color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wish-pool-card__heart:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.wish-pool-card__heart.is-active {
+  color: #e04060;
+}
+
+.wish-pool-card__heart:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.wish-pool-card__heart-count {
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+@media (min-width: 640px) {
+  .wish-pool-card {
+    grid-template-columns: 120px 1fr auto;
+  }
+
+  .wish-pool-card__body {
+    gap: 6px;
+    padding: 12px 14px;
+  }
+
+  .wish-pool-card h2 {
+    font-size: 1.05rem;
+  }
+
+  .wish-pool-card__heart {
+    width: 60px;
+  }
+}

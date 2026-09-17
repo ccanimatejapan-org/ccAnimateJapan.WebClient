@@ -3,6 +3,7 @@
     "products": "Activities",
     "orders": "Orders",
     "member": "Member",
+    "wishPool": "Wish pool",
     "cart": "Cart",
     "cartWithCount": "Cart ({count} items)",
     "menu": "Open menu",
@@ -29,6 +30,7 @@
     "next": "Next",
     "save": "Save",
     "cancel": "Cancel",
+    "retry": "Retry",
     "loading": "Loading",
     "close": "Close notification",
     "scrollPrev": "Scroll left",
@@ -102,6 +104,64 @@
     "unnamed": "Untitled activity",
     "endedDivider": "Ended activities",
     "viewProducts": "View products"
+  },
+  "wishPool": {
+    "eyebrow": "Make a wish",
+    "title": "Wish pool",
+    "description": "Tell us what you want and let the community support a group buy.",
+    "addWish": "Add a wish",
+    "loadFailed": "Unable to load wishes",
+    "empty": "No wishes yet",
+    "form": {
+      "title": "Add a wish",
+      "animateType": "Anime",
+      "animateTypePlaceholder": "Choose an anime",
+      "animateTypesLoadFailed": "Unable to load anime options",
+      "activityName": "Activity name",
+      "activityNamePlaceholder": "Enter the activity you want",
+      "productUrl": "Product link (optional)",
+      "productUrlPlaceholder": "https://example.com/item",
+      "productUrlHint": "Only http or https links are accepted",
+      "image": "Product image (optional)",
+      "imageHint": "JPG, PNG, WebP, or GIF up to 5 MB",
+      "imagePreview": "Product image preview",
+      "submitting": "Submitting",
+      "submit": "Submit wish"
+    },
+    "validation": {
+      "animateTypeRequired": "Choose an anime",
+      "activityNameRequired": "Enter an activity name",
+      "activityNameTooLong": "Activity names may be up to 200 characters",
+      "productUrlInvalid": "Enter a valid http or https link up to 2048 characters",
+      "imageTooLarge": "Images must be no larger than 5 MB",
+      "imageEmpty": "The image file cannot be empty",
+      "imageTypeInvalid": "Use a JPG, PNG, WebP, or GIF image"
+    },
+    "card": {
+      "imageEmpty": "No product image",
+      "viewProduct": "View product link",
+      "createdAt": "Created",
+      "reactionCount": "{count} supporters"
+    },
+    "reaction": {
+      "support": "Support group buy"
+    },
+    "decision": {
+      "pending": "Awaiting reply",
+      "opened": "Group buy opened",
+      "notOpened": "Not opening",
+      "unknown": "Status pending"
+    },
+    "toast": {
+      "createSuccess": "Wish submitted",
+      "createSuccessMessage": "Thanks for sharing your wish",
+      "createFailed": "Submit failed",
+      "createFailedMessage": "Unable to add your wish. Please try again later.",
+      "reactionFailed": "Action failed",
+      "reactionFailedMessage": "Unable to update support right now. Please try again later.",
+      "reactionForbiddenMessage": "You cannot support this wish right now.",
+      "dailyLimitMessage": "You can only make one wish per day. Please come back tomorrow."
+    }
   },
   "product": {
     "eyebrow": "Take your time",

@@ -1,0 +1,95 @@
+@use '@/styles/variables' as *;
+
+.wish-pool-form {
+  gap: 16px;
+}
+
+.wish-pool-form input:not([type='file']) {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid $color-border;
+  border-radius: 10px;
+  background: #fff;
+  color: $color-ink;
+  font: inherit;
+}
+
+.wish-pool-form input:disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
+.wish-pool-form input:focus {
+  outline: 2px solid rgba($color-primary, 0.25);
+  border-color: $color-primary;
+}
+
+.wish-pool-form__field {
+  display: grid;
+  gap: 8px;
+}
+
+.wish-pool-form__option {
+  border: 0;
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+  background: transparent;
+  color: inherit;
+}
+
+.wish-pool-form__retry,
+.wish-pool-form__remove {
+  margin-left: 6px;
+  border: 0;
+  background: transparent;
+  color: $color-primary;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline;
+}
+
+.wish-pool-form__remove {
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+}
+
+.wish-pool-form__image-area {
+  .wish-pool-image-picker {
+    min-height: 150px;
+  }
+
+  .form-grid__hint,
+  .form-grid__error {
+    padding-top: 2px;
+  }
+}
+
+.wish-pool-form__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 560px) {
+  .wish-pool-form__actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 560px) {
+  .wish-pool-form__image-area {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+
+    > label,
+    > .wish-pool-image-picker,
+    > small {
+      grid-column: 1 / -1;
+    }
+  }
+}

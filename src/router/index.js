@@ -10,6 +10,7 @@ import orderRoutes from '@/modules/order/routes';
 import authRoutes from '@/modules/auth/routes';
 import memberRoutes from '@/modules/member/routes';
 import infoRoutes from '@/modules/info/routes';
+import wishPoolRoutes from '@/modules/wishPool/routes';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { useAuthStore } from '@/modules/auth/stores/authStore';
 import { useUiStore } from '@/shared/stores/uiStore';
@@ -46,7 +47,8 @@ const routes = [
       ...checkoutRoutes,
       ...orderRoutes,
       ...memberRoutes,
-      ...infoRoutes
+      ...infoRoutes,
+      ...wishPoolRoutes
     ]
   },
   {
