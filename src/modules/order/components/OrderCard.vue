@@ -15,16 +15,18 @@
         variant="compact"
       />
     </div>
-    <div class="order-card__total">
-      <span>{{ t('order.total') }}</span>
-      <AppPrice :value="order.grandTotal" />
+    <div class="order-card__foot">
+      <div class="order-card__total">
+        <span>{{ t('order.total') }}</span>
+        <AppPrice :value="order.grandTotal" />
+      </div>
+      <RouterLink
+        class="app-button app-button--secondary order-card__detail"
+        :to="{ name: ROUTE_NAMES.ORDER_DETAIL, params: { id: order.id } }"
+      >
+        {{ t('order.detail') }}
+      </RouterLink>
     </div>
-    <RouterLink
-      class="app-button app-button--secondary order-card__detail"
-      :to="{ name: ROUTE_NAMES.ORDER_DETAIL, params: { id: order.id } }"
-    >
-      {{ t('order.detail') }}
-    </RouterLink>
   </article>
 </template>
 

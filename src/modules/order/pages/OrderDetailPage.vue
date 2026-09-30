@@ -1,92 +1,119 @@
 <template>
   <AppLoading v-if="isLoading" :label="t('common.loading')" />
-  <section v-else-if="order" class="section narrow-section">
-    <p class="eyebrow">{{ t('order.detail') }}</p>
-    <div class="order-detail__heading">
-      <h1>{{ t('order.orderNoLabel') }}{{ order.orderNo || `#${order.id}` }}</h1>
-      <OrderStatusBadge :order-status="order.orderStatus" />
-    </div>
-    <p class="order-detail__activity">{{ order.activityName }}</p>
-    <p class="order-detail__created">{{ t('order.createdAt') }} · {{ formatDateTime(order.createdAt) }}</p>
+  <section v-else-if="order" class="section order-detail">
+    <header class="page-head">
+      <p class="eyebrow">{{ t('order.detailEyebrow') }}</p>
+      <div class="order-detail__heading">
+        <h1>{{ order.activityName }}</h1>
+        <OrderStatusBadge :order-status="order.orderStatus" />
+      </div>
+      <p class="page-head__desc order-detail__meta">
+        {{ t('order.orderNoLabel') }}{{ order.orderNo || `#${order.id}` }}
+        <span aria-hidden="true">·</span>
+        {{ t('order.createdAt') }} {{ formatDateTime(order.createdAt) }}
+      </p>
+    </header>
 
-    <OfficialShippingCard
-      class="order-detail__shipping"
-      :is-pre-order="order.activityIsPreOrder"
-      :start-time="order.officialShippingStartTime"
-      :end-time="order.officialShippingEndTime"
-      variant="full"
-    />
-    <div class="order-detail__sections">
-      <section class="order-detail__block">
-        <h2 class="order-detail__block-title">{{ t('order.section.items') }}</h2>
-        <div class="order-detail__items">
-          <article v-for="item in order.items" :key="item.productId" class="order-detail__item">
-            <div>
-              <h3>{{ item.productName }}</h3>
-              <p v-if="item.note">{{ item.note }}</p>
-            </div>
-            <span>x {{ item.quantity }}</span>
-            <AppPrice :value="item.price * item.quantity" />
-          </article>
-        </div>
-        <div v-if="order.shippingFee > 0" class="summary-row">
-          <span>{{ t('order.shippingFeeLabel') }}</span>
-          <AppPrice :value="order.shippingFee" />
-        </div>
-        <div class="summary-row order-detail__total">
-          <span>{{ t('order.total') }}</span>
-          <AppPrice :value="order.grandTotal" />
-        </div>
-      </section>
+    <div class="order-detail__grid">
+      <div class="order-detail__stack">
+        <OfficialShippingCard
+          :is-pre-order="order.activityIsPreOrder"
+          :start-time="order.officialShippingStartTime"
+          :end-time="order.officialShippingEndTime"
+          variant="full"
+        />
 
-      <section class="order-detail__block">
-        <h2 class="order-detail__block-title">{{ t('order.section.status') }}</h2>
-        <div class="summary-row">
-          <span>{{ t('order.processStatusLabel') }}</span>
-          <OrderStatusBadge :order-status="order.orderStatus" />
-        </div>
-        <div class="summary-row">
-          <span>{{ t('order.paymentStatusLabel') }}</span>
-          <StatusBadge
-            :variant="order.paymentStatus === 'paid' ? 'paid' : 'pending'"
-            :label="t(paymentStatusLabelKey)"
-          />
-        </div>
-        <div v-if="order.shippingFee > 0" class="summary-row">
-          <span>{{ t('order.shippingPaymentStatusLabel') }}</span>
-          <StatusBadge
-            :variant="shippingPaymentStatus.variant"
-            :label="t(shippingPaymentStatus.labelKey)"
-          />
-        </div>
-      </section>
+        <section class="panel">
+          <h2 class="panel__title">{{ t('order.section.items') }}</h2>
+          <div class="order-detail__items">
+            <article v-for="item in order.items" :key="item.productId" class="order-detail__item">
+              <div>
+                <h3>{{ item.productName }}</h3>
+                <p v-if="item.note">{{ item.note }}</p>
+                <span class="order-detail__qty">x {{ item.quantity }}</span>
+              </div>
+              <AppPrice :value="item.price * item.quantity" />
+            </article>
+          </div>
+          <div v-if="order.shippingFee > 0" class="summary-row">
+            <span>{{ t('order.shippingFeeAmountLabel') }}</span>
+            <AppPrice :value="order.shippingFee" />
+          </div>
+          <div class="summary-row order-detail__total">
+            <span>{{ t('order.total') }}</span>
+            <AppPrice :value="order.grandTotal" />
+          </div>
+        </section>
+      </div>
 
-      <section class="order-detail__block">
-        <h2 class="order-detail__block-title">{{ t('order.section.shipping') }}</h2>
-        <div v-if="order.deliveryTypeName" class="summary-row">
-          <span>{{ t('order.deliveryMethod') }}</span>
-          <span>{{ order.deliveryTypeName }}</span>
-        </div>
-        <div v-if="order.address" class="summary-row">
-          <span>{{ t('order.recipientAddress') }}</span>
-          <span>{{ order.address }}</span>
-        </div>
-        <div v-if="order.recipientPhone" class="summary-row">
-          <span>{{ t('order.recipientPhone') }}</span>
-          <span>{{ order.recipientPhone }}</span>
-        </div>
-        <p v-if="!order.deliveryTypeName && !order.address && !order.recipientPhone" class="order-detail__empty-hint">
-          {{ t('order.noShippingInfo') }}
-        </p>
-      </section>
+      <div class="order-detail__stack">
+        <section class="panel">
+          <h2 class="panel__title">{{ t('order.section.status') }}</h2>
+          <div class="order-detail__row">
+            <span>{{ t('order.processStatusLabel') }}</span>
+            <OrderStatusBadge :order-status="order.orderStatus" />
+          </div>
+          <div class="order-detail__row">
+            <span>{{ t('order.paymentStatusLabel') }}</span>
+            <StatusBadge
+              :variant="order.paymentStatus === 'paid' ? 'paid' : 'pending'"
+              :label="t(paymentStatusLabelKey)"
+            />
+          </div>
+          <div class="order-detail__row">
+            <span>{{ t('order.shippingFeeLabel') }}</span>
+            <span class="order-detail__value">
+              {{ requiresJapanShipping ? t('order.shippingRequired') : t('order.shippingNotRequired') }}
+            </span>
+          </div>
+          <div class="order-detail__row">
+            <span>{{ t('order.shippingPaymentStatusLabel') }}</span>
+            <StatusBadge
+              v-if="requiresJapanShipping"
+              :variant="shippingPaymentStatus.variant"
+              :label="t(shippingPaymentStatus.labelKey)"
+            />
+            <StatusBadge v-else variant="neutral" :label="t('order.shippingPaymentStatus.none')" />
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 class="panel__title">{{ t('order.section.shipping') }}</h2>
+          <div v-if="order.deliveryTypeName" class="order-detail__row">
+            <span>{{ t('order.deliveryMethod') }}</span>
+            <span class="order-detail__value">{{ order.deliveryTypeName }}</span>
+          </div>
+          <div v-if="order.address" class="order-detail__row">
+            <span>{{ t('order.recipientAddress') }}</span>
+            <span class="order-detail__value">{{ order.address }}</span>
+          </div>
+          <div v-if="order.recipientPhone" class="order-detail__row">
+            <span>{{ t('order.recipientPhone') }}</span>
+            <span class="order-detail__value">{{ order.recipientPhone }}</span>
+          </div>
+          <p v-if="!order.deliveryTypeName && !order.address && !order.recipientPhone" class="order-detail__empty-hint">
+            {{ t('order.noShippingInfo') }}
+          </p>
+        </section>
+
+        <RouterLink class="app-button app-button--secondary" :to="{ name: ROUTE_NAMES.ORDER_LIST }">
+          {{ t('order.backToList') }}
+        </RouterLink>
+      </div>
     </div>
   </section>
-  <AppEmpty v-else :message="t(loadFailed ? 'order.loadFailed' : 'order.notFound')" />
+  <AppEmpty v-else icon="box" :message="t(loadFailed ? 'order.loadFailed' : 'order.notFound')">
+    <RouterLink class="app-button app-button--dark" :to="{ name: ROUTE_NAMES.ORDER_LIST }">
+      {{ t('order.backToList') }}
+    </RouterLink>
+  </AppEmpty>
 </template>
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { RouterLink } from 'vue-router';
+import { ROUTE_NAMES } from '@/shared/constants/routes';
 import AppEmpty from '@/shared/components/AppEmpty.vue';
 import AppLoading from '@/shared/components/AppLoading.vue';
 import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
@@ -115,6 +142,9 @@ const paymentStatusLabelKey = computed(() =>
     : 'order.paymentStatus.unpaid'
 );
 
+// 是否需補日本境內運：依後端 shippingFee 判斷，不由付款狀態推算。
+const requiresJapanShipping = computed(() => Number(order.value?.shippingFee) > 0);
+
 const shippingPaymentStatus = computed(() => mapShippingPaymentStatus(order.value?.shippingPaymentStatus));
 
 onMounted(async () => {
@@ -129,119 +159,5 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-@use '@/styles/variables' as *;
-
-.order-detail__activity {
-  margin: -12px 0 0;
-  color: $color-muted;
-}
-
-.order-detail__created {
-  margin: -6px 0 0;
-  color: $color-muted;
-  font-size: 0.85rem;
-}
-
-.order-detail__heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.order-detail__heading h1 {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.order-detail__heading .status-badge {
-  flex-shrink: 0;
-}
-
-.order-detail__shipping {
-  margin: 12px 0 2px;
-}
-
-.order-detail__sections {
-  display: grid;
-  gap: 12px;
-}
-
-.order-detail__block {
-  padding: 16px;
-  border: 1px solid $color-border;
-  border-radius: 8px;
-  background: #fff;
-}
-
-.order-detail__block-title {
-  margin: 0 0 12px;
-  font-size: 1rem;
-}
-
-.order-detail__total {
-  font-weight: 800;
-}
-
-.order-detail__empty-hint {
-  margin: 0;
-  color: $color-muted;
-  font-size: 0.9rem;
-}
-
-.order-detail__items {
-  display: grid;
-  gap: 10px;
-}
-
-.order-detail__item {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  align-items: center;
-  gap: 12px;
-  padding: 14px;
-  border: 1px solid $color-border;
-  border-radius: 8px;
-  background: #fff;
-}
-
-.order-detail__item > div {
-  min-width: 0;
-}
-
-.order-detail__item h3,
-.order-detail__item p {
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-
-.order-detail__item p {
-  color: $color-muted;
-  font-size: 0.9rem;
-}
-
-.order-detail__item > span,
-.order-detail__item > .app-price {
-  white-space: nowrap;
-}
-
-@media (max-width: 420px) {
-  .order-detail__item {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-  }
-
-  .order-detail__item > div {
-    grid-column: 1 / -1;
-  }
-
-  .order-detail__item > span {
-    grid-column: 1;
-  }
-
-  .order-detail__item > .app-price {
-    grid-column: 2;
-    justify-self: end;
-  }
-}
+@use '../styles/order-detail';
 </style>

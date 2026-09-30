@@ -1,70 +1,5 @@
-@use '@/styles/variables' as *;
-
-.order-list__heading {
-  flex: 1;
-  min-width: 0;
-}
-
-.order-list__title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.order-list-page {
   gap: 16px;
-}
-
-.order-list__title-row h1 {
-  margin: 0;
-}
-
-.order-list__search {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-}
-
-.order-list__search--open {
-  flex: 1 1 160px;
-  min-width: 0;
-}
-
-.order-list__search-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 1px solid $color-border;
-  border-radius: 999px;
-  background: #fff;
-  color: $color-muted;
-  cursor: pointer;
-}
-
-.order-list__search-toggle svg {
-  width: 18px;
-  height: 18px;
-}
-
-.order-list__search-input {
-  width: 100%;
-  min-width: 0;
-  padding: 7px 14px;
-  border: 1px solid $color-border;
-  border-radius: 999px;
-  background: #fff;
-  color: $color-ink;
-  font-size: 0.9rem;
-}
-
-.order-list__search-input::placeholder {
-  color: $color-muted;
-}
-
-.order-list__search-input:focus {
-  outline: none;
-  border-color: $color-ink;
 }
 
 .order-list {
@@ -72,13 +7,9 @@
   gap: 12px;
 }
 
-.order-list__tabs {
-  margin-top: 12px;
-}
-
-@media (min-width: 761px) {
-  .order-list__tabs {
-    flex: 1 1 0;
-    margin-top: 0;
+@media (min-width: 700px) {
+  .order-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
   }
 }

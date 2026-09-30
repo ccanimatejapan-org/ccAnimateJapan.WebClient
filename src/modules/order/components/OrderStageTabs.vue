@@ -1,39 +1,21 @@
 <template>
-  <nav class="order-stage-tabs" :aria-label="t('order.tabsTitle')" role="tablist">
+  <nav ref="tabsRef" class="order-stage-tabs ui-chips" :aria-label="t('order.tabsTitle')" role="tablist">
     <button
-      v-for="(option, index) in stageOptions"
+      v-for="option in stageOptions"
       :key="option.value"
       type="button"
       role="tab"
+      class="ui-chip order-stage-tabs__tab"
       :aria-selected="option.value === normalizedStage"
-      :class="[
-        'order-stage-tabs__tab',
-        option.value === normalizedStage ? 'order-stage-tabs__tab--active' : '',
-        index < activeStageIndex ? 'order-stage-tabs__tab--completed' : ''
-      ]"
       @click="selectStage(option.value)"
     >
-      <span class="order-stage-tabs__step" aria-hidden="true">
-        <svg
-          v-if="index < activeStageIndex"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="m6.5 12.5 3.5 3.5 7.5-8" />
-        </svg>
-        <span v-else>{{ index + 1 }}</span>
-      </span>
-      <span class="order-stage-tabs__label">{{ t(option.labelKey) }}</span>
+      {{ t(option.labelKey) }}
     </button>
   </nav>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { DEFAULT_ORDER_STAGE, normalizeOrderStage, ORDER_STAGES } from '../utils/orderStages';
 
@@ -51,10 +33,25 @@ const { t } = useI18n();
 
 const stageOptions = ORDER_STAGES;
 
+const tabsRef = ref(null);
+
 const normalizedStage = computed(() => normalizeOrderStage(props.modelValue) ?? DEFAULT_ORDER_STAGE);
-const activeStageIndex = computed(() => (
-  stageOptions.findIndex((option) => option.value === normalizedStage.value)
-));
+
+async function scrollActiveTabIntoView() {
+  await nextTick();
+  const container = tabsRef.value;
+  const activeTab = container?.querySelector('[aria-selected="true"]');
+
+  if (!container || !activeTab) {
+    return;
+  }
+
+  const left = activeTab.offsetLeft - (container.clientWidth - activeTab.offsetWidth) / 2;
+  container.scrollTo({ left: Math.max(left, 0), behavior: 'smooth' });
+}
+
+onMounted(scrollActiveTabIntoView);
+watch(normalizedStage, scrollActiveTabIntoView);
 
 function selectStage(value) {
   emit('update:modelValue', value);

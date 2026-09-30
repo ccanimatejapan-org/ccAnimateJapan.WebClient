@@ -2,20 +2,15 @@
 
 .order-card {
   display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas:
-    'main main'
-    'total detail';
-  gap: 10px 14px;
-  align-items: center;
+  gap: 12px;
   padding: 16px;
   border: 1px solid $color-border;
-  border-radius: 8px;
-  background: #fff;
+  border-radius: $radius-card;
+  background: $color-paper;
+  box-shadow: $shadow-card;
 }
 
 .order-card__main {
-  grid-area: main;
   display: grid;
   gap: 4px;
   min-width: 0;
@@ -23,17 +18,10 @@
 
 .order-card__heading {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-}
-
-.order-card__heading p {
-  min-width: 0;
-}
-
-.order-card__heading .status-badge {
-  flex-shrink: 0;
 }
 
 .order-card__main p,
@@ -44,45 +32,40 @@
 }
 
 .order-card__main p {
-  color: $color-primary;
-  font-weight: 900;
+  min-width: 0;
+  color: $color-muted;
+  font-family: $font-number;
+  font-size: 0.78rem;
   overflow-wrap: anywhere;
 }
 
 .order-card__main h3 {
-  line-height: 1.35;
+  font-size: 0.95rem;
+  line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
-.order-card__main span,
+.order-card__main > span,
 .order-card__total span {
   color: $color-muted;
-  font-size: 0.88rem;
+  font-size: 0.75rem;
+}
+
+.order-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid $color-border;
 }
 
 .order-card__total {
-  grid-area: total;
   display: grid;
-  gap: 4px;
 }
 
 .order-card__detail {
-  grid-area: detail;
-  justify-self: end;
-  min-height: 36px;
-  padding: 0 14px;
-  font-size: 0.85rem;
-  text-decoration: none;
-}
-
-@media (min-width: 600px) {
-  .order-card {
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    grid-template-areas: 'main total detail';
-    gap: 14px;
-  }
-
-  .order-card__total {
-    text-align: right;
-  }
+  min-height: 44px;
+  padding: 10px 14px;
+  font-size: 0.8rem;
 }

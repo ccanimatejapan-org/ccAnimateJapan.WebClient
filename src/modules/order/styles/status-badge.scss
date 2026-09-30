@@ -1,36 +1,38 @@
 .status-badge {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  padding: 0 10px;
-  border-radius: 999px;
-  background: #eef5ff;
-  color: #2563eb;
-  font-size: 0.82rem;
-  font-weight: 800;
+  min-height: 24px;
+  padding: 2px 9px;
+  border-radius: 6px;
+  background: #f7edd1;
+  color: #7c5d23;
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.5;
+  white-space: nowrap;
 }
 
 .status-badge--pending,
-.status-badge--info {
-  background: #eef5ff;
-  color: #2563eb;
+.status-badge--info,
+.status-badge--processing,
+.status-badge--shipped {
+  background: #f7edd1;
+  color: #7c5d23;
 }
 
 .status-badge--paid,
 .status-badge--completed {
-  background: #ecfdf5;
-  color: #047857;
+  background: #e8efe7;
+  color: #41674e;
 }
 
-.status-badge--processing,
-.status-badge--shipped {
-  background: #fff7ed;
-  color: #c2410c;
+.status-badge--canceled {
+  background: #f8e6df;
+  color: #9a4d37;
 }
 
-.status-badge--canceled,
 .status-badge--unknown,
 .status-badge--neutral {
-  background: #f3f4f6;
-  color: #4b5563;
+  background: #eeece7;
+  color: #777267;
 }
