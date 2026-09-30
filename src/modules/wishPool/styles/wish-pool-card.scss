@@ -2,17 +2,19 @@
 
 .wish-pool-card {
   display: grid;
-  grid-template-columns: 80px 1fr auto;
+  grid-template-columns: 88px minmax(0, 1fr) auto;
   overflow: hidden;
   border: 1px solid $color-border;
-  border-radius: 8px;
-  background: #fff;
+  border-radius: $radius-card;
+  background: $color-paper;
+  box-shadow: $shadow-card;
 }
 
 .wish-pool-card__image-wrap {
   display: grid;
   place-items: center;
-  background: $color-surface;
+  min-height: 104px;
+  background: #f1ead9;
 }
 
 .wish-pool-card__image {
@@ -22,127 +24,135 @@
 }
 
 .wish-pool-card__image-empty {
-  color: $color-muted;
-  font-size: 0.75rem;
-  text-align: center;
   padding: 8px;
+  color: #947749;
+  font-size: 0.7rem;
+  text-align: center;
 }
 
 .wish-pool-card__body {
-  display: grid;
-  gap: 4px;
-  padding: 10px 12px;
-  align-content: center;
   min-width: 0;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 12px 14px;
 }
 
 .wish-pool-card__heading {
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 6px;
-  min-width: 0;
 }
 
 .wish-pool-card__animate-type {
-  color: $color-muted;
-  font-size: 0.75rem;
-  white-space: nowrap;
   overflow: hidden;
+  color: $color-muted;
+  font-size: 0.7rem;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .wish-pool-card h2 {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.3;
+  display: -webkit-box;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .wish-pool-card a {
+  width: fit-content;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
   color: $color-primary;
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 650;
 }
 
 .wish-pool-card__date {
   color: $color-muted;
-  font-size: 0.72rem;
+  font-family: $font-number;
+  font-size: 0.68rem;
 }
 
 .wish-pool-card__decision {
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: $color-border;
-  color: $color-ink;
-  font-size: 0.7rem;
-  font-weight: 700;
-  white-space: nowrap;
   flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: #eeece7;
+  color: $color-muted;
+  font-size: 0.68rem;
+  font-weight: 650;
+  white-space: nowrap;
 }
 
 .wish-pool-card__decision--opened {
-  background: #d9efd9;
-  color: #176b32;
+  background: #e8efe7;
+  color: #41674e;
 }
 
 .wish-pool-card__decision--not-opened {
-  background: #f4e0e0;
-  color: #8d3434;
+  background: #f8e6df;
+  color: #9a4d37;
 }
 
-// Heart reaction button
+// 支持按鈕
 .wish-pool-card__heart {
+  align-self: center;
+  min-width: 52px;
+  min-height: 52px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2px;
-  width: 52px;
-  padding: 0;
-  border: none;
-  background: transparent;
+  margin-right: 10px;
+  padding: 6px;
+  border: 1px solid $color-border;
+  border-radius: 16px;
+  background: $color-paper;
   color: $color-muted;
   cursor: pointer;
-  transition: color 0.15s ease;
-  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .wish-pool-card__heart:active:not(:disabled) {
-  transform: scale(0.92);
+  transform: scale(0.94);
 }
 
 .wish-pool-card__heart.is-active {
-  color: #e04060;
+  border-color: #e7ca77;
+  background: #f9ebbd;
+  color: #70521b;
 }
 
 .wish-pool-card__heart:disabled {
   cursor: not-allowed;
-  opacity: 0.4;
+  opacity: 0.46;
 }
 
 .wish-pool-card__heart-count {
+  font-family: $font-number;
   font-size: 0.72rem;
   font-weight: 700;
   line-height: 1;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 700px) {
   .wish-pool-card {
-    grid-template-columns: 120px 1fr auto;
+    grid-template-columns: 116px minmax(0, 1fr) auto;
   }
 
   .wish-pool-card__body {
-    gap: 6px;
-    padding: 12px 14px;
+    padding: 14px 16px;
   }
 
   .wish-pool-card h2 {
-    font-size: 1.05rem;
-  }
-
-  .wish-pool-card__heart {
-    width: 60px;
+    font-size: 0.95rem;
   }
 }

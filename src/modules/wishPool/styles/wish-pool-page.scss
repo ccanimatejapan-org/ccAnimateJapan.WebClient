@@ -1,56 +1,28 @@
 @use '@/styles/variables' as *;
 
 .wish-pool-page {
-  display: grid;
   gap: 16px;
-}
-
-.wish-pool-page__header {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.wish-pool-page__header h1 {
-  margin: 0;
-}
-
-.wish-pool-page__intro {
-  max-width: 540px;
-  margin: 6px 0 0;
-  color: $color-muted;
-  font-size: 0.9rem;
 }
 
 .wish-pool-page__add-button {
-  min-width: 44px;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border-radius: 12px;
-  flex-shrink: 0;
-}
-
-.wish-pool-page__add-button:focus-visible {
-  outline: 3px solid rgba($color-primary, 0.25);
-  outline-offset: 2px;
+  width: 100%;
 }
 
 .wish-pool-page__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: 12px;
 }
 
-@media (min-width: 640px) {
-  .wish-pool-page__grid {
-    gap: 12px;
+@media (min-width: 700px) {
+  .wish-pool-page__add-button {
+    width: auto;
+    justify-self: start;
+    min-width: 220px;
   }
-}
 
-@media (min-width: 980px) {
   .wish-pool-page__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
   }
 }

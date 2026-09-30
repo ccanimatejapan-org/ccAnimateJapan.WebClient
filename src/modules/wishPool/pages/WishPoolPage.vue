@@ -1,30 +1,35 @@
 <template>
-  <section class="wish-pool-page">
-    <header class="wish-pool-page__header">
-      <div>
-        <p class="eyebrow">{{ t('wishPool.eyebrow') }}</p>
-        <h1>{{ t('wishPool.title') }}</h1>
-        <p class="wish-pool-page__intro">{{ t('wishPool.description') }}</p>
-      </div>
-      <AppButton
-        type="button"
-        variant="primary"
-        class="wish-pool-page__add-button"
-        :aria-label="t('wishPool.addWish')"
-        @click="openForm"
-      >
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-          <path d="M11 4h2v16h-2z" fill="currentColor" />
-          <path d="M4 11h16v2H4z" fill="currentColor" />
-        </svg>
-      </AppButton>
+  <section class="wish-pool-page section">
+    <header class="page-head">
+      <p class="eyebrow">{{ t('wishPool.eyebrow') }}</p>
+      <h1>{{ t('wishPool.title') }}</h1>
+      <p class="page-head__desc">{{ t('wishPool.description') }}</p>
     </header>
 
+    <p class="notice">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.6 6.4L21 12l-6.4 2.6L12 21l-2.6-6.4L3 12l6.4-2.6Z" /></svg>
+      <span>{{ t('wishPool.dailyNotice') }}</span>
+    </p>
+
+    <AppButton
+      type="button"
+      variant="primary"
+      class="wish-pool-page__add-button"
+      :aria-label="t('wishPool.addWish')"
+      @click="openForm"
+    >
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+        <path d="M11 4h2v16h-2z" fill="currentColor" />
+        <path d="M4 11h16v2H4z" fill="currentColor" />
+      </svg>
+      <span aria-hidden="true">{{ t('wishPool.addWish') }}</span>
+    </AppButton>
+
     <AppLoading v-if="isLoading" :label="t('common.loading')" />
-    <AppEmpty v-else-if="loadFailed" :message="t('wishPool.loadFailed')">
+    <AppEmpty v-else-if="loadFailed" icon="info" :message="t('wishPool.loadFailed')">
       <AppButton variant="secondary" @click="load(1)">{{ t('common.retry') }}</AppButton>
     </AppEmpty>
-    <AppEmpty v-else-if="!items.length" :message="t('wishPool.empty')" />
+    <AppEmpty v-else-if="!items.length" icon="spark" :message="t('wishPool.empty')" />
     <div v-else class="wish-pool-page__grid">
       <WishPoolCard
         v-for="item in items"

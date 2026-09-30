@@ -6,13 +6,14 @@
 
 .wish-pool-form input:not([type='file']) {
   width: 100%;
-  min-height: 46px;
+  min-height: 48px;
   padding: 0 14px;
   border: 1px solid $color-border;
-  border-radius: 10px;
-  background: #fff;
+  border-radius: $radius-control;
+  background: $color-paper;
   color: $color-ink;
   font: inherit;
+  font-size: 16px;
 }
 
 .wish-pool-form input:disabled {
@@ -21,8 +22,9 @@
 }
 
 .wish-pool-form input:focus {
-  outline: 2px solid rgba($color-primary, 0.25);
-  border-color: $color-primary;
+  outline: none;
+  border-color: #b98f42;
+  box-shadow: 0 0 0 3px rgba(245, 207, 102, 0.35);
 }
 
 .wish-pool-form__field {

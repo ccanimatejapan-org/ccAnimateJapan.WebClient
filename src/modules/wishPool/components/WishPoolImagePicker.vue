@@ -44,7 +44,7 @@
       type="button"
       class="wish-pool-image-picker__clear"
       :disabled="disabled"
-      @click="clearInput"
+      @click="onClearClick"
     >
       {{ t('common.remove') }}
     </button>
@@ -116,7 +116,10 @@ function clearInput() {
   if (fileInput.value) {
     fileInput.value.value = '';
   }
+}
 
+function onClearClick() {
+  clearInput();
   emit('clear');
 }
 
