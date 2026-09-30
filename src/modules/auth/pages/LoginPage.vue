@@ -6,7 +6,7 @@
     <!-- The LIFF login flow is driven by the router guard; this page is only
          reached on failure or when LIFF is not configured. Offer a retry. -->
     <p>{{ isAutoRetrying ? t(autoRetryMessageKey) : hasLiffError ? t('auth.liffError') : t('auth.description') }}</p>
-    <AppButton v-if="!isAutoRetrying" @click="retry">{{ t('auth.login') }}</AppButton>
+    <AppButton v-if="!isAutoRetrying" variant="line" @click="retry">{{ t('auth.login') }}</AppButton>
   </div>
 </template>
 

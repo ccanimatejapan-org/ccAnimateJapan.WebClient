@@ -1,25 +1,37 @@
+@use '@/styles/variables' as *;
+
 .auth-form {
   display: grid;
-  gap: 18px;
+  gap: 12px;
+}
+
+.auth-form .eyebrow {
+  margin: 0 auto;
 }
 
 .auth-form h1 {
-  margin: 0;
-  line-height: 1.05;
+  margin: 8px 0 0;
+  font-size: 1.7rem;
+  line-height: 1.4;
 }
 
 .auth-form > p:not(.eyebrow) {
-  margin: 0;
-  color: #64748b;
-  line-height: 1.7;
+  margin: 0 0 8px;
+  color: $color-muted;
+  font-size: 0.87rem;
+  line-height: 1.9;
+}
+
+.auth-form .app-button {
+  width: 100%;
 }
 
 .line-login-button {
-  min-height: 44px;
-  border: 1px solid #06c755;
-  border-radius: 8px;
-  background: #06c755;
+  min-height: 48px;
+  border: 0;
+  border-radius: $radius-control;
+  background: #087c3e;
   color: #fff;
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 700;
 }

@@ -5,7 +5,7 @@
     <p>{{ t('auth.notFriendMessage') }}</p>
     <a
       v-if="addFriendUrl"
-      class="app-button app-button--primary"
+      class="app-button app-button--line"
       :href="addFriendUrl"
       target="_blank"
       rel="noopener"
