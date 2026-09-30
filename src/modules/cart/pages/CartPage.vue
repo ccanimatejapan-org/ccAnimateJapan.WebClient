@@ -1,15 +1,18 @@
 <template>
   <section class="section">
-    <div class="section__header">
-      <div>
-        <p class="eyebrow">{{ t('cart.eyebrow') }}</p>
-        <h1>{{ t('cart.title') }}</h1>
-      </div>
-    </div>
+    <header class="page-head">
+      <p class="eyebrow">{{ t('cart.eyebrow') }}</p>
+      <h1>{{ t('cart.title') }}</h1>
+      <p class="page-head__desc">{{ t('cart.subtitle') }}</p>
+    </header>
 
     <div v-if="cart.items.length" class="cart-layout">
       <div class="cart-list">
-        <section v-for="group in cart.groups" :key="group.activityId" class="cart-group">
+        <p v-if="cart.groups.length > 1" class="notice">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 11v6M12 7h.01M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0" /></svg>
+          <span>{{ t('cart.splitNotice', { count: cart.groups.length }) }}</span>
+        </p>
+        <section v-for="group in cart.groups" :key="group.activityId" class="cart-group panel">
           <div class="cart-group__header">
             <h2>{{ group.activityName || t('activity.unnamed') }}</h2>
             <AppPrice :value="group.subtotal" />
@@ -26,8 +29,8 @@
       <CartSummary @submit="goCheckout" />
     </div>
 
-    <AppEmpty v-else :message="t('cart.empty')">
-      <RouterLink class="app-button app-button--primary" :to="{ name: ROUTE_NAMES.HOME }">
+    <AppEmpty v-else icon="bag" :message="t('cart.empty')">
+      <RouterLink class="app-button app-button--dark" :to="{ name: ROUTE_NAMES.ACTIVITY_LIST }">
         {{ t('cart.goShopping') }}
       </RouterLink>
     </AppEmpty>

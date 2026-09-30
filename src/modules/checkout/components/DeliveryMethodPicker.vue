@@ -29,42 +29,49 @@ defineEmits(['update:modelValue']);
 @use '@/styles/variables' as *;
 
 .method-picker {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  gap: 10px;
 }
 
 .method-picker__option {
-  display: inline-flex;
+  position: relative;
+  min-height: 56px;
+  display: flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0 18px;
+  gap: 12px;
+  padding: 12px 14px;
   border: 1px solid $color-border;
-  border-radius: 999px;
-  background: #fffdf9;
+  border-radius: 14px;
+  background: $color-paper;
   color: $color-ink;
-  font-weight: 700;
   cursor: pointer;
-  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
-}
-
-.method-picker__option input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
+  transition: border-color 0.16s ease, background 0.16s ease;
 }
 
 .method-picker__option:hover {
-  border-color: rgba(178, 106, 0, 0.4);
+  border-color: #e7cf8e;
 }
 
 .method-picker__option.is-selected {
-  border-color: $color-primary;
-  background: #fff5e0;
-  color: $color-primary;
+  border-color: #b98f42;
+  background: #fcf1d1;
+}
+
+.method-picker__option input {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin: 0;
+  accent-color: #b98f42;
 }
 
 .method-picker__option:focus-within {
-  box-shadow: 0 0 0 4px rgba(184, 121, 22, 0.12);
+  outline: 3px solid #966419;
+  outline-offset: 2px;
+}
+
+.method-picker__option {
+  font-size: 0.9rem;
+  font-weight: 650;
 }
 </style>

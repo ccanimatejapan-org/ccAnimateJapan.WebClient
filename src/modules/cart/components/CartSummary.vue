@@ -1,18 +1,16 @@
 <template>
-  <aside class="cart-summary">
-    <h2>{{ t('cart.summary') }}</h2>
-    <p v-if="cart.groups.length > 1" class="cart-summary__notice">
-      {{ t('cart.splitNotice', { count: cart.groups.length }) }}
-    </p>
+  <aside class="cart-summary panel">
+    <h2 class="panel__title">{{ t('cart.summary') }}</h2>
     <div class="summary-row">
       <span>{{ t('cart.totalQuantity') }}</span>
       <strong>{{ cart.totalQuantity }}</strong>
     </div>
-    <div class="summary-row">
+    <div class="summary-row cart-summary__total">
       <span>{{ t('cart.subtotal') }}</span>
       <AppPrice :value="cart.subtotal" />
     </div>
-    <AppButton @click="$emit('submit')">{{ t('checkout.goCheckout') }}</AppButton>
+    <p class="cart-summary__hint">{{ t('cart.shippingHint') }}</p>
+    <AppButton class="cart-summary__submit" @click="$emit('submit')">{{ t('checkout.goCheckout') }}</AppButton>
   </aside>
 </template>
 

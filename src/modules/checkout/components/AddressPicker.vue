@@ -43,47 +43,60 @@ const { t } = useI18n();
 
 .address-picker {
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
 
 .address-picker__option {
+  position: relative;
+  min-height: 56px;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
   border: 1px solid $color-border;
   border-radius: 14px;
-  background: #fffdf9;
+  background: $color-paper;
+  color: $color-ink;
   cursor: pointer;
   transition: border-color 0.16s ease, background 0.16s ease;
 }
 
 .address-picker__option:hover {
-  border-color: rgba(178, 106, 0, 0.4);
+  border-color: #e7cf8e;
 }
 
 .address-picker__option.is-selected {
-  border-color: $color-primary;
-  background: #fff5e0;
+  border-color: #b98f42;
+  background: #fcf1d1;
 }
 
 .address-picker__option input {
-  width: 18px;
-  height: 18px;
-  accent-color: $color-primary;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin: 0;
+  accent-color: #b98f42;
+}
+
+.address-picker__option:focus-within {
+  outline: 3px solid #966419;
+  outline-offset: 2px;
 }
 
 .address-picker__text {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
 .address-picker__text strong {
-  color: $color-ink;
+  font-size: 0.9rem;
 }
 
 .address-picker__text small {
   color: $color-muted;
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
 }
 </style>

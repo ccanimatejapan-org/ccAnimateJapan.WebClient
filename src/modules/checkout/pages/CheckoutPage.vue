@@ -1,25 +1,29 @@
 <template>
   <section class="section narrow-section checkout">
-    <div class="section__header">
-      <div>
-        <p class="eyebrow">{{ t('checkout.eyebrow') }}</p>
-        <h1>{{ t('checkout.title') }}</h1>
-      </div>
-    </div>
+    <header class="page-head">
+      <p class="eyebrow">{{ t('checkout.eyebrow') }}</p>
+      <h1>{{ t('checkout.title') }}</h1>
+      <p class="page-head__desc">{{ t('checkout.subtitle') }}</p>
+    </header>
 
     <div v-if="ready" class="checkout__layout">
       <div class="checkout__main">
-        <div class="checkout__block">
-          <h2>{{ t('checkout.chooseMethod') }}</h2>
+        <div class="checkout__block panel">
+          <h2 class="panel__title">{{ t('checkout.chooseMethod') }}</h2>
           <DeliveryMethodPicker v-model="selectedMethodId" :delivery-types="deliveryTypes" />
         </div>
 
-        <div class="checkout__block">
-          <h2>{{ t('checkout.chooseAddress') }}</h2>
+        <div class="checkout__block panel">
+          <h2 class="panel__title">{{ t('checkout.chooseAddress') }}</h2>
           <template v-if="needsAddress">
             <AddressPicker v-model="selectedAddressId" :addresses="methodAddresses" />
             <div v-if="usingNew" class="checkout__new-address">
-              <input class="checkout__field" v-model="newAddress" :placeholder="addressPlaceholder" />
+              <input
+                class="checkout__field"
+                v-model="newAddress"
+                :placeholder="addressPlaceholder"
+                :aria-label="t('checkout.chooseAddress')"
+              />
               <label class="checkout__save">
                 <input v-model="saveAddress" type="checkbox" />
                 <span>{{ t('checkout.saveAsAddress') }}</span>
@@ -33,17 +37,29 @@
               />
             </div>
           </template>
-          <p v-else class="checkout__hint">{{ t('checkout.noAddressNeeded') }}</p>
+          <p v-else class="notice">
+            <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 11v6M12 7h.01M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0" /></svg>
+            <span>{{ t('checkout.noAddressNeeded') }}</span>
+          </p>
         </div>
 
-        <div class="checkout__block">
-          <h2>{{ t('checkout.recipientPhone') }}</h2>
-          <input class="checkout__field" v-model="recipientPhone" type="tel" />
+        <div class="checkout__block panel">
+          <h2 class="panel__title">
+            <label for="checkout-recipient-phone">{{ t('checkout.recipientPhone') }}</label>
+          </h2>
+          <input
+            id="checkout-recipient-phone"
+            class="checkout__field"
+            v-model="recipientPhone"
+            type="tel"
+            inputmode="tel"
+            autocomplete="tel"
+          />
         </div>
       </div>
 
-      <aside class="checkout__summary">
-        <h2>{{ t('checkout.summary') }}</h2>
+      <aside class="checkout__summary panel">
+        <h2 class="panel__title">{{ t('checkout.summary') }}</h2>
         <div class="checkout__groups">
           <div
             v-for="group in cart.groups"
@@ -63,14 +79,14 @@
             />
           </div>
         </div>
-        <p v-if="cart.groups.length" class="checkout__notice">
+        <p v-if="cart.groups.length" class="notice">
           {{ t('checkout.splitNotice', { count: cart.groups.length }) }}
         </p>
         <div class="summary-row">
           <span>{{ t('cart.totalQuantity') }}</span>
           <strong>{{ cart.totalQuantity }}</strong>
         </div>
-        <div class="summary-row">
+        <div class="summary-row checkout__total">
           <span>{{ t('cart.subtotal') }}</span>
           <AppPrice :value="cart.subtotal" />
         </div>
@@ -278,6 +294,7 @@ function showPartialFailureToast(failures, options = {}) {
 }
 
 .checkout__main {
+  min-width: 0;
   display: grid;
   gap: 16px;
 }
@@ -285,15 +302,10 @@ function showPartialFailureToast(failures, options = {}) {
 .checkout__block {
   display: grid;
   gap: 12px;
-  padding: 18px;
-  border: 1px solid rgba(234, 216, 204, 0.74);
-  border-radius: 16px;
-  background: rgba(255, 253, 249, 0.72);
 }
 
-.checkout__block h2 {
+.checkout__block .panel__title {
   margin: 0;
-  font-size: 1.05rem;
 }
 
 .checkout__new-address {
@@ -303,51 +315,44 @@ function showPartialFailureToast(failures, options = {}) {
 
 .checkout__field {
   width: 100%;
-  min-height: 46px;
+  min-height: 48px;
   padding: 0 14px;
   border: 1px solid $color-border;
-  border-radius: 14px;
-  background: #fffdf9;
+  border-radius: $radius-control;
+  background: $color-paper;
   color: $color-ink;
+  font-size: 16px;
 }
 
 .checkout__field:focus {
-  border-color: $color-primary;
-  box-shadow: 0 0 0 4px rgba(184, 121, 22, 0.12);
+  border-color: #b98f42;
+  box-shadow: 0 0 0 3px rgba(245, 207, 102, 0.35);
   outline: none;
 }
 
 .checkout__save {
+  min-height: 44px;
   display: flex;
   align-items: center;
   gap: 8px;
-  color: $color-muted;
-  font-weight: 600;
+  color: $color-ink;
+  font-size: 0.87rem;
+  cursor: pointer;
 }
 
 .checkout__save input {
-  width: 18px;
-  height: 18px;
-  accent-color: $color-primary;
-}
-
-.checkout__hint {
-  margin: 0;
-  color: $color-muted;
+  width: 20px;
+  height: 20px;
+  accent-color: #b98f42;
 }
 
 .checkout__summary {
   display: grid;
   gap: 10px;
-  padding: 18px;
-  border: 1px solid rgba(234, 216, 204, 0.74);
-  border-radius: 16px;
-  background: #fff;
 }
 
-.checkout__summary h2 {
-  margin: 0;
-  font-size: 1.05rem;
+.checkout__summary .panel__title {
+  margin-bottom: 4px;
 }
 
 .checkout__groups {
@@ -360,6 +365,12 @@ function showPartialFailureToast(failures, options = {}) {
   gap: 8px;
 }
 
+.checkout__group-row {
+  padding-top: 0;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
 .checkout__group-row span {
   min-width: 0;
   overflow-wrap: anywhere;
@@ -369,35 +380,29 @@ function showPartialFailureToast(failures, options = {}) {
   align-self: start;
 }
 
-.checkout__group-row span {
-  min-width: 0;
-  overflow-wrap: anywhere;
+.checkout__total {
+  align-items: center;
+  border-bottom: 0;
 }
 
-.checkout__notice {
-  margin: 0;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: rgba(184, 121, 22, 0.1);
-  color: $color-primary;
-  font-size: 0.9rem;
-  font-weight: 800;
+.checkout__total .app-price {
+  font-size: 1.3rem;
 }
 
 .checkout__submit {
-  margin-top: 6px;
   width: 100%;
+  margin-top: 4px;
 }
 
 @media (min-width: 860px) {
   .checkout__layout {
-    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-columns: minmax(0, 1fr) 340px;
     gap: 24px;
   }
 
   .checkout__summary {
     position: sticky;
-    top: 84px;
+    top: 24px;
   }
 }
 </style>

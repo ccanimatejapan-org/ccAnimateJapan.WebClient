@@ -2,24 +2,38 @@
 
 .quantity-control {
   display: inline-grid;
-  grid-template-columns: 44px 56px 44px;
-  border: 1px solid $color-border;
-  border-radius: 999px;
+  grid-template-columns: 44px 44px 44px;
   overflow: hidden;
-  background: #fffaf4;
+  border: 1px solid $color-border;
+  border-radius: 10px;
+  background: $color-paper;
 }
 
 .quantity-control button,
 .quantity-control input {
+  width: 100%;
   height: 44px;
+  padding: 0;
   border: 0;
   background: transparent;
   color: $color-ink;
+  font-family: $font-number;
+  font-size: 16px;
   text-align: center;
+  -moz-appearance: textfield;
+}
+
+.quantity-control input::-webkit-outer-spin-button,
+.quantity-control input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
 }
 
 .quantity-control button {
-  color: $color-primary;
   cursor: pointer;
-  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+.quantity-control button:hover {
+  background: #f6f1e6;
 }
