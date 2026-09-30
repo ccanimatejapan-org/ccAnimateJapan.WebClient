@@ -16,7 +16,8 @@
   width: 100%;
   overflow: hidden;
   border: 1px solid $color-border;
-  border-radius: 8px;
+  border-radius: $radius-control;
+  background: $color-paper;
 }
 
 .product-add-dialog__heading {
@@ -31,44 +32,48 @@
 
 .product-add-dialog__heading p {
   color: $color-muted;
-  font-size: 0.9rem;
+  font-size: 0.78rem;
 }
 
 .product-add-dialog__heading h3 {
-  line-height: 1.35;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .product-add-dialog__field {
   display: grid;
   gap: 8px;
-  color: $color-muted;
+  color: $color-ink;
+  font-size: 0.87rem;
   font-weight: 700;
 }
 
 .product-add-dialog__quantity {
   width: fit-content;
   display: inline-grid;
-  grid-template-columns: 42px 68px 42px;
+  grid-template-columns: 44px 56px 44px;
   overflow: hidden;
   border: 1px solid $color-border;
-  border-radius: 999px;
-  background: #fff;
+  border-radius: 10px;
+  background: $color-paper;
 }
 
 .product-add-dialog__quantity button,
 .product-add-dialog__quantity input {
-  height: 42px;
+  height: 44px;
   border: 0;
   background: transparent;
   color: $color-ink;
+  font-family: $font-number;
+  font-size: 16px;
   text-align: center;
 }
 
 .product-add-dialog__quantity button {
-  color: $color-primary;
+  color: $color-ink;
   cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: 900;
+  font-size: 1.2rem;
+  font-weight: 400;
 }
 
 .product-add-dialog__hint {
@@ -83,16 +88,18 @@
   resize: vertical;
   padding: 12px 14px;
   border: 1px solid $color-border;
-  border-radius: 8px;
-  background: #fff;
+  border-radius: $radius-control;
+  background: $color-paper;
   color: $color-ink;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.6;
 }
 
 .product-add-dialog__field textarea:focus,
 .product-add-dialog__quantity:focus-within {
-  border-color: $color-primary;
-  box-shadow: 0 0 0 4px rgba($color-primary, 0.12);
+  border-color: #b98f42;
+  box-shadow: 0 0 0 3px rgba(245, 207, 102, 0.35);
   outline: none;
 }
 
@@ -102,8 +109,9 @@
   justify-content: space-between;
   gap: 16px;
   padding: 12px 0;
-  border-top: 1px dashed $color-border;
-  border-bottom: 1px dashed $color-border;
+  border-top: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
+  font-size: 0.87rem;
 }
 
 .product-add-dialog__actions {
@@ -149,7 +157,7 @@
     position: sticky;
     bottom: 0;
     padding-top: 8px;
-    background: #fff;
+    background: $color-canvas;
   }
 }
 

@@ -21,16 +21,17 @@
       <div class="product-add-dialog__field">
         <span>{{ t('product.addDialog.quantity') }}</span>
         <div class="product-add-dialog__quantity">
-          <button type="button" @click="setQuantity(quantity - 1)">-</button>
+          <button type="button" :aria-label="t('common.decrease')" @click="setQuantity(quantity - 1)">−</button>
           <input
             v-model.number="quantity"
             type="number"
             min="1"
             :max="maxQuantity || undefined"
             inputmode="numeric"
+            :aria-label="t('product.addDialog.quantity')"
             @blur="setQuantity(quantity)"
           />
-          <button type="button" @click="setQuantity(quantity + 1)">+</button>
+          <button type="button" :aria-label="t('common.increase')" @click="setQuantity(quantity + 1)">+</button>
         </div>
         <p v-if="showMaxQuantityHint" class="product-add-dialog__hint">
           {{ t('product.addDialog.maxOrderQuantityHint', { count: MAX_QUANTITY }) }}

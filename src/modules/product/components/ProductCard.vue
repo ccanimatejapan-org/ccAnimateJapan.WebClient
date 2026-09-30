@@ -6,17 +6,22 @@
       <h3>{{ product.name }}</h3>
       <span v-if="product.note" class="product-card__note">{{ product.note }}</span>
       <AppPrice :value="product.price" />
-      <AppButton :disabled="isAddDisabled" @click="$emit('add', product)">
-        {{ addButtonLabel }}
-      </AppButton>
     </div>
+    <button
+      type="button"
+      class="product-card__buy"
+      :disabled="isAddDisabled"
+      @click="$emit('add', product)"
+    >
+      <svg v-if="!isAddDisabled" class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+      {{ addButtonLabel }}
+    </button>
   </article>
 </template>
 
 <script setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppButton from '@/shared/components/AppButton.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
 import { isActivityOrderable } from '@/shared/utils/activityOrderable.js';
 import ProductImageCarousel from './ProductImageCarousel.vue';
