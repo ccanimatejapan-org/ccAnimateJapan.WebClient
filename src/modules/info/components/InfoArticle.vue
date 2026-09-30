@@ -1,6 +1,7 @@
 <template>
   <article class="info-page">
-    <header class="info-page__head">
+    <header class="info-page__head page-head">
+      <p class="eyebrow">{{ t('info.common.eyebrow') }}</p>
       <h1 class="info-page__title">{{ t(`${contentKey}.title`) }}</h1>
       <p v-if="updated" class="info-page__updated">
         {{ t('info.common.updatedLabel') }} · {{ updated }}
