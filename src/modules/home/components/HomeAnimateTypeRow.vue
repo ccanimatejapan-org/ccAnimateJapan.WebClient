@@ -1,48 +1,43 @@
 <template>
   <section v-if="homeWorks.length" class="home-works">
-    <div class="home-works__head">
-      <h2 class="home-works__title">{{ t('home.animateType.title') }}</h2>
-      <RouterLink class="home-works__more" :to="{ name: ROUTE_NAMES.WORK_LIST }">
-        {{ t('home.animateType.viewAll') }} ›
+    <div class="section-head">
+      <h2>{{ t('home.animateType.title') }}</h2>
+      <RouterLink class="section-head__more" :to="{ name: ROUTE_NAMES.WORK_LIST }">
+        {{ t('home.animateType.viewAll') }}
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" width="15" height="15"><path d="m9 5 7 7-7 7" /></svg>
       </RouterLink>
     </div>
 
-    <AppCarousel :gap="16">
+    <div class="work-tiles">
       <RouterLink
-        v-for="work in homeWorks"
+        v-for="work in visibleWorks"
         :key="work.id"
-        class="home-works__chip"
+        class="work-tile"
         :to="{ name: ROUTE_NAMES.WORK_ACTIVITIES, params: { animateTypeId: work.id } }"
       >
-        <span class="home-works__avatar">
-          <img
-            v-if="work.imageUrl"
-            class="home-works__img"
-            :src="work.imageUrl"
-            :alt="work.name"
-            loading="lazy"
-          />
-          <span v-else class="home-works__fallback">{{ (work.name || '?').slice(0, 1) }}</span>
-          <span class="home-works__badge">{{ t('home.workCount', { count: work.count }) }}</span>
+        <img v-if="work.imageUrl" class="work-tile__img" :src="work.imageUrl" alt="" loading="lazy" />
+        <span v-else class="work-tile__img work-tile__fallback" aria-hidden="true">{{ (work.name || '?').slice(0, 1) }}</span>
+        <span class="work-tile__copy">
+          <strong>{{ work.name }}</strong>
+          <small>{{ t('home.workCount', { count: work.count }) }}</small>
         </span>
-        <span class="home-works__name">{{ work.name }}</span>
       </RouterLink>
-    </AppCarousel>
+    </div>
   </section>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useActivityStore } from '@/modules/activity/stores/activityStore';
-import AppCarousel from '@/shared/components/AppCarousel.vue';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 
 const { t } = useI18n();
 const activityStore = useActivityStore();
 const { homeWorks } = storeToRefs(activityStore);
+const visibleWorks = computed(() => homeWorks.value.slice(0, 8));
 
 onMounted(() => {
   if (!homeWorks.value.length) {

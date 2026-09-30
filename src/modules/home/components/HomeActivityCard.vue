@@ -35,14 +35,17 @@
         {{ activity.animateTypeName }}
       </span>
       <h3 class="home-activity-card__name">{{ activity.name || t('activity.unnamed') }}</h3>
-      <p class="home-activity-card__date">{{ dateRange }}</p>
+      <p class="home-activity-card__date">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v5l3 2M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0" /></svg>
+        {{ dateRange }}
+      </p>
       <div v-if="showGroupBuyProgress" class="home-activity-card__progress">
         <div class="home-activity-card__progress-track">
           <div class="home-activity-card__progress-fill" :style="{ width: progressPercent + '%' }"></div>
         </div>
         <span class="home-activity-card__progress-label">{{ progressLabel }}</span>
       </div>
-      <span v-else-if="isGroupFormed" class="home-activity-card__formed">🎉 {{ t('home.groupBuyFormed') }}</span>
+      <span v-else-if="isGroupFormed" class="home-activity-card__formed">{{ t('home.groupBuyFormed') }}</span>
     </div>
   </RouterLink>
 </template>

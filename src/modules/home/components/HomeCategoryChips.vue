@@ -1,11 +1,10 @@
 <template>
-  <div class="home-chips" role="tablist" :aria-label="t('home.ongoing.title')">
+  <div class="ui-chips" role="tablist" :aria-label="t('home.ongoing.title')">
     <button
       v-for="option in options"
       :key="option.value"
       type="button"
-      class="home-chips__item"
-      :class="{ 'home-chips__item--active': option.value === modelValue }"
+      class="ui-chip"
       role="tab"
       :aria-selected="option.value === modelValue"
       @click="$emit('update:modelValue', option.value)"
@@ -36,6 +35,3 @@ const options = [
 ];
 </script>
 
-<style scoped lang="scss">
-@use '../styles/home-chips';
-</style>

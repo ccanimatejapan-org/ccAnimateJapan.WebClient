@@ -1,48 +1,22 @@
-@use '@/styles/variables' as *;
-
 .home-ending-soon {
-  display: grid;
-  gap: 14px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
-.home-ending-soon__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.home-ending-soon__title {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0;
-  font-size: 1.15rem;
-}
-
-.home-ending-soon__title-icon {
-  flex-shrink: 0;
-  color: $color-primary;
-}
-
-.home-ending-soon__more {
-  color: $color-primary;
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
-// 與人氣活動相同尺寸：固定 150px 寬的卡片，水平捲動。
+// 固定寬度卡片，水平捲動
 .home-ending-soon__item {
-  flex: 0 0 150px;
+  flex: 0 0 158px;
   display: flex;
   min-width: 0;
 }
 
-// 卡片填滿等高的項目，讓整列卡片高度一致
 .home-ending-soon__item .home-activity-card {
   flex: 1;
 }
 
-// 名稱固定保留兩行，避免名稱 1 行 / 2 行造成卡片內容高度不一
-.home-ending-soon__item :deep(.home-activity-card__name) {
-  min-height: 2.5rem;
+@media (min-width: 700px) {
+  .home-ending-soon__item {
+    flex-basis: 220px;
+  }
 }

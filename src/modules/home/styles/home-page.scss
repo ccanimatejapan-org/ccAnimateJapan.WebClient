@@ -1,4 +1,80 @@
-.page-stack {
+@use '@/styles/variables' as *;
+
+.home-page {
   display: grid;
-  gap: clamp(30px, 5vw, 54px);
+  gap: 28px;
+  min-width: 0;
+}
+
+.home-page__search {
+  margin-bottom: -8px;
+}
+
+.home-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.home-shortcuts__item {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.home-shortcuts__symbol {
+  width: 49px;
+  height: 49px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: #efe9dc;
+  color: #79623a;
+}
+
+.home-shortcuts__item--green .home-shortcuts__symbol {
+  background: #e9eee4;
+  color: #557450;
+}
+
+.home-shortcuts__item--rose .home-shortcuts__symbol {
+  background: #f8e7df;
+  color: #95664f;
+}
+
+.home-shortcuts__item--lilac .home-shortcuts__symbol {
+  background: #ece7f1;
+  color: #79668a;
+}
+
+.home-page__guide {
+  align-items: center;
+}
+
+.home-page__guide > span {
+  flex: 1;
+}
+
+.home-page__guide strong {
+  color: $color-ink;
+}
+
+.home-page__guide-arrow {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+@media (min-width: 700px) {
+  .home-page {
+    gap: 36px;
+  }
+
+  .home-shortcuts {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+  }
 }

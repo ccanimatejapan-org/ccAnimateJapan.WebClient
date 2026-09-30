@@ -8,7 +8,8 @@
 .home-banner__viewport {
   position: relative;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 20px;
+  background: #f4dfb2;
 }
 
 .home-banner__track {
@@ -30,40 +31,53 @@
 .home-banner__dots {
   display: flex;
   justify-content: center;
-  gap: 7px;
+  align-items: center;
+  gap: 2px;
 }
 
 .home-banner__dot {
-  width: 8px;
-  height: 8px;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: 0;
-  border-radius: 999px;
-  background: rgba($color-primary, 0.28);
+  background: transparent;
   cursor: pointer;
 }
 
-.home-banner__dot--active {
-  background: $color-primary;
+.home-banner__dot::before {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 5px;
+  margin: auto;
+  border-radius: 5px;
+  background: #d7cdbb;
+  transition: width 0.2s ease;
 }
+
+.home-banner__dot--active::before {
+  width: 18px;
+  background: #756044;
+}
+
 .home-banner__arrow {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
   padding: 0;
   border: 0;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.35);
-  color: #fff;
+  background: rgba(255, 253, 247, 0.82);
+  color: $color-ink;
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
-  z-index: 2;
+  transform: translateY(-50%);
 }
 
 .home-banner__arrow--prev {
@@ -72,4 +86,10 @@
 
 .home-banner__arrow--next {
   right: 10px;
+}
+
+@media (max-width: 699px) {
+  .home-banner__arrow {
+    display: none;
+  }
 }
