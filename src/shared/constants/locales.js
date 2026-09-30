@@ -1,8 +1,8 @@
 import { getStorageItem } from '../utils/storage.js';
 
 export const SUPPORTED_LOCALES = [
-  { code: 'zh-TW', label: '中文' },
-  { code: 'en', label: 'EN' }
+  { code: 'zh-TW', label: '繁中', name: '繁體中文', hint: 'Traditional Chinese' },
+  { code: 'en', label: 'EN', name: 'English', hint: '英文' }
 ];
 
 export const DEFAULT_LOCALE = 'zh-TW';

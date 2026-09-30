@@ -1,18 +1,21 @@
 {
   "nav": {
-    "products": "Activities",
-    "orders": "Orders",
-    "member": "Member",
+    "products": "Explore",
+    "orders": "My orders",
+    "member": "Me",
     "wishPool": "Wish pool",
     "cart": "Cart",
     "cartWithCount": "Cart ({count} items)",
     "menu": "Open menu",
     "closeMenu": "Close menu",
     "language": "Language",
-    "quickLinks": "Quick links"
+    "quickLinks": "Quick links",
+    "home": "Home",
+    "main": "Main navigation",
+    "languageTitle": "Choose language"
   },
   "footer": {
-    "copy": "Japan animation goods shop",
+    "copy": "CC Japan Anime Shop / Keep what you love, beautifully.",
     "contactGroup": "Contact us",
     "shopGroup": "Shopping info",
     "lineOfficial": "LINE Official Account",
@@ -38,7 +41,11 @@
     "prevPage": "Prev",
     "nextPage": "Next",
     "pageIndicator": "Page {current} of {total}",
-    "pagination": "Pagination"
+    "pagination": "Pagination",
+    "clearSearch": "Clear search",
+    "closeDialog": "Close",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
   },
   "home": {
     "bannerPrev": "Previous slide",
@@ -69,11 +76,11 @@
       "ended": "Ended"
     },
     "animateType": {
-      "title": "Anime categories",
-      "viewAll": "All titles"
+      "title": "Start from a title you love",
+      "viewAll": "Browse titles"
     },
     "ongoing": {
-      "title": "Latest activities",
+      "title": "Don't miss these",
       "viewAll": "View all"
     },
     "endingSoon": {
@@ -83,17 +90,33 @@
     "popular": {
       "title": "Popular activities",
       "rank": "No. {rank}"
+    },
+    "searchPlaceholder": "Which title or event are you looking for?",
+    "shortcuts": {
+      "label": "Shortcuts",
+      "works": "Titles",
+      "inStock": "In stock",
+      "latest": "Latest",
+      "wish": "Wish"
+    },
+    "guide": {
+      "title": "First time here? Let us show you around.",
+      "description": "From choosing goods to delivery, see how it works."
     }
   },
   "work": {
-    "listTitle": "Titles",
-    "listSubtitle": "Pick a title to see its activities",
+    "listTitle": "Everything you love, right here",
+    "listSubtitle": "Start from a title and find goods worth collecting.",
     "empty": "No titles yet",
     "activitiesEmpty": "No activities for this title yet",
-    "notFound": "Title not found"
+    "notFound": "Title not found",
+    "eyebrow": "BY SERIES",
+    "workEyebrow": "SERIES",
+    "workSubtitle": "Latest group buys and goods for this title.",
+    "backToList": "All titles"
   },
   "activity": {
-    "listTitle": "All activities",
+    "listTitle": "Find your next favorite",
     "searchPlaceholder": "Search activities or titles",
     "searchLabel": "Search activities",
     "datePending": "Date pending",
@@ -103,12 +126,15 @@
     "preOrder": "Pre-order",
     "unnamed": "Untitled activity",
     "endedDivider": "Ended activities",
-    "viewProducts": "View products"
+    "viewProducts": "View products",
+    "eyebrow": "EXPLORE",
+    "listSubtitle": "Limited goods and new pre-orders, all in one place.",
+    "browseByWork": "Browse by title"
   },
   "wishPool": {
-    "eyebrow": "Make a wish",
-    "title": "Wish pool",
-    "description": "Tell us what you want and let the community support a group buy.",
+    "eyebrow": "WISH POOL",
+    "title": "Make a wish together",
+    "description": "Share the goods you want so every bit of love gets seen.",
     "addWish": "Add a wish",
     "loadFailed": "Unable to load wishes",
     "empty": "No wishes yet",
@@ -161,7 +187,8 @@
       "reactionFailedMessage": "Unable to update support right now. Please try again later.",
       "reactionForbiddenMessage": "You cannot support this wish right now.",
       "dailyLimitMessage": "You can only make one wish per day. Please come back tomorrow."
-    }
+    },
+    "dailyNotice": "One wish per person per day. The more support a wish gets, the more likely it opens."
   },
   "product": {
     "eyebrow": "Take your time",
@@ -194,7 +221,12 @@
       "notePlaceholder": "Character, option, or other request",
       "subtotal": "Subtotal",
       "confirm": "Add to cart"
-    }
+    },
+    "backToActivities": "Explore",
+    "deadline": "Ends {date}",
+    "searchPlaceholder": "Search goods in this event",
+    "searchEmpty": "No matching goods",
+    "count": "{count} items"
   },
   "officialShipping": {
     "title": "Official shipping period",
@@ -202,8 +234,8 @@
     "description": "This is the Japanese official shipping period. After leaving Japan, shipping to Taiwan usually takes about 2 to 3 weeks; our customer service will contact you individually about the delivery after the products arrive in Taiwan."
   },
   "cart": {
-    "eyebrow": "Ready to order",
-    "title": "Cart",
+    "eyebrow": "SHOPPING BAG",
+    "title": "Your collection list",
     "empty": "Your cart is empty",
     "goShopping": "Go shopping",
     "summary": "Summary",
@@ -215,7 +247,7 @@
     "submitOrder": "Submit order",
     "submitting": "Submitting",
     "viewCart": "View cart",
-    "splitNotice": "This will be submitted as {count} orders",
+    "splitNotice": "Checkout is split by activity — {count} orders will be created.",
     "toast": {
       "addedTitle": "Added to cart",
       "addedMessage": "“{name}” is now in your cart",
@@ -231,19 +263,22 @@
       "addFailedMessage": "Unable to add to cart. Please try again later.",
       "actionFailedTitle": "Action failed",
       "actionFailedMessage": "Couldn't update your cart, please try again."
-    }
+    },
+    "subtitle": "Double-check your picks, then move on.",
+    "removeConfirmTitle": "Remove item?",
+    "removeConfirmMessage": "Remove \"{name}\" from your cart?",
+    "shippingHint": "Delivery method and fees are confirmed in the next step."
   },
   "order": {
     "searchLabel": "Search orders",
     "searchPlaceholder": "Search order no or activity",
-    "eyebrow": "Orders",
-    "title": "Orders",
+    "eyebrow": "MY ORDERS",
+    "title": "My orders",
     "tabsTitle": "Order status",
     "tabs": {
       "customerOrdered": "Not completed yet",
       "awaitingPayment": "Awaiting payment",
-      "awaitingShipment": "Awaiting shipment",
-      "arrivedTaiwan": "Arrived in Taiwan",
+      "awaitingShipment": "Not yet arrived",
       "completed": "Completed"
     },
     "detail": "Order detail",
@@ -252,8 +287,8 @@
     "createdAt": "Created at",
     "total": "Total",
     "paymentStatusLabel": "Payment",
-    "shippingFeeLabel": "Customer Shipping Top-up",
-    "shippingPaymentStatusLabel": "Top-up Payment Status",
+    "shippingFeeLabel": "Japan domestic shipping top-up (group not formed)",
+    "shippingPaymentStatusLabel": "Shipping payment status",
     "processStatusLabel": "Status",
     "loadFailed": "Failed to load orders",
     "notFound": "Order not found",
@@ -287,7 +322,13 @@
       "completed": "Completed",
       "canceled": "Canceled",
       "unknown": "Unknown"
-    }
+    },
+    "subtitle": "Track progress, payment and delivery details.",
+    "detailEyebrow": "ORDER DETAIL",
+    "shippingFeeAmountLabel": "Japan domestic shipping",
+    "shippingRequired": "Required",
+    "shippingNotRequired": "Not required",
+    "backToList": "Back to my orders"
   },
   "auth": {
     "eyebrow": "LINE member",
@@ -343,11 +384,21 @@
     "addressHint": {
       "home": "Enter the full delivery address",
       "store": "Enter the full pickup store location (name / store ID)"
-    }
+    },
+    "home": {
+      "eyebrow": "MY PAGE",
+      "fallbackName": "Member",
+      "viewAllOrders": "View all",
+      "orderCount": "{count} orders",
+      "noOrders": "No orders yet",
+      "support": "Support & community"
+    },
+    "profileDesc": "Complete your contact details so every order arrives safely.",
+    "addressBookDesc": "Type less at your next checkout."
   },
   "checkout": {
-    "eyebrow": "Checkout",
-    "title": "Checkout",
+    "eyebrow": "CHECKOUT",
+    "title": "Confirm order",
     "goCheckout": "Checkout",
     "chooseMethod": "Delivery method",
     "chooseAddress": "Shipping address",
@@ -360,12 +411,14 @@
     "submitting": "Submitting",
     "noAddressNeeded": "This delivery method needs no address",
     "selectAddress": "Please select or enter a shipping address",
-    "partialFailureMessage": "Activities \"{names}\" could not be created because inventory or product data changed, and remain in your cart."
+    "partialFailureMessage": "Activities \"{names}\" could not be created because inventory or product data changed, and remain in your cart.",
+    "subtitle": "Choose delivery and recipient details; orders are created per activity."
   },
   "info": {
     "common": {
       "updatedLabel": "Last updated",
-      "backHome": "Back to home"
+      "backHome": "Back to home",
+      "eyebrow": "CC JAPAN / SHOPPING GUIDE"
     },
     "purchaseNotice": {
       "title": "Purchase notice",

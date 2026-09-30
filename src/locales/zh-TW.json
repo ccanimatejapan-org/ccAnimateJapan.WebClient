@@ -1,18 +1,21 @@
 {
   "nav": {
-    "products": "活動",
-    "orders": "訂單",
-    "member": "會員中心",
+    "products": "逛活動",
+    "orders": "我的訂單",
+    "member": "我的",
     "wishPool": "許願池",
     "cart": "購物車",
     "cartWithCount": "購物車（{count} 件）",
     "menu": "開啟選單",
     "closeMenu": "關閉選單",
     "language": "語言",
-    "quickLinks": "快速前往"
+    "quickLinks": "快速前往",
+    "home": "首頁",
+    "main": "主要導覽",
+    "languageTitle": "選擇語言"
   },
   "footer": {
-    "copy": "日本動畫商品選物平台",
+    "copy": "CC 日本動漫代購 / 把喜歡，好好收藏。",
     "contactGroup": "聯繫我們",
     "shopGroup": "購物資訊",
     "lineOfficial": "LINE 官方帳號",
@@ -38,7 +41,11 @@
     "prevPage": "上一頁",
     "nextPage": "下一頁",
     "pageIndicator": "第 {current} / {total} 頁",
-    "pagination": "分頁"
+    "pagination": "分頁",
+    "clearSearch": "清除搜尋",
+    "closeDialog": "關閉",
+    "decrease": "減少數量",
+    "increase": "增加數量"
   },
   "home": {
     "bannerPrev": "上一張",
@@ -69,31 +76,47 @@
       "ended": "已結束"
     },
     "animateType": {
-      "title": "動漫分類",
-      "viewAll": "作品列表"
+      "title": "從喜歡的作品開始",
+      "viewAll": "逛作品"
     },
     "ongoing": {
-      "title": "最新活動",
-      "viewAll": "查看全部活動"
+      "title": "這些活動，別錯過",
+      "viewAll": "查看全部"
     },
     "endingSoon": {
       "title": "快結束活動",
-      "viewAll": "查看全部活動"
+      "viewAll": "查看全部"
     },
     "popular": {
       "title": "人氣活動",
       "rank": "第 {rank} 名"
+    },
+    "searchPlaceholder": "想找哪一部作品或活動？",
+    "shortcuts": {
+      "label": "快捷入口",
+      "works": "作品分類",
+      "inStock": "現貨專區",
+      "latest": "最新活動",
+      "wish": "一起許願"
+    },
+    "guide": {
+      "title": "第一次來？讓我們陪你逛。",
+      "description": "從選購到收件，一次看懂代購流程。"
     }
   },
   "work": {
-    "listTitle": "作品列表",
-    "listSubtitle": "選擇喜歡的作品，看看有哪些活動",
+    "listTitle": "你喜歡的，都在這裡",
+    "listSubtitle": "從作品出發，找到值得收藏的小物。",
     "empty": "目前沒有作品",
     "activitiesEmpty": "這個作品目前沒有活動",
-    "notFound": "找不到作品"
+    "notFound": "找不到作品",
+    "eyebrow": "BY SERIES / 動漫作品",
+    "workEyebrow": "SERIES / 作品專區",
+    "workSubtitle": "關於這部作品的最新募集與收藏。",
+    "backToList": "全部作品"
   },
   "activity": {
-    "listTitle": "全部活動",
+    "listTitle": "發現下一份喜歡",
     "searchPlaceholder": "搜尋活動或作品名稱",
     "searchLabel": "搜尋活動",
     "datePending": "活動時間未定",
@@ -103,12 +126,15 @@
     "preOrder": "可預購",
     "unnamed": "未命名活動",
     "endedDivider": "已結束活動",
-    "viewProducts": "查看活動商品"
+    "viewProducts": "查看活動商品",
+    "eyebrow": "EXPLORE / 活動選物",
+    "listSubtitle": "限定周邊、預購新作，都在這裡。",
+    "browseByWork": "依動漫作品逛"
   },
   "wishPool": {
-    "eyebrow": "一起許願",
-    "title": "許願池",
-    "description": "留下想買的商品，讓大家一起支持開團。",
+    "eyebrow": "WISH POOL / 一起許願",
+    "title": "喜歡的，大家一起許願",
+    "description": "留下想買的周邊，讓每一份喜歡被看見。",
     "addWish": "新增許願",
     "loadFailed": "許願資料讀取失敗",
     "empty": "目前還沒有許願",
@@ -161,7 +187,8 @@
       "reactionFailedMessage": "目前無法更新支持狀態，請稍後再試",
       "reactionForbiddenMessage": "目前沒有權限支持這筆許願",
       "dailyLimitMessage": "每人每天只能許願一次，請明天再來"
-    }
+    },
+    "dailyNotice": "每人每天可許願一次；支持越多的願望，越有機會開團。"
   },
   "product": {
     "eyebrow": "慢慢挑選",
@@ -194,7 +221,12 @@
       "notePlaceholder": "可填角色、款式或其他需求",
       "subtotal": "小計",
       "confirm": "加入購物車"
-    }
+    },
+    "backToActivities": "逛活動",
+    "deadline": "{date} 截止",
+    "searchPlaceholder": "搜尋本活動商品",
+    "searchEmpty": "沒有符合的商品",
+    "count": "{count} 件商品"
   },
   "officialShipping": {
     "title": "官方出貨期間",
@@ -202,8 +234,8 @@
     "description": "此為日本官方出貨期間，出貨後還須經過約2~3周運送至台灣，商品抵台後官方客服會再個別聯絡出貨事宜喔。"
   },
   "cart": {
-    "eyebrow": "準備送出",
-    "title": "購物車",
+    "eyebrow": "SHOPPING BAG / 購物車",
+    "title": "你的收藏清單",
     "empty": "購物車目前沒有商品",
     "goShopping": "前往選購",
     "summary": "訂單摘要",
@@ -215,7 +247,7 @@
     "submitOrder": "送出訂單",
     "submitting": "送出中",
     "viewCart": "查看購物車",
-    "splitNotice": "將分為 {count} 筆訂單送出",
+    "splitNotice": "依活動分組結帳，將建立 {count} 筆訂單。",
     "toast": {
       "addedTitle": "已加入購物車",
       "addedMessage": "「{name}」已放進購物車",
@@ -231,19 +263,22 @@
       "addFailedMessage": "目前無法加入購物車，請稍後再試",
       "actionFailedTitle": "操作失敗",
       "actionFailedMessage": "目前無法更新購物車，請稍後再試"
-    }
+    },
+    "subtitle": "確認好心意，就準備下一步吧。",
+    "removeConfirmTitle": "移除商品？",
+    "removeConfirmMessage": "確定要將「{name}」從購物車移除嗎？",
+    "shippingHint": "物流費用與收件方式於下一步確認。"
   },
   "order": {
     "searchLabel": "搜尋訂單",
     "searchPlaceholder": "搜尋訂單編號或活動名稱",
-    "eyebrow": "訂單紀錄",
-    "title": "訂單查詢",
+    "eyebrow": "MY ORDERS / 我的訂單",
+    "title": "我的訂單",
     "tabsTitle": "訂單狀態",
     "tabs": {
       "customerOrdered": "尚未結單",
       "awaitingPayment": "尚未付款",
-      "awaitingShipment": "官方尚未出貨",
-      "arrivedTaiwan": "商品已抵台",
+      "awaitingShipment": "尚未到貨",
       "completed": "已完成"
     },
     "detail": "訂單明細",
@@ -252,8 +287,8 @@
     "createdAt": "建立時間",
     "total": "總計",
     "paymentStatusLabel": "付款狀態",
-    "shippingFeeLabel": "顧客自行補運費",
-    "shippingPaymentStatusLabel": "補運費付款狀態",
+    "shippingFeeLabel": "未成團自行補日本境內運",
+    "shippingPaymentStatusLabel": "運費付款狀態",
     "processStatusLabel": "處理狀態",
     "loadFailed": "訂單資料讀取失敗",
     "notFound": "找不到訂單",
@@ -272,8 +307,8 @@
       "unpaid": "待付款"
     },
     "shippingPaymentStatus": {
-      "paid": "已付款自行運費",
-      "unpaid": "未付款自行運費",
+      "paid": "已付款",
+      "unpaid": "待付款",
       "none": "不適用",
       "unknown": "未知"
     },
@@ -287,7 +322,13 @@
       "completed": "訂單已完成",
       "canceled": "訂單已取消",
       "unknown": "未知"
-    }
+    },
+    "subtitle": "查詢訂單進度、付款與收件資訊。",
+    "detailEyebrow": "ORDER DETAIL / 訂單明細",
+    "shippingFeeAmountLabel": "日本境內運費",
+    "shippingRequired": "需要",
+    "shippingNotRequired": "不需要",
+    "backToList": "返回我的訂單"
   },
   "auth": {
     "eyebrow": "LINE 會員",
@@ -309,7 +350,7 @@
     "recheckFriend": "我已加入，重新檢查"
   },
   "member": {
-    "eyebrow": "我的資料",
+    "eyebrow": "MY PROFILE / 我的資料",
     "title": "會員中心",
     "profile": "會員資料",
     "addressBook": "常用地址",
@@ -343,11 +384,21 @@
     "addressHint": {
       "home": "請填寫完整收件地址",
       "store": "請填寫取貨門市完整地點（店名／店號）"
-    }
+    },
+    "home": {
+      "eyebrow": "MY PAGE / 我的",
+      "fallbackName": "會員",
+      "viewAllOrders": "查看全部",
+      "orderCount": "{count} 筆",
+      "noOrders": "尚無訂單",
+      "support": "客服與社群"
+    },
+    "profileDesc": "補齊聯絡資訊，讓每份收藏安心抵達。",
+    "addressBookDesc": "下次結帳，少打幾個字。"
   },
   "checkout": {
-    "eyebrow": "結帳",
-    "title": "結帳",
+    "eyebrow": "CHECKOUT / 確認訂購",
+    "title": "確認訂購",
     "goCheckout": "前往結帳",
     "chooseMethod": "選擇物流方式",
     "chooseAddress": "選擇收件地址",
@@ -360,12 +411,14 @@
     "submitting": "送出中",
     "noAddressNeeded": "此物流方式不需填寫地址",
     "selectAddress": "請選擇或填寫收件地址",
-    "partialFailureMessage": "活動「{names}」因庫存或商品異常未能建立，已保留在購物車"
+    "partialFailureMessage": "活動「{names}」因庫存或商品異常未能建立，已保留在購物車",
+    "subtitle": "選擇物流與收件資訊，送出後依活動建立訂單。"
   },
   "info": {
     "common": {
       "updatedLabel": "最後更新",
-      "backHome": "返回首頁"
+      "backHome": "返回首頁",
+      "eyebrow": "CC JAPAN / SHOPPING GUIDE"
     },
     "purchaseNotice": {
       "title": "購買須知",
