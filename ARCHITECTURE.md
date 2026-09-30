@@ -107,12 +107,14 @@ src/
 /                             首頁（輪播、分類、熱門活動、依作品逛、進行中活動、指南）
 /activities/:activityId/products
                               活動商品列表，一行兩筆商品的手機版 grid
+/activities                   活動列表（支援 `?q=` 關鍵字與 `?availability=inStock` 深連結）
 /works                        作品列表（依作品逛）
 /works/:animateTypeId         特定作品底下的活動列表
 /cart                         購物車，可修改數量、刪除商品、送出訂單
-/orders                       我的訂單列表
+/orders                       我的訂單列表（支援 `?stage=` 深連結指定階段）
   /orders/:id                   訂單詳情簡版
   /wish-pool                    許願池（需 LINE 登入與加官方好友）
+/member                       會員中心首頁（訂單階段捷徑、個人資料、地址、指南入口）
 /auth/login                   LINE 登入導向頁（LIFF 未配置時的降級頁）
 /auth/line/callback           LINE callback 防呆頁（LIFF 流程不走 OAuth callback）
 /auth/add-friend              非官方帳號好友時的加好友頁
@@ -244,6 +246,7 @@ src/router/
   /cart                        -> cart
   /orders                      -> order list
   /orders/:id                  -> order detail
+  /member                      -> member center home（ROUTE_NAMES.MEMBER_CENTER）
   /member/profile              -> member profile
   /member/addresses            -> member address book
   /wish-pool                   -> wish pool（需 LINE 登入與加官方好友）
@@ -276,6 +279,14 @@ src/styles/
 - `variables.scss`：全域設計 token，例如顏色、間距、陰影、字體或斷點。
 - `utilities.scss`：可跨頁面使用的 utility class。
 - `index.scss`：全域樣式入口，集中引入 reset、variables、utilities，並定義基本元素樣式。
+
+視覺設計依 `mobile-ui-preview/DESIGN-PLAN.md`（V1.2）：
+
+- token：`$color-paper`、`$color-yellow`（主要 CTA）、`$color-danger`、`$radius-card/control/sheet`、`$shadow-card`、`$content-max`、`$font-sans`、`$font-number`。
+- 共用 utility：`.page-head`、`.section-head`、`.panel`、`.text-link`、`.search-field`、`.ui-chips`／`.ui-chip`（`aria-selected`／`aria-pressed` 表示選取，`--wrap` 換行）、`.notice`（`--green`／`--rose`）、`.work-tiles`、`.card-grid`。
+- 按鈕變體：`--primary`（黃）、`--dark`、`--secondary`、`--ghost`、`--line`。
+- Header、手機選單與操作列皆在頁面流中，不使用 fixed/sticky，也不鎖 body 捲動；可點擊元件至少 44px、輸入框 16px 字級。
+- `LanguageSwitcher` 為地球 icon 按鈕，點擊後開啟語系選擇 sheet（`AppModal` 手機為 bottom sheet、≥700px 置中）。
 
 樣式分層：
 
@@ -643,8 +654,8 @@ src/modules/order/
 資料夾功能：
 
 - `api/orderApi.js`：封裝訂單列表、訂單詳情與 `createOrderFromCartItems()`，打後端 `GET /orders`、`GET /orders/{id}`、`POST /orders`（皆需登入帶 token）。
-- `pages/OrderListPage.vue`：訂單列表頁。
-- `pages/OrderDetailPage.vue`：訂單詳情簡版，接收 `id` route param。有補運費時另列「補運費」一行；訂單總額顯示後端算好的 `order.grandTotal`。
+- `pages/OrderListPage.vue`：訂單列表頁。讀取 `route.query.stage` 決定初始階段（會員中心捷徑使用），階段篩選為可換行 chips。
+- `pages/OrderDetailPage.vue`：訂單詳情簡版，接收 `id` route param。「未成團自行補日本境內運」依 `shippingFee > 0` 顯示需要／不需要，無運費時補運費付款狀態顯示不適用。有補運費時另列「補運費」一行；訂單總額顯示後端算好的 `order.grandTotal`。
 - `components/OrderCard.vue`：訂單摘要卡片，顯示訂單編號、活動名稱、總金額、付款狀態、處理狀態、建立時間。**總金額用後端 `grandTotal`（= 商品 `total` + 補運費 `shippingFee`），前端不自行加總。**
 - `components/OrderStatusBadge.vue`：訂單狀態 badge，搭配 `shared/constants/orderStatus.js`。
 - `routes.js`：定義 `/orders` 與 `/orders/:id`。
@@ -690,22 +701,25 @@ src/modules/member/
 │  └─ ProfileForm.vue
 ├─ pages/
 │  ├─ AddressBookPage.vue
+│  ├─ MemberHomePage.vue
 │  └─ ProfilePage.vue
 ├─ routes.js
 └─ styles/
    ├─ address-book.scss
-   └─ address-form.scss
+   ├─ address-form.scss
+   └─ member-home.scss
 ```
 
 資料夾功能：
 
 - `api/memberApi.js`：封裝會員資料、更新會員資料與地址清單 API。
+- `pages/MemberHomePage.vue`：會員中心首頁（`/member`），提供訂單階段捷徑（導向 `/orders?stage=`）、個人資料／地址／指南／公告選單與客服連結。
 - `pages/ProfilePage.vue`：會員資料頁。
 - `pages/AddressBookPage.vue`：會員地址簿頁。
 - `components/ProfileForm.vue`：會員資料表單。
 - `components/AddressForm.vue`：地址表單。`useAddressDraft` 只在明確成功 reset token 後清空，API failure 保留完整輸入並保留目前物流方式。
 - `components/AddressPanel.vue`：地址 mutation 共用 `useAddressBook` lock；save/default/delete 成功後以 GET reconciliation，mutation 開始即讓舊 reload response 失效。
-- `routes.js`：定義 `/member/profile` 與 `/member/addresses`。
+- `routes.js`：定義 `/member`、`/member/profile` 與 `/member/addresses`。
 
 模組定位：
 
