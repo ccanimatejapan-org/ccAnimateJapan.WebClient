@@ -1,10 +1,11 @@
 @use '@/styles/variables' as *;
 
 .address-form {
-  padding: 20px;
+  padding: 18px;
   border: 1px solid $color-border;
-  border-radius: 16px;
-  background: #fff;
+  border-radius: $radius-card;
+  background: $color-paper;
+  box-shadow: $shadow-card;
 }
 
 .address-form__default {
@@ -39,23 +40,23 @@
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  min-height: 46px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
   padding: 0 14px;
   border: 1px solid $color-border;
-  border-radius: 16px;
-  background: #fffdf9;
+  border-radius: $radius-control;
+  background: $color-paper;
   color: $color-ink;
   text-align: left;
   cursor: pointer;
 }
 
 .address-form__delivery-trigger:focus {
-  border-color: $color-primary;
-  box-shadow: 0 0 0 4px rgba(184, 121, 22, 0.12);
+  border-color: #b98f42;
+  box-shadow: 0 0 0 3px rgba(245, 207, 102, 0.35);
   outline: none;
 }
 
@@ -112,8 +113,8 @@
 .address-form__delivery-option:hover,
 .address-form__delivery-option:focus-visible,
 .address-form__delivery-option.is-selected {
-  background: #fff5e0;
-  color: $color-primary;
+  background: #fcf1d1;
+  color: $color-ink;
   outline: none;
 }
 
@@ -125,11 +126,11 @@
 }
 
 .address-form__cancel {
-  min-height: 44px;
+  min-height: 48px;
   padding: 0 18px;
   border: 1px solid $color-border;
-  border-radius: 999px;
-  background: #fffaf3;
+  border-radius: $radius-control;
+  background: $color-paper;
   color: $color-ink;
   font-weight: 700;
   cursor: pointer;
@@ -137,6 +138,6 @@
 }
 
 .address-form__cancel:hover {
-  border-color: rgba(178, 106, 0, 0.4);
-  background: #fff5e0;
+  border-color: #e7cf8e;
+  background: #fcf1d1;
 }

@@ -1,14 +1,23 @@
 <template>
   <section class="section narrow-section">
-    <h1>{{ t('member.title') }}</h1>
+    <header class="page-head">
+      <RouterLink class="text-link member-center__back" :to="{ name: ROUTE_NAMES.MEMBER_CENTER }">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7" /></svg>
+        {{ t('nav.member') }}
+      </RouterLink>
+      <p class="eyebrow">{{ t('member.eyebrow') }}</p>
+      <h1>{{ t(activeName === ROUTE_NAMES.MEMBER_ADDRESS_BOOK ? 'member.addressBook' : 'member.profile') }}</h1>
+      <p class="page-head__desc">
+        {{ t(activeName === ROUTE_NAMES.MEMBER_ADDRESS_BOOK ? 'member.addressBookDesc' : 'member.profileDesc') }}
+      </p>
+    </header>
 
-    <div class="member-tabs" role="tablist">
+    <div class="member-tabs ui-chips" role="tablist">
       <button
         v-for="tab in tabs"
         :key="tab.name"
         type="button"
-        class="member-tabs__item"
-        :class="{ 'member-tabs__item--active': activeName === tab.name }"
+        class="ui-chip"
         role="tab"
         :aria-selected="activeName === tab.name"
         @click="selectTab(tab.name)"
@@ -25,7 +34,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import AddressPanel from '../components/AddressPanel.vue';
 import ProfilePanel from '../components/ProfilePanel.vue';

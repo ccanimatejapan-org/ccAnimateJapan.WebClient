@@ -1,0 +1,125 @@
+@use '@/styles/variables' as *;
+
+.member-home {
+  width: 100%;
+  max-width: 760px;
+  display: grid;
+  gap: 16px;
+  margin: 0 auto;
+}
+
+.member-home__hero {
+  display: grid;
+  justify-items: center;
+  padding: 12px 0 10px;
+  text-align: center;
+}
+
+.member-home__hero h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  overflow-wrap: anywhere;
+}
+
+.member-home__avatar {
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: #f1dfae;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.member-home__email {
+  margin: 4px 0 0;
+  color: $color-muted;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.member-home__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: -12px 0 4px;
+}
+
+.member-home__panel-head .panel__title {
+  margin: 0;
+}
+
+.member-home__panel-head .text-link {
+  font-size: 0.8rem;
+}
+
+.member-home__order-list {
+  display: grid;
+}
+
+.member-home__row-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.member-home__order-count {
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.member-home__order-count.is-empty {
+  color: $color-muted;
+  font-weight: 400;
+}
+
+.member-home__menu {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.member-home__menu .panel__title {
+  margin: 12px 0 4px;
+}
+
+.member-home__row {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid $color-border;
+  font-size: 0.87rem;
+}
+
+.member-home__row:last-child {
+  border-bottom: 0;
+}
+
+.member-home__row-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.member-home__row-label .ui-icon {
+  width: 19px;
+  height: 19px;
+  color: #8a7044;
+}
+
+.member-home__arrow {
+  width: 16px;
+  height: 16px;
+  color: #969084;
+}
+
+.text-link .member-home__arrow {
+  width: 14px;
+  height: 14px;
+  color: inherit;
+}

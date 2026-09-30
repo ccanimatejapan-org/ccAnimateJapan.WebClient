@@ -13,6 +13,7 @@ export const ROUTE_NAMES = {
   LOGIN: 'login',
   LINE_CALLBACK: 'line-callback',
   LINE_ADD_FRIEND: 'line-add-friend',
+  MEMBER_CENTER: 'member-center',
   MEMBER_PROFILE: 'member-profile',
   MEMBER_ADDRESS_BOOK: 'member-address-book',
   PURCHASE_NOTICE: 'purchase-notice',

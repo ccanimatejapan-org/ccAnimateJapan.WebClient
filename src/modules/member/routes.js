@@ -1,7 +1,13 @@
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import MemberCenterPage from './pages/MemberCenterPage.vue';
+import MemberHomePage from './pages/MemberHomePage.vue';
 
 export default [
+  {
+    path: 'member',
+    name: ROUTE_NAMES.MEMBER_CENTER,
+    component: MemberHomePage
+  },
   {
     path: 'member/profile',
     name: ROUTE_NAMES.MEMBER_PROFILE,
