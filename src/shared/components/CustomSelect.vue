@@ -375,7 +375,7 @@ watch(
   padding: 0 14px;
   border: 1px solid $color-border;
   border-radius: 10px;
-  background: #fffdf9;
+  background: #fff;
   color: $color-ink;
   cursor: pointer;
 }
@@ -435,7 +435,7 @@ watch(
 .custom-select__option:hover,
 .custom-select__option:focus-visible,
 .custom-select__option[aria-selected='true'] {
-  background: #fff5e0;
+  background: #fcf1d1;
   color: $color-primary;
   outline: none;
 }

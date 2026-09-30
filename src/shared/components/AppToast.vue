@@ -43,40 +43,36 @@ const ui = useUiStore();
 
 .app-toast {
   position: fixed;
-  right: clamp(16px, 4vw, 36px);
-  bottom: clamp(16px, 4vw, 36px);
-  z-index: 60;
-  width: min(420px, calc(100% - 32px));
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  z-index: 100;
+  width: min(440px, calc(100% - 32px));
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 12px;
-  padding: 14px 14px 14px 16px;
-  border: 1px solid rgba(217, 128, 117, 0.32);
-  border-radius: 22px;
-  background: rgba(255, 252, 246, 0.96);
-  box-shadow: 0 18px 44px rgba(106, 73, 61, 0.18);
-  color: $color-ink;
-  backdrop-filter: blur(16px);
+  padding: 12px 10px 12px 16px;
+  border-radius: $radius-control;
+  background: rgba(48, 45, 39, 0.94);
+  box-shadow: 0 18px 44px rgba(48, 38, 25, 0.22);
+  color: #fff;
+  font-size: 0.87rem;
+  transform: translateX(-50%);
 }
 
 .app-toast__mark {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   display: grid;
   place-items: center;
   border-radius: 999px;
-  background: $color-accent;
-  color: #fff;
+  background: $color-yellow;
+  color: $color-ink;
   font-weight: 800;
 }
 
-.app-toast--warning {
-  border-color: rgba(192, 57, 43, 0.32);
-}
-
 .app-toast--warning .app-toast__mark {
-  background: #c0392b;
+  background: #e8b4a4;
 }
 
 .app-toast__body {
@@ -92,48 +88,47 @@ const ui = useUiStore();
 }
 
 .app-toast__body p {
-  color: $color-muted;
-  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.8rem;
 }
 
 .app-toast__action {
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(184, 121, 22, 0.12);
-  color: $color-primary;
-  font-size: 0.9rem;
-  font-weight: 800;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: $color-yellow;
+  color: $color-ink;
+  font-size: 0.8rem;
+  font-weight: 700;
   white-space: nowrap;
 }
 
 .app-toast__close {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: $color-muted;
+  color: rgba(255, 255, 255, 0.72);
   cursor: pointer;
   font-size: 1.2rem;
 }
 
 .app-toast-enter-active,
 .app-toast-leave-active {
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .app-toast-enter-from,
 .app-toast-leave-to {
   opacity: 0;
-  transform: translateY(10px) scale(0.98);
+  transform: translate(-50%, 10px);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 520px) {
   .app-toast {
-    right: 12px;
-    left: 12px;
-    bottom: 12px;
-    width: auto;
     grid-template-columns: auto minmax(0, 1fr) auto;
   }
 

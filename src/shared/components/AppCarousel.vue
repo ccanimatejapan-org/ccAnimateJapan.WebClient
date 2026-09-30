@@ -152,8 +152,8 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   border: 1px solid $color-border;
   border-radius: 999px;
@@ -180,15 +180,15 @@ onBeforeUnmount(() => {
 }
 
 .app-carousel__arrow:hover {
-  background: $color-primary;
-  color: #fff;
+  background: $color-yellow;
+  color: $color-ink;
   box-shadow: 0 6px 14px rgba(120, 100, 30, 0.2);
 }
 
 .app-carousel__arrow:focus-visible {
-  background: $color-primary;
-  color: #fff;
-  outline: 2px solid rgba(184, 121, 22, 0.32);
+  background: $color-yellow;
+  color: $color-ink;
+  outline: 3px solid #966419;
   outline-offset: 2px;
 }
 

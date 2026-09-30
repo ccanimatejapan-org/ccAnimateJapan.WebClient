@@ -73,10 +73,10 @@ const display = computed(() =>
 .official-shipping-card {
   display: grid;
   gap: 6px;
-  border: 1px solid rgba($color-primary, 0.22);
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba($color-surface, 0.88), rgba($color-canvas, 0.92));
-  color: $color-ink;
+  border: 0;
+  border-radius: $radius-control;
+  background: $color-surface;
+  color: #796549;
 }
 
 .official-shipping-card__heading {
@@ -95,23 +95,23 @@ const display = computed(() =>
 
 .official-shipping-card__title {
   margin: 0;
-  color: $color-primary;
-  font-weight: 800;
-  font-size: 0.9rem;
+  color: #796549;
+  font-weight: 700;
+  font-size: 0.8rem;
 }
 
 .official-shipping-card__value {
   margin: 0;
   color: $color-ink;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
 .official-shipping-card__description {
   margin: 0;
-  color: $color-muted;
-  font-size: 0.85rem;
-  line-height: 1.45;
+  color: #796549;
+  font-size: 0.78rem;
+  line-height: 1.6;
 }
 
 .official-shipping-card--compact .official-shipping-card__description,

@@ -1,11 +1,23 @@
-// 全站設計 token —— 淡黃色系（奶油白 ↔ 淡黃 交錯）
-$color-canvas: #fffdf6; // 主底（奶油白）
-$color-surface: #fbf1c9; // 交錯區塊底（淡黃）
-$color-ink: #2d2a24; // 主要文字
-$color-muted: #8f786f; // 次要文字
-$color-border: #f0e6c6; // 邊線
-$color-primary: #b26a00; // 重點／連結（琥珀）
-$color-accent: #8fb78f; // 既有輔助色（保留給舊樣式）
-$color-preorder: #c8881c; // 狀態：預購
-$color-instock: #0a7d33; // 狀態：現貨
+// 全站設計 token —— 奶油暖黃（依 mobile-ui-preview V1.2）
+$color-canvas: #fbf9f4; // 主背景（暖白）
+$color-paper: #ffffff; // 卡片／表面
+$color-surface: #f3eddf; // 提示區塊底（奶油）
+$color-ink: #302d27; // 主要文字
+$color-muted: #777267; // 次要文字
+$color-border: #e9e4da; // 邊線
+$color-yellow: #f5cf66; // 主要操作底色（搭配深色文字）
+$color-yellow-soft: #f7e7b6; // 選取／強調底
+$color-primary: #80551b; // 重點文字／連結（琥珀棕）
+$color-accent: #426c51; // 成功／已付款
+$color-danger: #a04634; // 提醒／失敗（暖棕紅）
+$color-preorder: #7c5d23; // 狀態：預購
+$color-instock: #41674e; // 狀態：現貨
 $color-line: #06c75a; // LINE CTA
+
+$radius-card: 16px;
+$radius-control: 12px;
+$radius-sheet: 24px;
+$shadow-card: 0 6px 22px rgba(89, 70, 37, 0.03);
+$content-max: 1120px;
+$font-sans: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, -apple-system, 'Segoe UI', sans-serif;
+$font-number: system-ui, -apple-system, 'Segoe UI', sans-serif;

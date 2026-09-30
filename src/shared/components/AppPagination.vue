@@ -103,13 +103,13 @@ const pageItems = computed(() => {
 
 .app-pagination__arrow,
 .app-pagination__page {
-  min-width: 34px;
-  height: 34px;
-  padding: 0 8px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 10px;
   border: 1px solid $color-border;
-  border-radius: 8px;
-  background: #fff;
-  color: $color-primary;
+  border-radius: 10px;
+  background: $color-paper;
+  color: $color-ink;
   font: inherit;
   font-weight: 700;
   cursor: pointer;
@@ -119,8 +119,8 @@ const pageItems = computed(() => {
 }
 
 .app-pagination__page.is-active {
-  background: $color-primary;
-  border-color: $color-primary;
+  background: $color-ink;
+  border-color: $color-ink;
   color: #fff;
   cursor: default;
 }
