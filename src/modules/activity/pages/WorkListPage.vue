@@ -1,32 +1,27 @@
 <template>
-  <div class="work-list">
-    <header class="work-list__head">
-      <h1 class="work-list__title">{{ t('work.listTitle') }}</h1>
-      <p class="work-list__subtitle">{{ t('work.listSubtitle') }}</p>
+  <div class="work-list section">
+    <header class="page-head">
+      <p class="eyebrow">{{ t('work.eyebrow') }}</p>
+      <h1>{{ t('work.listTitle') }}</h1>
+      <p class="page-head__desc">{{ t('work.listSubtitle') }}</p>
     </header>
 
     <AppLoading v-if="allWorksLoading" :label="t('common.loading')" />
-    <AppEmpty v-else-if="allWorksError" :message="t('activity.loadFailed')" />
+    <AppEmpty v-else-if="allWorksError" icon="info" :message="t('activity.loadFailed')" />
     <AppEmpty v-else-if="allWorksLoaded && !allWorks.length" :message="t('work.empty')" />
-    <div v-else class="work-list__grid">
+    <div v-else class="work-tiles work-list__grid">
       <RouterLink
         v-for="work in allWorks"
         :key="work.id"
-        class="work-list__card"
+        class="work-tile"
         :to="{ name: ROUTE_NAMES.WORK_ACTIVITIES, params: { animateTypeId: work.id } }"
       >
-        <span class="work-list__avatar">
-          <img
-            v-if="work.imageUrl"
-            class="work-list__img"
-            :src="work.imageUrl"
-            :alt="work.name"
-            loading="lazy"
-          />
-          <span v-else class="work-list__fallback">{{ (work.name || '?').slice(0, 1) }}</span>
-          <span class="work-list__badge">{{ t('home.workCount', { count: work.count }) }}</span>
+        <img v-if="work.imageUrl" class="work-tile__img" :src="work.imageUrl" alt="" loading="lazy" />
+        <span v-else class="work-tile__img work-tile__fallback" aria-hidden="true">{{ (work.name || '?').slice(0, 1) }}</span>
+        <span class="work-tile__copy">
+          <strong>{{ work.name }}</strong>
+          <small>{{ t('home.workCount', { count: work.count }) }}</small>
         </span>
-        <span class="work-list__name">{{ work.name }}</span>
       </RouterLink>
     </div>
   </div>

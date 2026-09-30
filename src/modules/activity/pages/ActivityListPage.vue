@@ -1,48 +1,41 @@
 <template>
-  <div class="activity-list">
-    <header class="activity-list__head">
-      <h1 class="activity-list__title">{{ t('activity.listTitle') }}</h1>
-      <div class="activity-list__filters">
-        <HomeCategoryChips v-model="availability" />
-        <div class="activity-list__search" :class="{ 'activity-list__search--open': searchOpen }">
-          <button
-            v-if="!searchOpen"
-            type="button"
-            class="activity-list__search-toggle"
-            :aria-label="t('activity.searchLabel')"
-            @click="openSearch"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="7" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-          </button>
-          <input
-            v-else
-            ref="searchField"
-            v-model="searchInput"
-            type="search"
-            class="activity-list__search-input"
-            :placeholder="t('activity.searchPlaceholder')"
-            :aria-label="t('activity.searchLabel')"
-            @blur="onSearchBlur"
-          />
-        </div>
-      </div>
+  <div class="activity-list section">
+    <header class="page-head">
+      <p class="eyebrow">{{ t('activity.eyebrow') }}</p>
+      <h1>{{ t('activity.listTitle') }}</h1>
+      <p class="page-head__desc">{{ t('activity.listSubtitle') }}</p>
     </header>
 
+    <div class="activity-list__filters">
+      <label class="search-field">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 21l-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0" /></svg>
+        <input
+          v-model="searchInput"
+          type="search"
+          enterkeyhint="search"
+          :placeholder="t('activity.searchPlaceholder')"
+          :aria-label="t('activity.searchLabel')"
+        />
+      </label>
+      <HomeCategoryChips v-model="availability" />
+      <div class="activity-list__meta">
+        <RouterLink class="text-link" :to="{ name: ROUTE_NAMES.WORK_LIST }">
+          {{ t('activity.browseByWork') }}
+          <svg class="ui-icon activity-list__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+        </RouterLink>
+      </div>
+    </div>
+
     <AppLoading v-if="isLoading" :label="t('common.loading')" />
-    <AppEmpty v-else-if="loadFailed" :message="t('activity.loadFailed')" />
-    <AppEmpty v-else-if="!activities.length" :message="t('activity.empty')" />
-    <div v-else class="activity-list__grid">
+    <AppEmpty v-else-if="loadFailed" icon="info" :message="t('activity.loadFailed')">
+      <button type="button" class="app-button app-button--dark" @click="load(page)">{{ t('common.retry') }}</button>
+    </AppEmpty>
+    <AppEmpty v-else-if="!activities.length" icon="search" :message="t('activity.empty')">
+      <button v-if="searchInput.trim()" type="button" class="app-button app-button--dark" @click="searchInput = ''">
+        {{ t('common.clearSearch') }}
+      </button>
+    </AppEmpty>
+    <div v-else class="card-grid">
       <template v-for="item in displayItems" :key="item._divider ? 'ended-divider' : item.id">
         <div v-if="item._divider" class="activity-list__divider" role="separator">
           {{ t('activity.endedDivider') }}
@@ -55,8 +48,10 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { RouterLink, useRoute } from 'vue-router';
+import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { useActivityStore } from '@/modules/activity/stores/activityStore';
 import AppEmpty from '@/shared/components/AppEmpty.vue';
 import AppLoading from '@/shared/components/AppLoading.vue';
@@ -67,23 +62,11 @@ import HomeCategoryChips from '@/modules/home/components/HomeCategoryChips.vue';
 
 const { t } = useI18n();
 const activityStore = useActivityStore();
-const availability = ref('all');
-const searchInput = ref('');
-const searchOpen = ref(false);
-const searchField = ref(null);
+const route = useRoute();
+const AVAILABILITY_VALUES = ['all', 'preOrder', 'inStock'];
+const availability = ref(AVAILABILITY_VALUES.includes(route.query.availability) ? route.query.availability : 'all');
+const searchInput = ref(typeof route.query.q === 'string' ? route.query.q : '');
 const ACTIVITY_STATUS_ENDED = 4;
-
-function openSearch() {
-  searchOpen.value = true;
-  nextTick(() => searchField.value?.focus());
-}
-
-// 失焦時若沒有輸入內容，收合回放大鏡。
-function onSearchBlur() {
-  if (!searchInput.value.trim()) {
-    searchOpen.value = false;
-  }
-}
 
 const {
   page,

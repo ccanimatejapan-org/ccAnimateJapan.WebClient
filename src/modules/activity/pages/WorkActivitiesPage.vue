@@ -1,16 +1,19 @@
 <template>
-  <div class="work-activities">
-    <header class="work-activities__head">
-      <RouterLink class="work-activities__back" :to="{ name: ROUTE_NAMES.WORK_LIST }">
-        ‹ {{ t('work.listTitle') }}
+  <div class="work-activities section">
+    <header class="page-head">
+      <RouterLink class="text-link work-activities__back" :to="{ name: ROUTE_NAMES.WORK_LIST }">
+        <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7" /></svg>
+        {{ t('work.backToList') }}
       </RouterLink>
-      <h1 class="work-activities__title">{{ workName }}</h1>
+      <p class="eyebrow">{{ t('work.workEyebrow') }}</p>
+      <h1>{{ workName }}</h1>
+      <p class="page-head__desc">{{ t('work.workSubtitle') }}</p>
     </header>
 
     <AppLoading v-if="isLoading" :label="t('common.loading')" />
-    <AppEmpty v-else-if="loadFailed" :message="t('activity.loadFailed')" />
+    <AppEmpty v-else-if="loadFailed" icon="info" :message="t('activity.loadFailed')" />
     <AppEmpty v-else-if="!activities.length" :message="t('work.activitiesEmpty')" />
-    <div v-else class="work-activities__grid">
+    <div v-else class="card-grid">
       <HomeActivityCard
         v-for="activity in activities"
         :key="activity.id"

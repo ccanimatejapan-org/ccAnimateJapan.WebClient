@@ -1,97 +1,14 @@
-@use '@/styles/variables' as *;
-
-.work-list {
-  display: grid;
-  gap: 20px;
+.work-list__grid :deep(.work-tile) {
+  padding: 16px;
 }
 
-.work-list__head {
-  display: grid;
-  gap: 4px;
+.work-list__grid :deep(.work-tile__img) {
+  width: 64px;
+  height: 64px;
 }
 
-.work-list__title {
-  margin: 0;
-  font-size: 1.4rem;
-}
-
-.work-list__subtitle {
-  margin: 0;
-  color: $color-muted;
-  font-size: 0.9rem;
-}
-
-.work-list__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.work-list__card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  color: $color-ink;
-  text-align: center;
-}
-
-.work-list__avatar {
-  position: relative;
-  width: 84px;
-  height: 84px;
-}
-
-.work-list__img,
-.work-list__fallback {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 1px solid $color-border;
-  border-radius: 999px;
-  overflow: hidden;
-  object-fit: cover;
-  box-shadow: 0 8px 20px rgba(120, 100, 30, 0.08);
-}
-
-.work-list__fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba($color-primary, 0.16), $color-surface);
-  color: $color-primary;
-  font-size: 1.6rem;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.work-list__badge {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translate(-50%, 35%);
-  padding: 2px 9px;
-  border: 1.5px solid #fff;
-  border-radius: 999px;
-  background: $color-primary;
-  color: #fff;
-  font-size: 0.66rem;
-  font-weight: 700;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
-.work-list__name {
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 0.84rem;
-  font-weight: 700;
-}
-
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   .work-list__grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
