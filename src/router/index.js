@@ -15,6 +15,7 @@ import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { useAuthStore } from '@/modules/auth/stores/authStore';
 import { useUiStore } from '@/shared/stores/uiStore';
 import { ensureServerAwake } from '@/shared/api/httpClient';
+import { resolveLoginFailureRoute } from '@/modules/auth/utils/loginFailure';
 import {
   ensureLiffReady,
   getAccessToken,
@@ -135,10 +136,7 @@ router.beforeEach(async (to) => {
     await auth.signInWithLiff(getAccessToken());
     return true;
   } catch (error) {
-    if (error?.apiStatus === '403' || error?.message === 'notFriend') {
-      return { name: ROUTE_NAMES.LINE_ADD_FRIEND };
-    }
-    return { name: ROUTE_NAMES.LOGIN, query: { error: 'liff' } };
+    return resolveLoginFailureRoute(error);
   } finally {
     clearTimeout(coldTimer);
     ui.setGlobalLoading(false);
