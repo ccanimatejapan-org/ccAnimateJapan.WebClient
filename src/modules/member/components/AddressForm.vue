@@ -41,11 +41,11 @@
     </div>
     <label class="form-grid__full">
       <span>{{ t('member.label') }}</span>
-      <input v-model="form.addressName" :placeholder="labelPlaceholder" />
+      <input v-model="form.addressName" :maxlength="ADDRESS_NAME_MAX_LENGTH" :placeholder="labelPlaceholder" />
     </label>
     <label class="form-grid__full">
       <span>{{ t('member.field.address') }}</span>
-      <input v-model="form.address" :placeholder="addressPlaceholder" required />
+      <input v-model="form.address" :maxlength="ADDRESS_MAX_LENGTH" :placeholder="addressPlaceholder" required />
     </label>
     <label class="address-form__default form-grid__full">
       <input v-model="form.isDefault" type="checkbox" />
@@ -65,6 +65,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n';
 import AppButton from '@/shared/components/AppButton.vue';
 import { ADDRESS_KIND, requiresAddress } from '@/shared/constants/addressKind';
+import { ADDRESS_MAX_LENGTH, ADDRESS_NAME_MAX_LENGTH } from '@/shared/constants/inputLimits';
 import { useAddressDraft } from '../composables/useAddressDraft';
 
 const props = defineProps({
