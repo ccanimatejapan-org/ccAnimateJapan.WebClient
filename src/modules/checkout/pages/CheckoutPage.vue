@@ -21,6 +21,7 @@
               <input
                 class="checkout__field"
                 v-model="newAddress"
+                :maxlength="ADDRESS_MAX_LENGTH"
                 :placeholder="addressPlaceholder"
                 :aria-label="t('checkout.chooseAddress')"
               />
@@ -32,6 +33,7 @@
                 v-if="saveAddress"
                 class="checkout__field"
                 v-model="newAddressName"
+                :maxlength="ADDRESS_NAME_MAX_LENGTH"
                 :placeholder="labelPlaceholder"
                 :aria-label="t('member.label')"
               />
@@ -51,6 +53,7 @@
             id="checkout-recipient-phone"
             class="checkout__field"
             v-model="recipientPhone"
+            :maxlength="PHONE_MAX_LENGTH"
             type="tel"
             inputmode="tel"
             autocomplete="tel"
@@ -109,6 +112,7 @@ import AppLoading from '@/shared/components/AppLoading.vue';
 import OfficialShippingCard from '@/shared/components/OfficialShippingCard.vue';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { ADDRESS_KIND, requiresAddress } from '@/shared/constants/addressKind';
+import { ADDRESS_MAX_LENGTH, ADDRESS_NAME_MAX_LENGTH, PHONE_MAX_LENGTH } from '@/shared/constants/inputLimits';
 import { useUiStore } from '@/shared/stores/uiStore';
 import { useCartStore } from '@/modules/cart/stores/cartStore';
 import { getAddresses, getDeliveryTypes, getProfile } from '@/modules/member/api/memberApi';
