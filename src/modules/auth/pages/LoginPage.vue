@@ -5,8 +5,9 @@
 
     <!-- The LIFF login flow is driven by the router guard; this page is only
          reached on failure or when LIFF is not configured. Offer a retry. -->
-    <p>{{ isAutoRetrying ? t(autoRetryMessageKey) : hasLiffError ? t('auth.liffError') : t('auth.description') }}</p>
-    <AppButton v-if="!isAutoRetrying" variant="line" @click="retry">{{ t('auth.login') }}</AppButton>
+    <p>{{ isAutoRetrying ? t(autoRetryMessageKey) : hasDisabledError ? t('auth.accountDisabled') : hasLiffError ? t('auth.liffError') : t('auth.description') }}</p>
+    <!-- A disabled account cannot log in, so retrying would only loop back here. -->
+    <AppButton v-if="!isAutoRetrying && !hasDisabledError" variant="line" @click="retry">{{ t('auth.login') }}</AppButton>
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import AppButton from '@/shared/components/AppButton.vue';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
+import { LOGIN_ERROR } from '@/modules/auth/utils/loginFailure';
 
 const AUTO_RETRY_STORAGE_KEY = 'ccAnimateJapan.auth.autoRetry';
 
@@ -23,7 +25,9 @@ const route = useRoute();
 const router = useRouter();
 const { t, te } = useI18n();
 
-const hasLiffError = computed(() => route.query.error === 'liff');
+const hasLiffError = computed(() => route.query.error === LOGIN_ERROR.LIFF);
+// An admin disabled this account (backend answered 403 accountDisabled).
+const hasDisabledError = computed(() => route.query.error === LOGIN_ERROR.DISABLED);
 
 // Re-enter the shop so the router guard re-runs the LIFF flow.
 function retry() {

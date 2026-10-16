@@ -347,6 +347,7 @@
     "notFriendMessage": "請先把我們的 LINE 官方帳號加為好友，才能進入商城。",
     "addFriend": "加入官方帳號好友",
     "liffError": "LINE 登入初始化失敗，請重新整理再試。",
+    "accountDisabled": "此帳號目前無法使用，如有疑問請聯絡客服。",
     "recheckFriend": "我已加入，重新檢查"
   },
   "member": {

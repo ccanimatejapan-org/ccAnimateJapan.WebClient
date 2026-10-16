@@ -675,6 +675,9 @@ src/modules/auth/
 ├─ routes.js
 ├─ stores/
 │  └─ authStore.js
+├─ utils/
+│  ├─ loginFailure.js
+│  └─ loginFailure.test.js
 └─ styles/
    └─ auth-form.scss
 ```
@@ -683,7 +686,8 @@ src/modules/auth/
 
 - `api/authApi.js`：`loginWithLiff(accessToken)` → `POST /auth/line/login`（LIFF 登入）、`devLogin()` → `POST /auth/dev-login`（本地開發專用）。
 - `stores/authStore.js`：管理登入 session（`accessToken` + `user`），持久化於 localStorage `ccAnimateJapan.auth`；提供 `signInWithLiff(accessToken)`、`renewSession()`（401 靜默續期）、`refreshProfileInBackground()`（進站背景節流刷新 LINE profile）、`signInWithDev()`、`signOut()`。
-- `pages/LoginPage.vue`：登入頁／重試入口（LIFF 流程主要由 router guard 驅動）。
+- `utils/loginFailure.js`：`resolveLoginFailureRoute(error)`（router guard 的登入失敗導向，純函式、有測試）與 `LOGIN_ERROR`（`/auth/login?error=` 的值：`liff`、`disabled`）。
+- `pages/LoginPage.vue`：登入頁／重試入口（LIFF 流程主要由 router guard 驅動）。`?error=disabled` 時顯示「此帳號目前無法使用，如有疑問請聯絡客服。」並隱藏登入按鈕（帳號被後台停用，重試也只會回到這裡）。
 - `pages/LineCallbackPage.vue`：LINE callback 防呆頁（LIFF 不走 OAuth callback，僅作降級導回）。
 - `pages/AddFriendPage.vue`：非官方帳號好友時的加好友頁，連到 `VITE_LINE_ADD_FRIEND_URL`。
 - `routes.js`：定義 `/auth/login`、`/auth/line/callback`、`/auth/add-friend`，並將 `/auth` redirect 到 login。
@@ -731,7 +735,7 @@ src/modules/member/
 
 1. 已有 session（localStorage `ccAnimateJapan.auth` 有 `accessToken`）→ 放行；同時在背景呼叫 `authStore.refreshProfileInBackground()`（節流每 10 分鐘一次、不阻塞導頁、失敗不影響現有 session），重打 `POST /auth/line/login` 觸發後端 upsert，讓 `members.displayName`/`pictureUrl` 不會因 session 未過期而長期停在舊值（例如顧客換頭像後 DB 存的舊網址會 404）。
 2. **本地 dev-login**：`import.meta.env.DEV && VITE_DEV_AUTO_LOGIN === 'true'` 時，呼叫 `authStore.signInWithDev()`（打 `POST /auth/dev-login`，用 DB 第一筆有效會員發真實 JWT）直接進站。此分支只在 dev build 存在（正式 build 被 tree-shake 移除），後端非 Development 也回 404。
-3. **LIFF 流程**：未設 `VITE_LIFF_ID` → 導 `/auth/login`；否則 `ensureLiffReady()` → 若 `!isLoggedIn()`：在 LINE app 內（`isInClient()`）改導登入頁避免卡白畫面，否則 `login(redirectUri)` 導向 LINE → `getFriendFlag()` 為 false（或後端 body 403）導 `/auth/add-friend` → `authStore.signInWithLiff(getAccessToken())` 換後端 session。
+3. **LIFF 流程**：未設 `VITE_LIFF_ID` → 導 `/auth/login`；否則 `ensureLiffReady()` → 若 `!isLoggedIn()`：在 LINE app 內（`isInClient()`）改導登入頁避免卡白畫面，否則 `login(redirectUri)` 導向 LINE → `getFriendFlag()` 為 false（或後端 body 403 `notFriend`）導 `/auth/add-friend` → `authStore.signInWithLiff(getAccessToken())` 換後端 session。後端回 403 `accountDisabled`（會員被後台停用）時**不**導加好友頁（他其實已是好友），改導 `/auth/login?error=disabled` 顯示停用說明。以上失敗導向集中在 `modules/auth/utils/loginFailure.js` 的 `resolveLoginFailureRoute()`。
 
 登入成功後 `httpClient` request interceptor 自動帶 `Authorization: Bearer`；遇 401 會先嘗試靜默續期並重試，失敗才清掉 token 並重導登入頁。
 
