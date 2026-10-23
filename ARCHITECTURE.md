@@ -371,15 +371,28 @@ src/shared/composables/
 
 ```text
 src/shared/constants/
+├─ addressKind.js
 ├─ externalLinks.js
 ├─ features.js
 ├─ features.test.js
+├─ groupBuy.js
+├─ inputLimits.js
+├─ inputLimits.test.js
+├─ locales.js
+├─ locales.test.js
 ├─ orderStatus.js
+├─ quantity.js
+├─ quantity.test.js
 └─ routes.js
 ```
 
 - `routes.js`：集中管理 `ROUTE_NAMES`（含 `WORK_LIST`、`WORK_ACTIVITIES`）。
 - `orderStatus.js`：訂單狀態代碼、狀態翻譯 key、badge variant 與 helper。
+- `addressKind.js`：物流方式的地址類型 `ADDRESS_KIND`（1 賣貨便取貨、2 面交免地址、3 宅配）與 `requiresAddress()`，後端 `deliveryTypes.addressKind` 的鏡像。
+- `groupBuy.js`：開團狀態 `GROUP_BUY_STATUS`（`NotRequired` / `Recruiting` / `Formed` / `Failed`）與運費模式 `SHIPPING_MODE`（`PerItemPrepaid` / `FreeOverAmount` / `NoShipping`），後端的鏡像。
+- `inputLimits.js`：自由文字欄位的長度上限（地址 200、地址標籤 60、電話 20），須與後端 WebAPI `Application/Common/InputLimits.cs` 一致（`inputLimits.test.js` 覆蓋）。
+- `locales.js`：支援語系清單（`zh-TW` / `en`）、預設語系、localStorage key `ccAnimateJapan.locale` 與 `<html lang>` 對應（`locales.test.js` 覆蓋）。
+- `quantity.js`：單一商品可購買數量上限 `MAX_ORDER_QUANTITY`（10）與 `clampQuantity()`；後端加購與結帳也會檢查，前端只是預先限制（`quantity.test.js` 覆蓋）。
 - `externalLinks.js`：外部連結常數（例如官方帳號、社群連結）。
 - `features.js`：功能旗標，集中管理「程式與語系檔都保留、但暫時不對外顯示」的功能；旗標一律為嚴格 boolean（`features.test.js` 驗證）。目前只有 `SHOW_LANGUAGE_SWITCHER`（`false`＝隱藏語言切換按鈕，見「styles/」）。
 
@@ -409,6 +422,7 @@ src/shared/styles/
 src/shared/utils/
 ├─ activityOrderable.js
 ├─ date.js
+├─ debounce.js
 ├─ html.js
 ├─ money.js
 ├─ officialShipping.js
@@ -418,7 +432,8 @@ src/shared/utils/
 
 - `activityOrderable.js`：`isActivityOrderable(activity)` 僅在活動 `status === 3` 時回傳可下單。
 - `date.js`：日期與日期時間格式化 helper。
-- `html.js`：商品說明（受限 HTML）的清洗與轉純文字，**不依賴 DOM**（`html.test.js` 以 node:test 覆蓋 XSS 案例）。`sanitizeHtml(value)` 只留 `P/BR/STRONG/B/EM/I/U/UL/OL/LI/DIV` 且去掉全部屬性，`script`/`style` 連內容一起刪，其餘標籤拆掉只留文字，不是標籤的 `<` 轉成 `&lt;`，未閉合的標籤／註解會丟掉後面全部內容，輸出標籤一定成對；`stripHtml(value)` 回傳純文字（`<br>`、`</p>`、`</div>`、`</li>` 等換行，解 `&amp; &lt; &gt; &nbsp; &quot; &#39;`）。凡是要把後端的 HTML 字串 `v-html` 出來，都必須先過 `sanitizeHtml`。
+- `debounce.js`：`debounce(fn, wait = 300)`，回傳的函式帶 `.cancel()`（`debounce.test.js` 覆蓋）。
+- `html.js`：商品說明（受限 HTML）的清洗與轉純文字，**不依賴 DOM**（`html.test.js` 以 node:test 覆蓋 XSS 案例）。`sanitizeHtml(value)` 只留 `P/BR/STRONG/B/EM/I/U/UL/OL/LI/DIV` 且去掉全部屬性，`script`/`style` 連內容一起刪，其餘標籤拆掉只留文字，不是標籤的 `<` 轉成 `&lt;`，未閉合的標籤／註解會丟掉後面全部內容，輸出標籤一定成對；`stripHtml(value)` 回傳純文字（`<br>`、`</p>`、`</div>`、`</li>` 等換行，解 `&amp; &lt; &gt; &nbsp; &quot; &#39;`）。凡是要把後端的 HTML 字串 `v-html` 出來，都必須先過 `sanitizeHtml`。**白名單必須與 AdminClient `src/shared/utils/html.js` 的 `allowedTags` 一致**（後台編輯器新增標籤時，前台要同步，否則新標籤會被默默拆掉、只剩文字）；兩邊同名的 `stripHtml` 行為不同（後台收合成單行、前台保留換行）。放在 `shared/utils` 是因為它是無 DOM、無業務知識的通用工具（後台同樣放在 shared），目前的使用者都在 `product` 模組。
 - `money.js`：金額格式化 helper。
 - `officialShipping.js`：`getOfficialShippingDisplay({ isPreOrder, startTime, endTime }, locale)` 回傳 `hidden` / `pending` / `ready`，並固定以 `Asia/Taipei` 格式化日期。
 - `storage.js`：localStorage/sessionStorage 讀寫封裝。
@@ -431,11 +446,13 @@ src/modules/
 ├─ activity/
 ├─ auth/
 ├─ cart/
+├─ checkout/
 ├─ home/
+├─ info/
 ├─ member/
 ├─ order/
-├─ wishPool/
-└─ product/
+├─ product/
+└─ wishPool/
 ```
 
 常見 module 內部資料夾：
@@ -558,8 +575,14 @@ src/modules/product/
 │  └─ productApi.js
 ├─ components/
 │  ├─ ProductAddDialog.vue
-│  └─ ProductCard.vue
+│  ├─ ProductCard.vue
+│  ├─ ProductImageCarousel.vue
+│  └─ ProductImageLightbox.vue
+├─ composables/
+│  ├─ useActivityProducts.js
+│  └─ useActivityProducts.test.js
 ├─ pages/
+│  ├─ ProductListPage.test.js
 │  └─ ProductListPage.vue
 ├─ routes.js
 ├─ stores/
@@ -567,7 +590,9 @@ src/modules/product/
 └─ styles/
    ├─ product-add-dialog.scss
    ├─ product-card.scss
-   └─ product-grid.scss
+   ├─ product-grid.scss
+   ├─ product-image-carousel.scss
+   └─ product-image-lightbox.scss
 ```
 
 資料夾功能：
@@ -577,6 +602,10 @@ src/modules/product/
 - `pages/ProductListPage.vue`：活動商品頁，路由為 `/activities/:activityId/products`。
 - `components/ProductCard.vue`：商品卡片，顯示圖片、分類、名稱、價格、商品說明的純文字摘要（`stripHtml(product.note)`，兩行截斷，清洗後為空則不顯示）與加入購物車按鈕。
 - `components/ProductAddDialog.vue`：加入購物車 dialog，先顯示完整商品說明（`product-add-dialog__description`，`sanitizeHtml` 後 `v-html`，清洗後無文字則整塊不渲染），再讓顧客選數量、填訂購備註，確認後交給 cart store；`isAdding` pending 時立即 disabled 且 confirm early-return。
+- `components/ProductImageCarousel.vue`：商品圖片輪播（橫向 scroll-snap；多張時有前後箭頭與圓點，右上角放大鏡開啟 lightbox），`ProductCard` 與 `ProductAddDialog` 共用。
+- `components/ProductImageLightbox.vue`：全螢幕看圖（Teleport 到 `body` 的 dialog，支援 Esc 關閉、左右鍵換圖，開啟時鎖住頁面捲動），由 `ProductImageCarousel` 開啟。
+- `composables/useActivityProducts.js`：包住「載入某活動商品」的流程，提供 `products` / `isLoading` / `loadFailed` / `load(activityId)` / `reset()`，以 request sequence 丟掉過期的回應與錯誤（`ProductListPage` 使用；`useActivityProducts.test.js` 覆蓋競態、失敗與 reset）。
+- `pages/ProductListPage.test.js`：以讀原始碼字串斷言頁面的資料流（不使用分頁、走 `useActivityProducts`、不呼叫 activity store reset）。
 - `routes.js`：定義活動商品頁；舊 `/products` route 會 redirect 回首頁。
 
 模組定位：
@@ -591,6 +620,7 @@ src/modules/product/
   - 只要純文字（卡片摘要、判斷是否為空）→ 用 `stripHtml()`，回傳純文字，只能用 `{{ }}` 顯示，不可再丟進 `v-html`。
   - 整個前台目前只有 `ProductAddDialog` 一處使用 `v-html`；新增任何 `v-html` 前必須先清洗，並補 `html.test.js` 的對應案例。
 - **顧客備註**：顧客在加入購物車 dialog 的 textarea 自己填的訂購備註（上限 80 字），純文字，存在購物車與訂單品項的 `item.note`，由 `CartItem`、`OrderDetailPage` 以 `{{ }}` 顯示，**不是 HTML，也不經 `html.js`**。空白備註不顯示。
+- **名稱陷阱：`info` 有兩個意思**。商品的 `info`（`productApi.js` 對應成 `product.note`，原始受限 HTML，渲染前要 `sanitizeHtml`）是商品說明；購物車 / 訂單品項的 `info`（`cartMapper.js` 的 `info: note`、後端 `CartResultMapper`）**只是顧客備註 `note` 的別名**，與商品說明無關，兩者不可互相當成對方使用。
 
 ### modules/cart/
 
@@ -641,10 +671,31 @@ src/modules/cart/
 }
 ```
 
+其中 `info` 只是 `note`（顧客備註，純文字）的別名，**不是商品說明**；商品說明是商品物件上的 `product.note` / `product.info`（受限 HTML，見「modules/product/」）。
+
 MVP 限制：
 
 - 購物車可跨活動加入商品；結帳時依活動拆單，一個活動一張訂單（由後端把關，採部分成功，失敗活動的商品保留在購物車）。
 - 購物車送出後進入 `/checkout` 結帳流程（選物流方式 + 收件地址）再建立訂單（打後端 `POST /orders`，回傳 `{ orders, failures }`）。
+
+### modules/checkout/
+
+```text
+src/modules/checkout/
+├─ components/
+│  ├─ AddressPicker.vue
+│  └─ DeliveryMethodPicker.vue
+├─ pages/
+│  └─ CheckoutPage.vue
+└─ routes.js
+```
+
+資料夾功能：
+
+- `pages/CheckoutPage.vue`：結帳頁（`/checkout`，沿用 `DefaultLayout`）。同時載入物流方式、會員資料與地址簿，顧客選物流方式與收件地址（依 `addressKind` 決定是否需要地址）後，呼叫 `order/api/orderApi.js` 的 `createOrderFromCartItems()` 建單（`POST /orders`，依活動拆單、部分成功），成功後導向 `/orders`；會員 email / 姓名 / 電話未填完整時導去會員資料頁補齊。
+- `components/DeliveryMethodPicker.vue`：物流方式選擇（props `deliveryTypes`，v-model 為物流方式 id）。
+- `components/AddressPicker.vue`：已存地址選擇（props `addresses`，v-model 為地址 id）。
+- `routes.js`：定義 `/checkout`。
 
 ### modules/order/
 
@@ -676,10 +727,14 @@ src/modules/order/
 
 - `api/orderApi.js`：封裝訂單列表、訂單詳情與 `createOrderFromCartItems()`，打後端 `GET /orders`、`GET /orders/{id}`、`POST /orders`（皆需登入帶 token）。
 - `pages/OrderListPage.vue`：訂單列表頁。讀取 `route.query.stage` 決定初始階段（會員中心捷徑使用），階段篩選是 `components/OrderStageTabs.vue` 的 4 顆 chips（單列、可橫向捲動）。
-- `utils/orderStages.js`：4 個分頁（尚未結單=狀態 1、尚未付款=2、**待出貨=3、4、5、6**、已完成=7、8 含取消）與狀態碼的分組、`normalizeOrderStage`、`buildOrderListQuery`、`countOrdersByStage`（會員中心徽章用）。**這份對照是後端 WebAPI `Application/Orders/OrderStages.cs` 的鏡像**：列表與徽章用同一份分組，後端回傳的狀態必須與它一致，否則會出現「徽章有數字、點進去列表卻缺訂單」。每個狀態 1 到 8 必須恰好屬於一個分頁。「待出貨」分頁卡片上的狀態標籤仍是各訂單的實際狀態（例如「商品已入庫」）。
+- `utils/orderStages.js`：4 個分頁（尚未結單=狀態 1、尚未付款=2、**待出貨=3、4、5、6**、已完成=7、8 含取消）與狀態碼的分組、`normalizeOrderStage`、`buildOrderListQuery`、`countOrdersByStage`（會員中心徽章用）。**這份對照是後端 WebAPI `Application/Orders/OrderStages.cs` 的鏡像**：訂單列表由**後端**依請求的 `orderStage` 參數過濾（`buildOrderListQuery` 只負責帶參數，前端不過濾），只有會員中心的徽章是前端用本檔的 `countOrdersByStage` 對全部訂單計算；兩邊分組不一致就會出現「徽章有數字、點進去列表卻缺訂單」，所以本檔必須與後端保持一致。每個狀態 1 到 8 必須恰好屬於一個分頁。「待出貨」分頁卡片上的狀態標籤仍是各訂單的實際狀態（例如「商品已入庫」）。
 - `pages/OrderDetailPage.vue`：訂單詳情簡版，接收 `id` route param。「未成團自行補日本境內運」依 `shippingFee > 0` 顯示需要／不需要，無運費時補運費付款狀態顯示不適用。有補運費時另列「補運費」一行；訂單總額顯示後端算好的 `order.grandTotal`。
 - `components/OrderCard.vue`：訂單摘要卡片，顯示訂單編號、活動名稱、總金額、付款狀態、處理狀態、建立時間。**總金額用後端 `grandTotal`（= 商品 `total` + 補運費 `shippingFee`），前端不自行加總。**
-- `components/OrderStatusBadge.vue`：訂單狀態 badge，搭配 `shared/constants/orderStatus.js`。
+- `components/OrderStageTabs.vue`：訂單頁的 4 個階段分頁（chips，單列、可橫向捲動），直接使用 `utils/orderStages.js` 的 `ORDER_STAGES`，樣式在 `styles/order-stage-tabs.scss`。
+- `components/OrderStatusBadge.vue`：訂單狀態 badge，搭配 `shared/constants/orderStatus.js`（由狀態碼取 i18n label 與 badge variant）。
+- `components/StatusBadge.vue`：純顯示用的通用 badge，只接 `variant` 與 `label` props、不認得任何狀態碼；`OrderDetailPage` 用它顯示補運費付款狀態等非訂單狀態，樣式與 `OrderStatusBadge` 共用 `styles/status-badge.scss`。
+- `utils/shippingPaymentStatus.js`：`mapShippingPaymentStatus(status)` 把後端 `shippingPaymentStatus`（`none` / `unpaid` / `paid`，其餘當 `unknown`）對應成 i18n label key 與 badge variant（`shippingPaymentStatus.test.js` 覆蓋）。
+- `styles/order-detail.scss`：訂單詳情頁樣式（標題列、`order-detail__meta` 與資訊 grid）。
 - `routes.js`：定義 `/orders` 與 `/orders/:id`。
 
 > 訂單金額欄位：後端 `OrderResult` 回傳 `total`（商品）、`shippingFee`（補運費）、`shippingPaymentStatus`（none/unpaid/paid）與計算好的 `grandTotal`（= total + shippingFee）。前端一律顯示 `grandTotal`，衍生加總在後端完成。
@@ -751,6 +806,28 @@ src/modules/member/
 
 - `member` 負責會員中心資料維護。
 
+### modules/info/
+
+```text
+src/modules/info/
+├─ components/
+│  └─ InfoArticle.vue
+├─ pages/
+│  ├─ PrivacyPolicyPage.vue
+│  ├─ PurchaseNoticePage.vue
+│  ├─ TermsPage.vue
+│  └─ UserGuidePage.vue
+├─ routes.js
+└─ styles/
+   └─ info-page.scss
+```
+
+資料夾功能：
+
+- `pages/*`：四個靜態內容頁——隱私權政策（`/privacy`）、服務條款（`/terms`）、購物須知（`/purchase-notice`）、使用指南（`/guide`）。
+- `components/InfoArticle.vue`：這些頁面共用的文章版型（標題、更新日期、可展開收合的章節）。
+- `routes.js`：定義上述四條路由；路由名稱列在 `router/index.js` 的 `PUBLIC_ROUTE_NAMES`（路由守衛不要求先登入）。
+
 ## LINE LIFF 登入流程
 
 進站（除登入相關路由外）需 LIFF 登入，邏輯集中在 `src/router/index.js` 的 `router.beforeEach`，能力由 `src/shared/composables/liffClient.js` 提供：
@@ -791,8 +868,8 @@ shared
 
 規則：
 
-- `shared` 不能 import `modules`。
-- module 之間盡量不要直接互相 import；若真的有跨 module 共用需求，優先抽到 `shared`。
+- `shared` 不能 import `modules`。**唯一的既有例外**：`shared/api/httpClient.js` 在處理 401 時以**動態 import** 取用 `modules/auth/stores/authStore`（以及 `app/router`），目的是避免與 authStore 形成循環相依；不要在其他 shared 檔案仿效。
+- module 之間盡量不要直接互相 import；若真的有跨 module 共用需求，優先抽到 `shared`。既有的例外：`member/pages/MemberHomePage.vue` 直接 import `order/utils/orderStages`（`ORDER_STAGES`、`countOrdersByStage`）與 `order/api/orderApi`（`getOrders`）來計算會員中心的訂單徽章；`checkout/pages/CheckoutPage.vue` 直接使用 `member/api/memberApi`（物流方式、會員資料、地址）與 `order/api/orderApi`（建單）。若之後要整理，可把 `orderStages.js` 移到 `shared`。
 - page 可以協調 store、API、route params 與元件，但應避免塞入過多可重用邏輯。
 - component 應以 props/emit 為主要介面，避免直接知道太多外部狀態。
 - API function 應隱藏 endpoint 細節，讓 page/store 呼叫語意化函式。
@@ -929,8 +1006,37 @@ src/shared/stores/uiStore.js
 目前測試檔與被測程式放在同一個資料夾，用 Node 內建 `node:test` + `node:assert/strict`，以 `node --test` 執行（沒有 test script／測試框架）：
 
 ```text
-src/shared/api/apiResponse.test.js
 src/layouts/useMobileMenu.test.js
+src/modules/activity/composables/useWorksCatalog.test.js
+src/modules/auth/utils/loginFailure.test.js
+src/modules/cart/stores/cartHydration.test.js
+src/modules/cart/utils/cartMapper.test.js
+src/modules/home/utils/activityFilters.test.js
+src/modules/member/composables/useAddressBook.test.js
+src/modules/member/composables/useAddressDraft.test.js
+src/modules/order/utils/orderStages.test.js
+src/modules/order/utils/shippingPaymentStatus.test.js
+src/modules/product/composables/useActivityProducts.test.js
+src/modules/product/pages/ProductListPage.test.js
+src/modules/wishPool/components/WishPoolForm.test.js
+src/modules/wishPool/components/WishPoolImagePicker.test.js
+src/modules/wishPool/pages/WishPoolPage.test.js
+src/modules/wishPool/utils/wishPoolPayload.test.js
+src/modules/wishPool/utils/wishPoolRules.test.js
+src/shared/api/apiResponse.test.js
+src/shared/components/CustomSelect.test.js
+src/shared/composables/useSingleFlight.test.js
+src/shared/constants/features.test.js
+src/shared/constants/inputLimits.test.js
+src/shared/constants/locales.test.js
+src/shared/constants/quantity.test.js
+src/shared/utils/activityOrderable.test.js
+src/shared/utils/date.test.js
+src/shared/utils/debounce.test.js
+src/shared/utils/html.test.js
+src/shared/utils/money.test.js
+src/shared/utils/officialShipping.test.js
+src/shared/utils/storage.test.js
 ```
 
 規則：

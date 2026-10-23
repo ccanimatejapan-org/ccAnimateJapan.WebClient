@@ -19,6 +19,7 @@ ccAnimateJapan 的前台商城，技術棧為 **Vue 3（Composition API）+ Vite
 - 權威登記表：[`../ccAnimateJapan.AdminAPI/docs/STATUS_CODES.md`](../ccAnimateJapan.AdminAPI/docs/STATUS_CODES.md)（顧客端子集見 [`../ccAnimateJapan.WebAPI/docs/STATUS_CODES.md`](../ccAnimateJapan.WebAPI/docs/STATUS_CODES.md)）
 - 開團 / 運費 / 補運費怎麼運作：[`../ccAnimateJapan.AdminAPI/docs/GROUP_BUY.md`](../ccAnimateJapan.AdminAPI/docs/GROUP_BUY.md)
 - 本 repo 鏡像檔：`src/shared/constants/groupBuy.js`（開團狀態 / 運費模式）、`orderStatus.js`、`orderStages.js`（`src/modules/order/utils/`，顧客端訂單分頁與狀態碼的分組，須與後端 WebAPI `Application/Orders/OrderStages.cs` 一致）、`addressKind.js`；活動已結束碼 `ACTIVITY_STATUS_ENDED` 在 `src/modules/home/components/HomeActivityCard.vue`；付款 / 補運費標籤在 `src/locales/zh-TW.json`。
+- 商品說明 HTML 白名單（不是狀態碼，但同樣是跨 repo 鏡像）：`src/shared/utils/html.js` 的 `sanitizeHtml` 白名單（`P/BR/STRONG/B/EM/I/U/UL/OL/LI/DIV`，全部去掉屬性）必須與 AdminClient（`../ccAnimateJapan.AdminClient/src/shared/utils/html.js` 的 `allowedTags`）一致；後台編輯器新增標籤時，前台要同步改，否則新標籤會被默默拆掉。兩邊同名的 `stripHtml` 行為不同（後台收合成單行、前台保留換行）。
 
 ## 工作流程規範（重要）
 
