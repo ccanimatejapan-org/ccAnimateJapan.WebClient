@@ -48,6 +48,54 @@
   font-weight: 700;
 }
 
+// 商品說明是 v-html 渲染的受限 HTML（P/BR/STRONG/B/EM/I/U/UL/OL/LI/DIV），
+// 內層元素沒有 scoped 的 data 屬性，所以一律用 :deep 套樣式。
+.product-add-dialog__description {
+  min-width: 0;
+  color: $color-ink;
+  font-size: 0.87rem;
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.product-add-dialog__description :deep(p),
+.product-add-dialog__description :deep(div) {
+  margin: 0;
+}
+
+.product-add-dialog__description :deep(p + p) {
+  margin-top: 8px;
+}
+
+.product-add-dialog__description :deep(ul),
+.product-add-dialog__description :deep(ol) {
+  margin: 4px 0;
+  padding-left: 1.4em;
+}
+
+.product-add-dialog__description :deep(ul) {
+  list-style: disc;
+}
+
+.product-add-dialog__description :deep(ol) {
+  list-style: decimal;
+}
+
+.product-add-dialog__description :deep(strong),
+.product-add-dialog__description :deep(b) {
+  font-weight: 700;
+}
+
+.product-add-dialog__description :deep(em),
+.product-add-dialog__description :deep(i) {
+  font-style: italic;
+}
+
+.product-add-dialog__description :deep(u) {
+  text-decoration: underline;
+}
+
 .product-add-dialog__quantity {
   width: fit-content;
   display: inline-grid;

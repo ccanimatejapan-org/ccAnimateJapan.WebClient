@@ -44,7 +44,7 @@ export const useCartStore = defineStore('cart', () => {
     const product = payload.product || payload;
     const nextActivityId = Number(payload.activityId ?? activity?.id ?? product?.activityId);
     const nextProductId = Number(payload.productId ?? product?.id);
-    const note = String(payload.note ?? payload.info ?? '').trim().slice(0, 80);
+    const note = String(payload.note ?? '').trim().slice(0, 80);
     const quantity = Math.max(1, Number(payload.quantity) || 1);
     if (!Number.isFinite(nextActivityId) || !Number.isFinite(nextProductId)) {
       return { ok: false, reason: 'error' };

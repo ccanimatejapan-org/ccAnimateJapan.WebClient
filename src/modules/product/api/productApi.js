@@ -23,7 +23,6 @@ function normalizeActivityProducts(products, activityId) {
         productTypeName: product.productTypeName || '',
         stock: Number.isFinite(stock) ? stock : null,
         note: product.note ?? info,
-        description: product.description ?? info,
         imageUrl,
         imageUrls: normalizedImageUrls
       };

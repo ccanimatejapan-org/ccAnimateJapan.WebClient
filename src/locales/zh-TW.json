@@ -212,6 +212,7 @@
     },
     "addDialog": {
       "title": "加入購物車",
+      "description": "商品說明",
       "quantity": "數量",
       "maxQuantityHint": "單筆最多可購買 {count} 件",
       "maxOrderQuantityHint": "單一商品每筆訂單最多購買 {count} 件",
@@ -278,7 +279,7 @@
     "tabs": {
       "customerOrdered": "尚未結單",
       "awaitingPayment": "尚未付款",
-      "awaitingShipment": "尚未到貨",
+      "awaitingShipment": "待出貨",
       "completed": "已完成"
     },
     "detail": "訂單明細",
