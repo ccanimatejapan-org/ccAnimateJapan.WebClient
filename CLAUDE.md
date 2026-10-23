@@ -52,7 +52,7 @@ node --test src/shared/api/apiResponse.test.js   # 執行單一測試檔
 - **路徑別名**：`@` → `src`（同時設定在 `vite.config.js` 與 `jsconfig.json`，兩處要保持一致）。
 - **模組結構**：功能放在 `src/modules/{feature}/`，各自擁有 `pages/ components/ api/ stores/ composables/ utils/ styles/ routes.js`。`src/shared/` 放跨模組共用程式，**不可以 import `src/modules/` 內的東西**；模組之間也盡量不要互相 import，有共用需求請抽到 `src/shared/`。
 - **路由**：route name 集中在 `src/shared/constants/routes.js` 的 `ROUTE_NAMES`，各模組 `routes.js` 只引用、不硬寫字串。`src/router/index.js` 把模組路由分組到 `DefaultLayout` / `AuthLayout`。新增路由流程：先補 route name → 補模組 route → 再到 `src/router/index.js` 掛進正確的 layout group。
-- **i18n**：每個畫面文字都要**同時**補上 `src/locales/zh-TW.json`（預設語系）與 `src/locales/en.json`（fallback）的 key。
+- **i18n**：每個畫面文字都要**同時**補上 `src/locales/zh-TW.json`（預設語系）與 `src/locales/en.json`（fallback）的 key。語言切換按鈕（`LanguageSwitcher`）目前被功能旗標隱藏（`src/shared/constants/features.js` 的 `SHOW_LANGUAGE_SWITCHER = false`，`DefaultLayout`／`AuthLayout` 以 `v-if` 讀取），但元件、語系 store 與兩份語系檔都保留，所以 en／zh-TW 仍要同步維護；要恢復只要把旗標改成 `true`。
 - **UI 設計**：依 `../mobile-ui-preview/DESIGN-PLAN.md`（V1.2）。優先使用 `src/styles/variables.scss` 的 token 與 `src/styles/utilities.scss` 的共用 class（`.page-head`、`.panel`、`.ui-chip`、`.notice`、`.card-grid` 等）；Header／選單／操作列不使用 fixed/sticky；可點擊元件至少 44px、輸入框 16px 字級；成團進度只顯示百分比；空白備註不顯示。
 - **測試 colocate**：測試檔以 `*.test.js` 命名，放在來源檔旁邊。純函式 / 業務規則（例如 `quantityPolicy.js`）優先補測試。
 

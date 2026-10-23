@@ -49,13 +49,6 @@
   white-space: nowrap;
 }
 
-.site-header__brand-copy small {
-  color: $color-muted;
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  white-space: nowrap;
-}
-
 .site-header__nav {
   display: none;
 }
@@ -160,8 +153,8 @@
 .site-footer {
   display: grid;
   justify-items: center;
-  gap: 12px;
-  padding: 28px 20px calc(32px + env(safe-area-inset-bottom));
+  gap: 4px;
+  padding: 18px 20px calc(18px + env(safe-area-inset-bottom));
   border-top: 1px solid $color-border;
   color: #8d8476;
   font-size: 0.75rem;
@@ -249,10 +242,6 @@
 }
 
 @media (min-width: 700px) and (max-width: 900px) {
-  .site-header__brand-copy small {
-    display: none;
-  }
-
   .site-header__nav {
     gap: 14px;
   }
@@ -274,10 +263,5 @@
 
   .site-header__brand-name {
     font-size: 0.8rem;
-  }
-
-  .site-header__brand-copy small {
-    font-size: 0.5rem;
-    letter-spacing: 0.04em;
   }
 }

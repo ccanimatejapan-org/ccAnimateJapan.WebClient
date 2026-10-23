@@ -6,7 +6,6 @@
           <img class="site-header__logo" :src="brandLogo" alt="" />
           <span class="site-header__brand-copy">
             <strong class="site-header__brand-name">CC日本動漫代購</strong>
-            <small>YOUR LITTLE COLLECTION</small>
           </span>
         </RouterLink>
         <nav class="site-header__nav" :aria-label="t('nav.main')">
@@ -20,7 +19,7 @@
           </RouterLink>
         </nav>
         <div class="site-header__actions">
-          <LanguageSwitcher />
+          <LanguageSwitcher v-if="SHOW_LANGUAGE_SWITCHER" />
           <RouterLink
             class="site-header__icon-button site-header__cart"
             :class="{ 'site-header__cart--bump': cartBumped }"
@@ -31,7 +30,7 @@
             @click="closeMenu"
           >
             <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path :d="NAV_ICONS.bag" />
+              <path :d="NAV_ICONS.cart" />
             </svg>
             <span v-show="cart.totalQuantity > 0" class="site-header__badge">{{ cart.totalQuantity }}</span>
           </RouterLink>
@@ -107,6 +106,7 @@ import { RouterLink, RouterView, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
 import { externalLinks } from '@/shared/constants/externalLinks';
+import { SHOW_LANGUAGE_SWITCHER } from '@/shared/constants/features';
 import { useCartStore } from '@/modules/cart/stores/cartStore';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher.vue';
 import { useMobileMenu } from './useMobileMenu';
@@ -123,7 +123,7 @@ const NAV_ICONS = {
   grid: 'M3 3h7v7H3ZM14 3h7v7h-7ZM3 14h7v7H3ZM14 14h7v7h-7Z',
   spark: 'm12 3 2.6 6.4L21 12l-6.4 2.6L12 21l-2.6-6.4L3 12l6.4-2.6Z',
   box: 'm3 7 9-4 9 4v11l-9 4-9-4ZM3 7l9 4 9-4M12 11v11M7 5l9 4',
-  bag: 'M5 7h14l1 14H4L5 7ZM9 8V6a3 3 0 0 1 6 0v2',
+  cart: 'M2.5 3.2h2.7l2.4 11.3a1.7 1.7 0 0 0 1.7 1.3h8.5a1.7 1.7 0 0 0 1.65-1.3L21.5 7.2H6.1M11 20a1.4 1.4 0 1 1-2.8 0 1.4 1.4 0 0 1 2.8 0ZM18.6 20a1.4 1.4 0 1 1-2.8 0 1.4 1.4 0 0 1 2.8 0Z',
   user: 'M20 21v-2a7 7 0 0 0-14 0v2M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0'
 };
 
@@ -143,7 +143,7 @@ const NAV_ITEMS = {
     icon: 'box',
     match: [ROUTE_NAMES.ORDER_LIST, ROUTE_NAMES.ORDER_DETAIL]
   },
-  cart: { name: ROUTE_NAMES.CART, label: 'nav.cart', icon: 'bag', match: [ROUTE_NAMES.CART, ROUTE_NAMES.CHECKOUT] },
+  cart: { name: ROUTE_NAMES.CART, label: 'nav.cart', icon: 'cart', match: [ROUTE_NAMES.CART, ROUTE_NAMES.CHECKOUT] },
   member: {
     name: ROUTE_NAMES.MEMBER_CENTER,
     label: 'nav.member',

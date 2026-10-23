@@ -59,7 +59,7 @@ ccAnimateJapan.WebClient/
 ├─ src/                 主要前端原始碼
 ├─ dist/                Vite build 產物，本機建置後產生
 ├─ node_modules/        npm 相依套件，本機安裝後產生
-├─ index.html           Vite SPA HTML 入口
+├─ index.html           Vite SPA HTML 入口（含瀏覽器分頁圖示 favicon）
 ├─ package.json         npm scripts 與 dependencies
 ├─ package-lock.json    npm lockfile
 ├─ vite.config.js       Vite、Vue plugin、dev proxy、alias 設定
@@ -74,6 +74,7 @@ ccAnimateJapan.WebClient/
 - `dist/` 與 `node_modules/` 是產生物，不應手動維護，也不應作為架構邏輯來源。
 - `vite.config.js` 設定 `@` 指向 `src`，並把本機 `/api` proxy 到 `VITE_API_PROXY_TARGET`，預設為 `http://localhost:5222`。
 - `vercel.json` 將所有路徑 rewrite 到 `/index.html`，支援 Vue Router history mode 的前端路由。
+- `index.html` 以 `<link rel="icon" type="image/jpeg" href="/src/assets/logo/brand-logo.jpg" />` 把品牌 logo 當作瀏覽器分頁圖示（favicon）。圖檔直接引用 `src/assets/logo/brand-logo.jpg`（與版面的 logo 同一張），由 Vite 處理：dev 時由 dev server 直接提供、build 時隨資源雜湊輸出；換 favicon 只要換這張圖（或改這個 `href`）。
 - `jsconfig.json` 讓編輯器理解 `@/* -> src/*`，與 Vite alias 保持一致。
 
 ## src 目錄總覽
@@ -167,7 +168,7 @@ src/assets/
 
 - `icons/`：放專案自有 icon 檔，例如 SVG、PNG icon。
 - `images/`：放產品以外的前端靜態圖片，例如 banner、視覺素材、預設空狀態圖片。
-- `logo/`：放品牌 logo、商標相關圖檔。
+- `logo/`：放品牌 logo、商標相關圖檔。`brand-logo.jpg` 同時用於頁首／登入頁品牌區，以及 `index.html` 的 favicon。
 
 放置規則：
 
@@ -187,8 +188,8 @@ src/layouts/
 
 資料夾功能：
 
-- `DefaultLayout.vue`：正式商城一般頁面外框。包含 mobile-first 單行 sticky header、品牌 logo、導覽、購物車數量 badge、手機版漢堡選單（`useMobileMenu`）、`RouterView` 與 footer。
-- `AuthLayout.vue`：登入與相關頁面的簡化 layout。
+- `DefaultLayout.vue`：正式商城一般頁面外框。包含 mobile-first 單行 sticky header、品牌 logo 與品牌名稱「CC日本動漫代購」、導覽、購物車 icon（標準購物車圖示，`NAV_ICONS.cart`，手機選單的「購物車」項目共用同一個 icon）與數量 badge、手機版漢堡選單（`useMobileMenu`）、`RouterView` 與 footer。頁首右側的語言切換按鈕（`LanguageSwitcher`）由 `SHOW_LANGUAGE_SWITCHER` 旗標控制，**目前隱藏**，見下方「styles/」的說明。
+- `AuthLayout.vue`：登入與相關頁面的簡化 layout，頁首為品牌 logo 與品牌名稱；語言切換按鈕同樣受 `SHOW_LANGUAGE_SWITCHER` 控制（目前隱藏）。
 - `styles/default-layout.scss`：一般頁面外框與 header 樣式。
 - `styles/auth-layout.scss`：登入頁外框樣式。
 
@@ -286,7 +287,7 @@ src/styles/
 - 共用 utility：`.page-head`、`.section-head`、`.panel`、`.text-link`、`.search-field`、`.ui-chips`／`.ui-chip`（`aria-selected`／`aria-pressed` 表示選取，`--wrap` 換行）、`.notice`（`--green`／`--rose`）、`.work-tiles`、`.card-grid`。
 - 按鈕變體：`--primary`（黃）、`--dark`、`--secondary`、`--ghost`、`--line`。
 - Header、手機選單與操作列皆在頁面流中，不使用 fixed/sticky，也不鎖 body 捲動；可點擊元件至少 44px、輸入框 16px 字級。
-- `LanguageSwitcher` 為地球 icon 按鈕，點擊後開啟語系選擇 sheet（`AppModal` 手機為 bottom sheet、≥700px 置中）。
+- `LanguageSwitcher`（`src/shared/components/LanguageSwitcher.vue`）為地球 icon 按鈕，點擊後開啟語系選擇 sheet（`AppModal` 手機為 bottom sheet、≥700px 置中）。**目前在畫面上隱藏**：`DefaultLayout.vue` 與 `AuthLayout.vue` 以 `v-if="SHOW_LANGUAGE_SWITCHER"` 讀取 `src/shared/constants/features.js` 的旗標，預設 `false`。元件、語系 store（`useLocale`／`appStore`）、i18n 切換邏輯與 `en`／`zh-TW` 語系檔都完整保留；要重新開啟只要把 `SHOW_LANGUAGE_SWITCHER` 改成 `true`（兩個 layout 同時恢復，不需改其他檔案）。隱藏期間新增畫面文字仍須同步補齊 `zh-TW.json` 與 `en.json`。
 
 樣式分層：
 
@@ -371,6 +372,8 @@ src/shared/composables/
 ```text
 src/shared/constants/
 ├─ externalLinks.js
+├─ features.js
+├─ features.test.js
 ├─ orderStatus.js
 └─ routes.js
 ```
@@ -378,6 +381,7 @@ src/shared/constants/
 - `routes.js`：集中管理 `ROUTE_NAMES`（含 `WORK_LIST`、`WORK_ACTIVITIES`）。
 - `orderStatus.js`：訂單狀態代碼、狀態翻譯 key、badge variant 與 helper。
 - `externalLinks.js`：外部連結常數（例如官方帳號、社群連結）。
+- `features.js`：功能旗標，集中管理「程式與語系檔都保留、但暫時不對外顯示」的功能；旗標一律為嚴格 boolean（`features.test.js` 驗證）。目前只有 `SHOW_LANGUAGE_SWITCHER`（`false`＝隱藏語言切換按鈕，見「styles/」）。
 
 ### shared/stores/
 
@@ -540,7 +544,7 @@ src/modules/home/
 - `components/HomeAnimateTypeRow.vue`：「依作品逛」區塊，mount 時 `fetchHomeWorks(10)`；完整作品頁另以 `fetchAllWorks()` 取資料，不共用 preview cache。圈圈為作品圖片圓形頭像＋名稱＋活動檔數徽章（`work.imageUrl`，無圖退回名稱首字），`WorkListPage` 同款。
 - `components/HomeOngoingActivities.vue`：進行中活動列表，由 HomePage 傳入篩選後的活動。
 - `components/HomeActivityCard.vue`：首頁活動卡片（含作品標籤、預購／現貨 badge、排名），由熱門、進行中、作品頁共用。
-- `config/homeBanners.js`：首頁輪播 banner 設定。
+- `config/homeBanners.js`：首頁輪播 banner 設定（圖片放 `src/assets/images/banners/`）。`HomeBannerCarousel` 依陣列長度運作、不寫死張數：增減 banner 只需改此檔並增刪圖檔；只有 1 張時隱藏箭頭與圓點，空陣列時整個輪播區隱藏。
 - `utils/activityFilters.js`：`filterByAvailability()` 等首頁活動篩選純函式（依 `isPreOrder`）。
 - `routes.js`：定義首頁路由 `path: ''`、`name: ROUTE_NAMES.HOME`。
 

@@ -5,10 +5,9 @@
         <img class="auth-header__logo" :src="brandLogo" alt="" />
         <span class="auth-header__copy">
           <strong>CC日本動漫代購</strong>
-          <small>YOUR LITTLE COLLECTION</small>
         </span>
       </RouterLink>
-      <LanguageSwitcher />
+      <LanguageSwitcher v-if="SHOW_LANGUAGE_SWITCHER" />
     </header>
     <main class="auth-panel">
       <img class="auth-panel__logo" :src="brandLogo" alt="CC日本動漫代購" />
@@ -20,6 +19,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
 import { ROUTE_NAMES } from '@/shared/constants/routes';
+import { SHOW_LANGUAGE_SWITCHER } from '@/shared/constants/features';
 import LanguageSwitcher from '@/shared/components/LanguageSwitcher.vue';
 import brandLogo from '@/assets/logo/brand-logo.jpg';
 </script>
