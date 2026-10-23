@@ -1,5 +1,8 @@
 import { ORDER_STATUS } from '../../../shared/constants/orderStatus.js';
 
+// 顧客端「我的訂單」4 個分頁與狀態碼的分組，是後端 WebAPI Application/Orders/OrderStages.cs 的鏡像（兩邊要一致）。
+// 待出貨（awaitingShipment）涵蓋狀態 3 顧客已付款、4 預購已完成、5 商品已入庫、6 已聯絡顧客出貨事項；
+// 狀態 1 到 8 必須各屬於恰好一個分頁，否則該狀態的訂單在 /orders 會完全看不到。
 export const DEFAULT_ORDER_STAGE = 'customerOrdered';
 
 export const ORDER_STAGES = [

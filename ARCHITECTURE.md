@@ -644,21 +644,29 @@ src/modules/order/
 │  └─ orderApi.js
 ├─ components/
 │  ├─ OrderCard.vue
-│  └─ OrderStatusBadge.vue
+│  ├─ OrderStageTabs.vue
+│  ├─ OrderStatusBadge.vue
+│  └─ StatusBadge.vue
 ├─ pages/
 │  ├─ OrderDetailPage.vue
 │  └─ OrderListPage.vue
 ├─ routes.js
-└─ styles/
-   ├─ order-card.scss
-   ├─ order-list.scss
-   └─ status-badge.scss
+├─ styles/
+│  ├─ order-card.scss
+│  ├─ order-detail.scss
+│  ├─ order-list.scss
+│  ├─ order-stage-tabs.scss
+│  └─ status-badge.scss
+└─ utils/
+   ├─ orderStages.js
+   └─ shippingPaymentStatus.js
 ```
 
 資料夾功能：
 
 - `api/orderApi.js`：封裝訂單列表、訂單詳情與 `createOrderFromCartItems()`，打後端 `GET /orders`、`GET /orders/{id}`、`POST /orders`（皆需登入帶 token）。
-- `pages/OrderListPage.vue`：訂單列表頁。讀取 `route.query.stage` 決定初始階段（會員中心捷徑使用），階段篩選為可換行 chips。
+- `pages/OrderListPage.vue`：訂單列表頁。讀取 `route.query.stage` 決定初始階段（會員中心捷徑使用），階段篩選是 `components/OrderStageTabs.vue` 的 4 顆 chips（單列、可橫向捲動）。
+- `utils/orderStages.js`：4 個分頁（尚未結單=狀態 1、尚未付款=2、**待出貨=3、4、5、6**、已完成=7、8 含取消）與狀態碼的分組、`normalizeOrderStage`、`buildOrderListQuery`、`countOrdersByStage`（會員中心徽章用）。**這份對照是後端 WebAPI `Application/Orders/OrderStages.cs` 的鏡像**：列表與徽章用同一份分組，後端回傳的狀態必須與它一致，否則會出現「徽章有數字、點進去列表卻缺訂單」。每個狀態 1 到 8 必須恰好屬於一個分頁。「待出貨」分頁卡片上的狀態標籤仍是各訂單的實際狀態（例如「商品已入庫」）。
 - `pages/OrderDetailPage.vue`：訂單詳情簡版，接收 `id` route param。「未成團自行補日本境內運」依 `shippingFee > 0` 顯示需要／不需要，無運費時補運費付款狀態顯示不適用。有補運費時另列「補運費」一行；訂單總額顯示後端算好的 `order.grandTotal`。
 - `components/OrderCard.vue`：訂單摘要卡片，顯示訂單編號、活動名稱、總金額、付款狀態、處理狀態、建立時間。**總金額用後端 `grandTotal`（= 商品 `total` + 補運費 `shippingFee`），前端不自行加總。**
 - `components/OrderStatusBadge.vue`：訂單狀態 badge，搭配 `shared/constants/orderStatus.js`。
