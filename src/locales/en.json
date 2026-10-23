@@ -279,7 +279,7 @@
     "tabs": {
       "customerOrdered": "Not completed yet",
       "awaitingPayment": "Awaiting payment",
-      "awaitingShipment": "Not yet arrived",
+      "awaitingShipment": "Awaiting shipment",
       "completed": "Completed"
     },
     "detail": "Order detail",

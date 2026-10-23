@@ -279,7 +279,7 @@
     "tabs": {
       "customerOrdered": "尚未結單",
       "awaitingPayment": "尚未付款",
-      "awaitingShipment": "尚未到貨",
+      "awaitingShipment": "待出貨",
       "completed": "已完成"
     },
     "detail": "訂單明細",
