@@ -54,6 +54,7 @@ node --test src/shared/api/apiResponse.test.js   # 執行單一測試檔
 - **路由**：route name 集中在 `src/shared/constants/routes.js` 的 `ROUTE_NAMES`，各模組 `routes.js` 只引用、不硬寫字串。`src/router/index.js` 把模組路由分組到 `DefaultLayout` / `AuthLayout`。新增路由流程：先補 route name → 補模組 route → 再到 `src/router/index.js` 掛進正確的 layout group。
 - **i18n**：每個畫面文字都要**同時**補上 `src/locales/zh-TW.json`（預設語系）與 `src/locales/en.json`（fallback）的 key。語言切換按鈕（`LanguageSwitcher`）目前被功能旗標隱藏（`src/shared/constants/features.js` 的 `SHOW_LANGUAGE_SWITCHER = false`，`DefaultLayout`／`AuthLayout` 以 `v-if` 讀取），但元件、語系 store 與兩份語系檔都保留，所以 en／zh-TW 仍要同步維護；要恢復只要把旗標改成 `true`。
 - **UI 設計**：依 `../mobile-ui-preview/DESIGN-PLAN.md`（V1.2）。優先使用 `src/styles/variables.scss` 的 token 與 `src/styles/utilities.scss` 的共用 class（`.page-head`、`.panel`、`.ui-chip`、`.notice`、`.card-grid` 等）；Header／選單／操作列不使用 fixed/sticky；可點擊元件至少 44px、輸入框 16px 字級；成團進度只顯示百分比；空白備註不顯示。
+- **商品說明是受限 HTML，要先清洗才能 `v-html`**：後端 `info`（`productApi` 對應成 `product.note`）是後台富文字編輯器產生的 HTML（只有 P/BR/STRONG/B/EM/I/U/UL/OL/LI/DIV、無屬性），但後端不保證乾淨。要渲染成 HTML 一定先過 `src/shared/utils/html.js` 的 `sanitizeHtml()`（不依賴 DOM、有 XSS 測試）；只要純文字（卡片摘要、判斷是否為空）用 `stripHtml()`，不可直接 `{{ product.note }}`（會露出原始標籤）。**顧客備註不同**：加入購物車 dialog 的 textarea、購物車 / 訂單的 `item.note` 是顧客填的純文字（上限 80 字），照一般文字 `{{ }}` 顯示，不經 `html.js`。細節見 `ARCHITECTURE.md` 的 `modules/product/`。
 - **測試 colocate**：測試檔以 `*.test.js` 命名，放在來源檔旁邊。純函式 / 業務規則（例如 `quantityPolicy.js`）優先補測試。
 
 ## API 寫法

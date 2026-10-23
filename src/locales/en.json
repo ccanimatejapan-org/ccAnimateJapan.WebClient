@@ -212,6 +212,7 @@
     },
     "addDialog": {
       "title": "Add to cart",
+      "description": "Product details",
       "quantity": "Quantity",
       "maxQuantityHint": "Up to {count} per order",
       "maxOrderQuantityHint": "Up to {count} of the same product per order",

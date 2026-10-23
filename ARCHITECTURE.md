@@ -409,6 +409,7 @@ src/shared/styles/
 src/shared/utils/
 ├─ activityOrderable.js
 ├─ date.js
+├─ html.js
 ├─ money.js
 ├─ officialShipping.js
 ├─ storage.js
@@ -417,6 +418,7 @@ src/shared/utils/
 
 - `activityOrderable.js`：`isActivityOrderable(activity)` 僅在活動 `status === 3` 時回傳可下單。
 - `date.js`：日期與日期時間格式化 helper。
+- `html.js`：商品說明（受限 HTML）的清洗與轉純文字，**不依賴 DOM**（`html.test.js` 以 node:test 覆蓋 XSS 案例）。`sanitizeHtml(value)` 只留 `P/BR/STRONG/B/EM/I/U/UL/OL/LI/DIV` 且去掉全部屬性，`script`/`style` 連內容一起刪，其餘標籤拆掉只留文字，不是標籤的 `<` 轉成 `&lt;`，未閉合的標籤／註解會丟掉後面全部內容，輸出標籤一定成對；`stripHtml(value)` 回傳純文字（`<br>`、`</p>`、`</div>`、`</li>` 等換行，解 `&amp; &lt; &gt; &nbsp; &quot; &#39;`）。凡是要把後端的 HTML 字串 `v-html` 出來，都必須先過 `sanitizeHtml`。
 - `money.js`：金額格式化 helper。
 - `officialShipping.js`：`getOfficialShippingDisplay({ isPreOrder, startTime, endTime }, locale)` 回傳 `hidden` / `pending` / `ready`，並固定以 `Asia/Taipei` 格式化日期。
 - `storage.js`：localStorage/sessionStorage 讀寫封裝。
@@ -573,14 +575,22 @@ src/modules/product/
 - `api/productApi.js`：封裝活動商品列表（`getProductsByActivity(activityId)` 打 `GET /api/activities/{id}/products`）。目前活動資訊改由 `activityStore.getOrFetchActivity()` 提供（快取優先、未命中才打單筆 `GET /api/activities/{id}`），不再重撈整包活動清單。
 - `stores/productStore.js`：管理目前活動、活動商品清單、載入狀態、錯誤狀態與分類狀態。
 - `pages/ProductListPage.vue`：活動商品頁，路由為 `/activities/:activityId/products`。
-- `components/ProductCard.vue`：商品卡片，顯示圖片、分類、名稱、價格、簡短備註與加入購物車按鈕。
-- `components/ProductAddDialog.vue`：加入購物車 dialog，可選數量、填備註，確認後交給 cart store；`isAdding` pending 時立即 disabled 且 confirm early-return。
+- `components/ProductCard.vue`：商品卡片，顯示圖片、分類、名稱、價格、商品說明的純文字摘要（`stripHtml(product.note)`，兩行截斷，清洗後為空則不顯示）與加入購物車按鈕。
+- `components/ProductAddDialog.vue`：加入購物車 dialog，先顯示完整商品說明（`product-add-dialog__description`，`sanitizeHtml` 後 `v-html`，清洗後無文字則整塊不渲染），再讓顧客選數量、填訂購備註，確認後交給 cart store；`isAdding` pending 時立即 disabled 且 confirm early-return。
 - `routes.js`：定義活動商品頁；舊 `/products` route 會 redirect 回首頁。
 
 模組定位：
 
 - `product` 負責活動商品列表與商品加入購物車入口。
 - 商品專用 UI 放在 `product/components`，不放到 `shared/components`。
+
+商品說明 vs 顧客備註（兩個不同的東西，不要混用）：
+
+- **商品說明**：後台（AdminClient）用富文字編輯器維護，後端欄位 `info`，`productApi.js` 對應成 `product.note`（同時也放在 `product.description`）。內容是**受限 HTML**，只會有 `P`、`BR`、`STRONG`、`B`、`EM`、`I`、`U`、`UL`、`OL`、`LI`、`DIV`，且不帶任何屬性。後端不保證資料乾淨，所以前台**一律不可直接 `{{ }}` 顯示（會看到原始標籤），也不可未清洗就 `v-html`**：
+  - 要渲染成 HTML（段落、換行、粗體、清單）→ 先經 `src/shared/utils/html.js` 的 `sanitizeHtml()` 再 `v-html`（目前只有 `ProductAddDialog`）。
+  - 只要純文字（卡片摘要、判斷是否為空）→ 用 `stripHtml()`，回傳純文字，只能用 `{{ }}` 顯示，不可再丟進 `v-html`。
+  - 整個前台目前只有 `ProductAddDialog` 一處使用 `v-html`；新增任何 `v-html` 前必須先清洗，並補 `html.test.js` 的對應案例。
+- **顧客備註**：顧客在加入購物車 dialog 的 textarea 自己填的訂購備註（上限 80 字），純文字，存在購物車與訂單品項的 `item.note`，由 `CartItem`、`OrderDetailPage` 以 `{{ }}` 顯示，**不是 HTML，也不經 `html.js`**。空白備註不顯示。
 
 ### modules/cart/
 

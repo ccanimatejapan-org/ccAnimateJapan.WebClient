@@ -212,6 +212,7 @@
     },
     "addDialog": {
       "title": "加入購物車",
+      "description": "商品說明",
       "quantity": "數量",
       "maxQuantityHint": "單筆最多可購買 {count} 件",
       "maxOrderQuantityHint": "單一商品每筆訂單最多購買 {count} 件",

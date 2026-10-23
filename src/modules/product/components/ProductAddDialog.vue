@@ -18,6 +18,11 @@
         </div>
       </div>
 
+      <div v-if="hasDescription" class="product-add-dialog__field">
+        <span>{{ t('product.addDialog.description') }}</span>
+        <div class="product-add-dialog__description" v-html="descriptionHtml" />
+      </div>
+
       <div class="product-add-dialog__field">
         <span>{{ t('product.addDialog.quantity') }}</span>
         <div class="product-add-dialog__quantity">
@@ -76,6 +81,7 @@ import AppModal from '@/shared/components/AppModal.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
 import { MAX_ORDER_QUANTITY } from '@/shared/constants/quantity';
 import { isActivityOrderable } from '@/shared/utils/activityOrderable.js';
+import { sanitizeHtml, stripHtml } from '@/shared/utils/html.js';
 import ProductImageCarousel from './ProductImageCarousel.vue';
 
 const props = defineProps({
@@ -104,7 +110,12 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'confirm']);
 const { t } = useI18n();
 const quantity = ref(1);
+// 顧客自己填的訂購備註；商品說明是 product.note，兩者不同，別混用。
 const note = ref('');
+
+// 商品說明來自 DB，v-html 前一定要先清洗；清洗後沒有文字（例如只剩空 div / br）就不顯示。
+const descriptionHtml = computed(() => sanitizeHtml(props.product?.note));
+const hasDescription = computed(() => stripHtml(props.product?.note) !== '');
 
 const MAX_QUANTITY = MAX_ORDER_QUANTITY;
 const isActivityAvailable = computed(() => isActivityOrderable(props.activity));
