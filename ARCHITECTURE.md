@@ -615,10 +615,10 @@ src/modules/product/
 
 商品說明 vs 顧客備註（兩個不同的東西，不要混用）：
 
-- **商品說明**：後台（AdminClient）用富文字編輯器維護，後端欄位 `info`，`productApi.js` 對應成 `product.note`（同時也放在 `product.description`）。內容是**受限 HTML**，只會有 `P`、`BR`、`STRONG`、`B`、`EM`、`I`、`U`、`UL`、`OL`、`LI`、`DIV`，且不帶任何屬性。後端不保證資料乾淨，所以前台**一律不可直接 `{{ }}` 顯示（會看到原始標籤），也不可未清洗就 `v-html`**：
+- **商品說明**：後台（AdminClient）用富文字編輯器維護，後端欄位 `info`，`productApi.js` 對應成 `product.note`（`...product` 展開後原始的 `product.info` 也還在；`note` / `info` 都是**未清洗的原始 HTML**，不可直接渲染）。內容是**受限 HTML**，只會有 `P`、`BR`、`STRONG`、`B`、`EM`、`I`、`U`、`UL`、`OL`、`LI`、`DIV`，且不帶任何屬性。後端不保證資料乾淨，所以前台**一律不可直接 `{{ }}` 顯示（會看到原始標籤），也不可未清洗就 `v-html`**：
   - 要渲染成 HTML（段落、換行、粗體、清單）→ 先經 `src/shared/utils/html.js` 的 `sanitizeHtml()` 再 `v-html`（目前只有 `ProductAddDialog`）。
   - 只要純文字（卡片摘要、判斷是否為空）→ 用 `stripHtml()`，回傳純文字，只能用 `{{ }}` 顯示，不可再丟進 `v-html`。
-  - 整個前台目前只有 `ProductAddDialog` 一處使用 `v-html`；新增任何 `v-html` 前必須先清洗，並補 `html.test.js` 的對應案例。
+  - 整個前台目前只有 `ProductAddDialog` 一處使用 `v-html`；新增任何 `v-html` 前必須先清洗，並補 `html.test.js` 的對應案例。`src/shared/utils/htmlRenderingGuard.test.js` 會自動檢查：`v-html` / `innerHTML` / `outerHTML` / `insertAdjacentHTML` 只能出現在 `ProductAddDialog.vue`，且它綁定的值必須來自 `sanitizeHtml(...)`；要新增合法用途時，要同步更新該測試的白名單。
 - **顧客備註**：顧客在加入購物車 dialog 的 textarea 自己填的訂購備註（上限 80 字），純文字，存在購物車與訂單品項的 `item.note`，由 `CartItem`、`OrderDetailPage` 以 `{{ }}` 顯示，**不是 HTML，也不經 `html.js`**。空白備註不顯示。
 - **名稱陷阱：`info` 有兩個意思**。商品的 `info`（`productApi.js` 對應成 `product.note`，原始受限 HTML，渲染前要 `sanitizeHtml`）是商品說明；購物車 / 訂單品項的 `info`（`cartMapper.js` 的 `info: note`、後端 `CartResultMapper`）**只是顧客備註 `note` 的別名**，與商品說明無關，兩者不可互相當成對方使用。
 
@@ -1034,6 +1034,7 @@ src/shared/utils/activityOrderable.test.js
 src/shared/utils/date.test.js
 src/shared/utils/debounce.test.js
 src/shared/utils/html.test.js
+src/shared/utils/htmlRenderingGuard.test.js
 src/shared/utils/money.test.js
 src/shared/utils/officialShipping.test.js
 src/shared/utils/storage.test.js
