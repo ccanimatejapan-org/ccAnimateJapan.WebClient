@@ -1,5 +1,5 @@
 <template>
-  <article class="cart-item">
+  <article class="cart-item" :class="{ 'is-locked': locked }">
     <img :src="item.imageUrl" :alt="item.productName" />
     <div class="cart-item__body">
       <h3>{{ item.productName }}</h3>
@@ -11,6 +11,7 @@
         <QuantityControl
           :model-value="localQty"
           :max="maxQuantity"
+          :disabled="locked"
           @update:model-value="onQty"
           @limit-reached="showQuantityLimitToast"
         />
@@ -48,6 +49,11 @@ const props = defineProps({
   item: {
     type: Object,
     required: true
+  },
+  // 活動已結束：數量不能改，只能刪除
+  locked: {
+    type: Boolean,
+    default: false
   }
 });
 

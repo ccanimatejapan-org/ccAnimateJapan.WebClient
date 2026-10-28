@@ -65,7 +65,7 @@
         <h2 class="panel__title">{{ t('checkout.summary') }}</h2>
         <div class="checkout__groups">
           <div
-            v-for="group in cart.groups"
+            v-for="group in cart.selectedGroups"
             :key="group.activityId"
             class="checkout__group"
           >
@@ -82,16 +82,19 @@
             />
           </div>
         </div>
-        <p v-if="cart.groups.length" class="notice">
-          {{ t('checkout.splitNotice', { count: cart.groups.length }) }}
+        <RouterLink class="checkout__edit-selection" :to="{ name: ROUTE_NAMES.CART }">
+          {{ t('checkout.editSelection') }}
+        </RouterLink>
+        <p v-if="cart.selection.activityCount" class="notice">
+          {{ t('checkout.splitNotice', { count: cart.selection.activityCount }) }}
         </p>
         <div class="summary-row">
           <span>{{ t('cart.totalQuantity') }}</span>
-          <strong>{{ cart.totalQuantity }}</strong>
+          <strong>{{ cart.selection.totalQuantity }}</strong>
         </div>
         <div class="summary-row checkout__total">
           <span>{{ t('cart.subtotal') }}</span>
-          <AppPrice :value="cart.subtotal" />
+          <AppPrice :value="cart.selection.subtotal" />
         </div>
         <AppButton class="checkout__submit" :disabled="isSubmitting" @click="placeOrder">
           {{ isSubmitting ? t('checkout.submitting') : t('checkout.placeOrder') }}
@@ -104,7 +107,7 @@
 
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import AppButton from '@/shared/components/AppButton.vue';
 import AppPrice from '@/shared/components/AppPrice.vue';
@@ -115,11 +118,13 @@ import { ADDRESS_KIND, requiresAddress } from '@/shared/constants/addressKind';
 import { ADDRESS_MAX_LENGTH, ADDRESS_NAME_MAX_LENGTH, PHONE_MAX_LENGTH } from '@/shared/constants/inputLimits';
 import { useUiStore } from '@/shared/stores/uiStore';
 import { useCartStore } from '@/modules/cart/stores/cartStore';
+import { parseActivityIds } from '@/modules/cart/utils/cartSelection';
 import { getAddresses, getDeliveryTypes, getProfile } from '@/modules/member/api/memberApi';
 import { createOrderFromCartItems } from '@/modules/order/api/orderApi';
 import DeliveryMethodPicker from '../components/DeliveryMethodPicker.vue';
 import AddressPicker from '../components/AddressPicker.vue';
 
+const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 const ui = useUiStore();
@@ -168,6 +173,15 @@ onMounted(async () => {
     return;
   }
 
+  // 要結帳的活動以網址 ?activities= 為準（重新整理也不會遺失）；已不在購物車或已不能結帳的會被略過。
+  // 一個都不剩就回購物車重選，絕不退回成整台購物車結帳。
+  cart.setSelection(parseActivityIds(route.query.activities));
+  if (!cart.selection.activityCount) {
+    ui.showToast({ title: t('checkout.title'), message: t('cart.selectToCheckout') });
+    router.replace({ name: ROUTE_NAMES.CART });
+    return;
+  }
+
   try {
     const [types, profileData, addressList] = await Promise.all([getDeliveryTypes(), getProfile(), getAddresses()]);
     deliveryTypes.value = types;
@@ -190,7 +204,8 @@ onMounted(async () => {
 });
 
 async function placeOrder() {
-  if (isSubmitting.value || !cart.items.length) return;
+  const checkoutItems = cart.selection.items;
+  if (isSubmitting.value || !checkoutItems.length) return;
 
   if (!selectedMethodId.value) {
     ui.showToast({ title: t('checkout.title'), message: t('checkout.chooseMethod') });
@@ -223,7 +238,7 @@ async function placeOrder() {
 
   isSubmitting.value = true;
   try {
-    const result = await createOrderFromCartItems(cart.items, shipping);
+    const result = await createOrderFromCartItems(checkoutItems, shipping);
     const orders = Array.isArray(result?.orders) ? result.orders : [];
     const failures = Array.isArray(result?.failures) ? result.failures : [];
 
@@ -240,6 +255,9 @@ async function placeOrder() {
       }
 
       await cart.hydrate();
+      // 已送出：成功的活動已從購物車消失，失敗的活動留在購物車但回到不勾選。
+      // 在 hydrate 之後才清，避免離開前摘要先閃成空的 $0。
+      cart.clearSelection();
       router.push({ name: ROUTE_NAMES.ORDER_LIST });
       return;
     }
@@ -254,6 +272,7 @@ async function placeOrder() {
       });
     }
     await cart.hydrate();
+    cart.clearSelection();
     router.push({ name: ROUTE_NAMES.CART });
   } catch (error) {
     if (error.message === 'PROFILE_INCOMPLETE') {
@@ -267,6 +286,10 @@ async function placeOrder() {
       title: t('cart.toast.submitFailedTitle'),
       message: t('cart.toast.submitFailedMessage')
     });
+    // 重拿購物車後勾選的活動都已不能結帳（例如剛好結束），留在這頁送出鈕會沒反應，改回購物車重選
+    if (!cart.selection.activityCount) {
+      router.replace({ name: ROUTE_NAMES.CART });
+    }
   } finally {
     isSubmitting.value = false;
   }
@@ -357,6 +380,16 @@ function showPartialFailureToast(failures, options = {}) {
 
 .checkout__summary .panel__title {
   margin-bottom: 4px;
+}
+
+.checkout__edit-selection {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  color: $color-primary;
+  font-size: 0.85rem;
+  text-decoration: underline;
 }
 
 .checkout__groups {

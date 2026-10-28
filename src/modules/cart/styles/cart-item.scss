@@ -83,6 +83,12 @@
   color: $color-danger;
 }
 
+// 已結束活動的商品：只剩刪除可以操作，刪除鈕改成紅字凸顯
+.cart-item.is-locked .cart-item__remove {
+  color: $color-danger;
+  font-weight: 700;
+}
+
 .cart-item__confirm-text {
   margin: 0;
   color: $color-muted;

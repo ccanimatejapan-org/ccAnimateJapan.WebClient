@@ -1,16 +1,17 @@
 <template>
-  <div class="quantity-control">
-    <button type="button" :aria-label="t('common.decrease')" @click="emitValue(modelValue - 1)">−</button>
+  <div class="quantity-control" :class="{ 'is-disabled': disabled }">
+    <button type="button" :aria-label="t('common.decrease')" :disabled="disabled" @click="emitValue(modelValue - 1)">−</button>
     <input
       :value="modelValue"
       type="number"
       min="1"
       :max="max"
       inputmode="numeric"
+      :disabled="disabled"
       :aria-label="t('product.addDialog.quantity')"
       @input="emitValue(Number($event.target.value))"
     />
-    <button type="button" :aria-label="t('common.increase')" @click="emitValue(modelValue + 1)">+</button>
+    <button type="button" :aria-label="t('common.increase')" :disabled="disabled" @click="emitValue(modelValue + 1)">+</button>
   </div>
 </template>
 
@@ -26,6 +27,10 @@ const props = defineProps({
   max: {
     type: Number,
     default: MAX_ORDER_QUANTITY
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 });
 

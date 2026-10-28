@@ -29,7 +29,9 @@ export function mapServerCartItem(item) {
     info: note,
     activityIsPreOrder: item?.activityIsPreOrder,
     officialShippingStartTime: item?.officialShippingStartTime,
-    officialShippingEndTime: item?.officialShippingEndTime
+    officialShippingEndTime: item?.officialShippingEndTime,
+    // 後端判斷活動目前能否結帳；舊版後端沒有這個欄位時當作可結帳（送出時後端仍會再擋）
+    activityOrderable: item?.activityOrderable !== false
   };
 }
 
@@ -58,6 +60,7 @@ export function mapCartGroups(items = []) {
         activityIsPreOrder: item.activityIsPreOrder,
         officialShippingStartTime: item.officialShippingStartTime,
         officialShippingEndTime: item.officialShippingEndTime,
+        activityOrderable: true,
         items: [],
         subtotal: 0,
         totalQuantity: 0
@@ -66,6 +69,7 @@ export function mapCartGroups(items = []) {
 
     const group = map.get(key);
     group.items.push(item);
+    group.activityOrderable = group.activityOrderable && item.activityOrderable !== false;
     group.subtotal += item.price * item.quantity;
     group.totalQuantity += item.quantity;
   }

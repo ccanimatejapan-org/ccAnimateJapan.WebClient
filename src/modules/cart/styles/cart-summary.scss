@@ -24,6 +24,10 @@
   font-size: 0.75rem;
 }
 
+.cart-summary__hint--warn {
+  color: $color-danger;
+}
+
 .cart-summary__submit {
   width: 100%;
 }

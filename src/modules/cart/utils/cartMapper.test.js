@@ -32,8 +32,19 @@ describe('mapServerCartItem', () => {
       info: 'hello world',
       activityIsPreOrder: true,
       officialShippingStartTime: '2026-08-01',
-      officialShippingEndTime: '2026-08-10'
+      officialShippingEndTime: '2026-08-10',
+      activityOrderable: true
     });
+  });
+
+  it('keeps the backend activityOrderable flag', () => {
+    assert.equal(mapServerCartItem({ activityId: 1, productId: 2, activityOrderable: false }).activityOrderable, false);
+    assert.equal(mapServerCartItem({ activityId: 1, productId: 2, activityOrderable: true }).activityOrderable, true);
+  });
+
+  it('treats a missing activityOrderable as orderable (older backend; checkout still re-checks)', () => {
+    assert.equal(mapServerCartItem({ activityId: 1, productId: 2 }).activityOrderable, true);
+    assert.equal(mapServerCartItem({ activityId: 1, productId: 2, activityOrderable: null }).activityOrderable, true);
   });
 
   it('falls back to info if note is missing', () => {
@@ -144,5 +155,18 @@ describe('mapCartGroups', () => {
     assert.equal(groups[1].activityId, 11);
     assert.equal(groups[1].activityIsPreOrder, false);
     assert.equal(groups[1].officialShippingStartTime, null);
+  });
+
+  it('marks a group as not orderable when the backend says its activity cannot be checked out', () => {
+    const groups = mapCartGroups(mapServerCart({
+      items: [
+        { id: 1, activityId: 8, productId: 1, price: 10, quantity: 1, activityOrderable: true },
+        { id: 2, activityId: 11, productId: 2, price: 10, quantity: 1, activityOrderable: false },
+        { id: 3, activityId: 11, productId: 3, price: 10, quantity: 1, activityOrderable: false }
+      ]
+    }));
+
+    assert.equal(groups[0].activityOrderable, true);
+    assert.equal(groups[1].activityOrderable, false);
   });
 });

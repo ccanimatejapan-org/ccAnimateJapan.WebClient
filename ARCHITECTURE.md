@@ -10,11 +10,11 @@
 首頁（活動／熱門／依作品逛）
   -> 活動商品列表
   -> 加入購物車
-  -> 購物車 -> 前往結帳（選物流方式 / 收件地址）
+  -> 購物車 -> 勾選要結帳的活動 -> 前往結帳（選物流方式 / 收件地址）
   -> 我的訂單列表 / 訂單詳情
 ```
 
-購物車送出後進入獨立結帳流程 `modules/checkout`（`/checkout`）：選物流方式 → 依物流方式的 `addressKind` 選/填收件地址（免地址型態則略過）→ 送出建立訂單（打後端 `POST /orders`，後端清空伺服器購物車並寫入收件快照）後導向訂單列表。舊的活動訂購表單模組 `modules/order-form` 已**完全移除**，所有活動訂購統一走購物車流程。
+購物車以**活動為單位勾選**要結帳的活動（預設全部不勾，有「全選」按鈕；後端標示已結束的活動不能勾），按「前往結帳」進入獨立結帳流程 `modules/checkout`（`/checkout?activities=8,15`）：選物流方式 → 依物流方式的 `addressKind` 選/填收件地址（免地址型態則略過）→ 送出建立訂單（打後端 `POST /orders`，只送勾選活動的購物車項目；後端只刪除成功建單的項目並寫入收件快照，沒勾的活動留在購物車）後導向訂單列表。舊的活動訂購表單模組 `modules/order-form` 已**完全移除**，所有活動訂購統一走購物車流程。
 
 ## 技術棧
 
@@ -111,7 +111,8 @@ src/
 /activities                   活動列表（支援 `?q=` 關鍵字與 `?availability=inStock` 深連結）
 /works                        作品列表（依作品逛）
 /works/:animateTypeId         特定作品底下的活動列表
-/cart                         購物車，可修改數量、刪除商品、送出訂單
+/cart                         購物車，以活動為單位勾選要結帳的活動，可修改數量、刪除商品
+/checkout?activities=8,15     結帳頁，只處理網址帶的活動（重新整理不會遺失選擇）
 /orders                       我的訂單列表（支援 `?stage=` 深連結指定階段）
   /orders/:id                   訂單詳情簡版
   /wish-pool                    許願池（需 LINE 登入與加官方好友）
@@ -129,6 +130,7 @@ src/
 - 沒有舊的 `order-form` 流程（`/activity/:activityId` 已移除）。
 - 沒有商品詳情 route；`/products` 會 redirect 回首頁。
 - 購物車可跨活動加入商品；結帳時依活動拆單，一個活動一張訂單（採部分成功）。
+- 只能以活動為單位勾選結帳，不能只勾單一商品（之後的優惠券也是一個活動一張）。
 
 ## app/
 
@@ -636,7 +638,11 @@ src/modules/cart/
 │  └─ CartPage.vue
 ├─ routes.js
 ├─ stores/
+│  ├─ cartHydration.js
 │  └─ cartStore.js
+├─ utils/
+│  ├─ cartMapper.js
+│  └─ cartSelection.js
 └─ styles/
    ├─ cart-item.scss
    ├─ cart-page.scss
@@ -646,12 +652,14 @@ src/modules/cart/
 
 資料夾功能：
 
-- `stores/cartStore.js`：管理購物車品項、總數量、小計、活動限制、加入/更新/移除/清空，透過 `cart/api/cartApi.js` 與後端同步，操作後以伺服器回傳的購物車覆蓋本地（**伺服器為準**）。初始載入不在 store setup 隱式執行；由 `DefaultLayout` 作為唯一 lifecycle owner 呼叫 `ensureHydrated()`，該方法以 shared promise single-flight，`hydrate()` 保留為明確強制 refresh，`clearCart()` 會失效舊回覆。
+- `stores/cartStore.js`：管理購物車品項、總數量、小計、活動限制、加入/更新/移除/清空，透過 `cart/api/cartApi.js` 與後端同步，操作後以伺服器回傳的購物車覆蓋本地（**伺服器為準**）。初始載入不在 store setup 隱式執行；由 `DefaultLayout` 作為唯一 lifecycle owner 呼叫 `ensureHydrated()`，該方法以 shared promise single-flight，`hydrate()` 保留為明確強制 refresh，`clearCart()` 會失效舊回覆。也管理「選活動結帳」的勾選狀態：`selectedActivityIds`（只存在記憶體，預設空，離開購物車再回來保留、重新開網站清空）、`selectedGroups` / `selection`（勾選活動的數量、小計、品項）、`isAllSelected`、`toggleActivity` / `setAllSelected` / `setSelection` / `clearSelection`。每次套用伺服器購物車都會把已不在購物車或已不能結帳的活動從勾選中拿掉；`clearCart()`（登出）也會清空勾選。
+- `utils/cartMapper.js`：伺服器購物車 → 前端 item / 依活動分組的 group。後端 `activityOrderable`（活動目前能否結帳）帶進 item 與 group；欄位缺少時當作可結帳（舊版後端相容，送出時後端仍會再擋）。
+- `utils/cartSelection.js`：勾選規則的純函式（`parseActivityIds` / `formatActivityIds` 處理結帳網址 `?activities=8,15`、`toggleActivityId`、`selectableActivityIds`、`pruneSelection`、`pickGroups`、`summarizeGroups`）。只有 `activityOrderable` 的活動能被選；`pickGroups` 即使收到已結束活動的編號也不會回傳它。
 - `api/cartApi.js`：購物車 4 支端點封裝（`GET /cart`、`POST /cart/items`、`PUT/DELETE /cart/items/{id}`）。
-- `pages/CartPage.vue`：購物車頁。送出時呼叫 `order/api/createOrderFromCartItems()`（打 `POST /orders`），成功後清空購物車並導向 `/orders`。
-- `components/CartItem.vue`：單筆購物車項目，顯示商品名稱、活動名稱、單價、數量、備註、小計與刪除。
-- `components/CartSummary.vue`：購物車摘要，顯示活動名稱、總數量、小計與送出訂單按鈕。
-- `components/QuantityControl.vue`：數量調整控制。
+- `pages/CartPage.vue`：購物車頁。進頁時呼叫 `cartStore.hydrate()` 重拿一次購物車，讓活動是否已結束以當下為準。上方「全選 / 取消全選」按鈕與「已選 N 個活動」；每個活動標題前有勾選框，後端標示不能結帳的活動整塊灰底（商品圖維持原色）、右上角以紅色「已結束」標籤取代活動小計、標題下一行說明可自行刪除商品、不顯示官方出貨期間卡片、勾選框停用、「全選」會跳過；該活動的商品以 `CartItem` 的 `locked` 呈現：數量不能改、刪除鈕紅色凸顯（第一版不提供整個活動移除，顧客可逐件刪除）。勾選 2 個以上活動時提示會拆成幾張訂單。「前往結帳」導向 `/checkout?activities=<勾選的活動編號>`。
+- `components/CartItem.vue`：單筆購物車項目，顯示商品名稱、活動名稱、單價、數量、備註、小計與刪除。prop `locked`（活動已結束）時數量控制停用、刪除鈕改紅色凸顯。
+- `components/CartSummary.vue`：購物車摘要，只算勾選的活動：已選活動數、總數量、小計；一個都沒勾時「前往結帳」停用並提示「請先勾選要結帳的活動」（購物車裡的活動都已結束時改提示沒有可結帳的活動）。
+- `components/QuantityControl.vue`：數量調整控制；prop `disabled` 時加減鈕與輸入框都停用並呈灰色。
 - `routes.js`：定義 `/cart`。
 
 購物車 item 結構：
@@ -667,7 +675,11 @@ src/modules/cart/
   price,
   quantity,
   note,
-  info
+  info,
+  activityIsPreOrder,
+  officialShippingStartTime,
+  officialShippingEndTime,
+  activityOrderable // 後端判斷活動目前能否結帳（未開始、已結束、已刪除都是 false）
 }
 ```
 
@@ -676,7 +688,8 @@ src/modules/cart/
 MVP 限制：
 
 - 購物車可跨活動加入商品；結帳時依活動拆單，一個活動一張訂單（由後端把關，採部分成功，失敗活動的商品保留在購物車）。
-- 購物車送出後進入 `/checkout` 結帳流程（選物流方式 + 收件地址）再建立訂單（打後端 `POST /orders`，回傳 `{ orders, failures }`）。
+- 顧客勾選要結帳的活動後進入 `/checkout?activities=...` 結帳流程（選物流方式 + 收件地址）再建立訂單（打後端 `POST /orders`，只送勾選活動的項目，回傳 `{ orders, failures }`）。
+- 「活動已結束」只是顯示：打開購物車那一刻的狀態。從打開到送出之間活動仍可能結束，送出時後端會再檢查並把該活動列進 `failures`，前端提示「活動「X」未能建立訂單，已保留在購物車」。
 
 ### modules/checkout/
 
@@ -692,7 +705,7 @@ src/modules/checkout/
 
 資料夾功能：
 
-- `pages/CheckoutPage.vue`：結帳頁（`/checkout`，沿用 `DefaultLayout`）。同時載入物流方式、會員資料與地址簿，顧客選物流方式與收件地址（依 `addressKind` 決定是否需要地址）後，呼叫 `order/api/orderApi.js` 的 `createOrderFromCartItems()` 建單（`POST /orders`，依活動拆單、部分成功），成功後導向 `/orders`；會員 email / 姓名 / 電話未填完整時導去會員資料頁補齊。
+- `pages/CheckoutPage.vue`：結帳頁（`/checkout?activities=8,15`，沿用 `DefaultLayout`）。要結帳的活動**以網址為準**：進頁時用 `parseActivityIds(route.query.activities)` 寫回 `cartStore.setSelection()`，已不在購物車或已不能結帳的活動會被略過；一個都不剩就提示「請先勾選要結帳的活動」並導回購物車，**絕不退回成整台購物車結帳**。摘要只列勾選的活動與其數量、小計，並有「修改要結帳的活動」連結回購物車（勾選保留）。同時載入物流方式、會員資料與地址簿，顧客選物流方式與收件地址（依 `addressKind` 決定是否需要地址）後，以 `cartStore.selection.items` 呼叫 `order/api/orderApi.js` 的 `createOrderFromCartItems()` 建單（`POST /orders`，依活動拆單、部分成功）；送出有結果後（重拿購物車之後）清空勾選（失敗的活動回到購物車且不勾選），成功後導向 `/orders`；送出出錯（例如 409）重拿購物車後若勾選的活動都已不能結帳，就導回購物車重選；會員 email / 姓名 / 電話未填完整時導去會員資料頁補齊。
 - `components/DeliveryMethodPicker.vue`：物流方式選擇（props `deliveryTypes`，v-model 為物流方式 id）。
 - `components/AddressPicker.vue`：已存地址選擇（props `addresses`，v-model 為地址 id）。
 - `routes.js`：定義 `/checkout`。
@@ -869,7 +882,7 @@ shared
 規則：
 
 - `shared` 不能 import `modules`。**唯一的既有例外**：`shared/api/httpClient.js` 在處理 401 時以**動態 import** 取用 `modules/auth/stores/authStore`（以及 `app/router`），目的是避免與 authStore 形成循環相依；不要在其他 shared 檔案仿效。
-- module 之間盡量不要直接互相 import；若真的有跨 module 共用需求，優先抽到 `shared`。既有的例外：`member/pages/MemberHomePage.vue` 直接 import `order/utils/orderStages`（`ORDER_STAGES`、`countOrdersByStage`）與 `order/api/orderApi`（`getOrders`）來計算會員中心的訂單徽章；`checkout/pages/CheckoutPage.vue` 直接使用 `member/api/memberApi`（物流方式、會員資料、地址）與 `order/api/orderApi`（建單）。若之後要整理，可把 `orderStages.js` 移到 `shared`。
+- module 之間盡量不要直接互相 import；若真的有跨 module 共用需求，優先抽到 `shared`。既有的例外：`member/pages/MemberHomePage.vue` 直接 import `order/utils/orderStages`（`ORDER_STAGES`、`countOrdersByStage`）與 `order/api/orderApi`（`getOrders`）來計算會員中心的訂單徽章；`checkout/pages/CheckoutPage.vue` 直接使用 `member/api/memberApi`（物流方式、會員資料、地址）、`order/api/orderApi`（建單）、`cart/stores/cartStore`（購物車與勾選狀態）與 `cart/utils/cartSelection`（`parseActivityIds`，解析結帳網址）。若之後要整理，可把 `orderStages.js` 移到 `shared`。
 - page 可以協調 store、API、route params 與元件，但應避免塞入過多可重用邏輯。
 - component 應以 props/emit 為主要介面，避免直接知道太多外部狀態。
 - API function 應隱藏 endpoint 細節，讓 page/store 呼叫語意化函式。
@@ -907,10 +920,16 @@ ProductAddDialog
   -> cartApi.addCartItem() -> POST /cart/items（以伺服器回傳覆蓋本地）
 
 CartPage
-  -> createOrderFromCartItems(cart.items)
-  -> POST /orders（後端清空伺服器購物車）
-  -> cartStore.clearCart()
-  -> /orders
+  -> cartStore.hydrate() -> GET /cart（每個 item 帶 activityOrderable）
+  -> 勾選活動（cartStore.toggleActivity / setAllSelected）
+  -> /checkout?activities=8,15
+
+CheckoutPage
+  -> cartStore.setSelection(parseActivityIds(route.query.activities))
+  -> createOrderFromCartItems(cartStore.selection.items)
+  -> POST /orders（後端只刪除成功建單的購物車項目）
+  -> cartStore.hydrate() + cartStore.clearSelection()
+  -> /orders（全部失敗則回 /cart）
 ```
 
 官方出貨時程資料流：
@@ -924,6 +943,7 @@ Cart API
   -> GET /cart
   -> cartMapper 透過 item/group 轉換保留 activityIsPreOrder
   -> 同步保留 officialShippingStartTime / officialShippingEndTime
+  -> 同步保留 activityOrderable（勾選與「活動已結束」標示用）
 
 Order API
   -> GET /orders、GET /orders/{id}
@@ -937,7 +957,8 @@ Order API
 
 - `ProductListPage` 與 `OrderDetailPage` 顯示完整版。
 - `ProductAddDialog`、`CheckoutPage` 與 `OrderCard` 顯示 compact 版。
-- `HomeActivityCard` 與 `CartPage` 不顯示。
+- `CartPage` 只在可結帳的活動顯示 compact 版；已結束（`activityOrderable=false`）的活動不顯示。
+- `HomeActivityCard` 不顯示。
 - 現貨活動隱藏；預購活動同時有 start/end 時為 `ready`，缺漏時為 `pending`。
 - 日期統一以 `Asia/Taipei` 格式化。
 

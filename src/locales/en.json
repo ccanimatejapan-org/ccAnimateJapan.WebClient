@@ -268,7 +268,15 @@
     "subtitle": "Double-check your picks, then move on.",
     "removeConfirmTitle": "Remove item?",
     "removeConfirmMessage": "Remove \"{name}\" from your cart?",
-    "shippingHint": "Delivery method and fees are confirmed in the next step."
+    "shippingHint": "Delivery method and fees are confirmed in the next step.",
+    "selectAll": "Select all",
+    "deselectAll": "Clear selection",
+    "selectedCount": "{count} activities selected",
+    "selectedActivities": "Selected activities",
+    "selectToCheckout": "Select the activities you want to check out first",
+    "nothingSelectable": "All activities in your cart have ended; nothing can be checked out right now",
+    "endedBadge": "Ended",
+    "activityEndedHint": "This activity has ended and can no longer be checked out. You can remove items you no longer need."
   },
   "order": {
     "searchLabel": "Search orders",
@@ -413,7 +421,8 @@
     "submitting": "Submitting",
     "noAddressNeeded": "This delivery method needs no address",
     "selectAddress": "Please select or enter a shipping address",
-    "partialFailureMessage": "Activities \"{names}\" could not be created because inventory or product data changed, and remain in your cart.",
+    "partialFailureMessage": "Orders for \"{names}\" could not be created; the items remain in your cart.",
+    "editSelection": "Change activities to check out",
     "subtitle": "Choose delivery and recipient details; orders are created per activity."
   },
   "info": {

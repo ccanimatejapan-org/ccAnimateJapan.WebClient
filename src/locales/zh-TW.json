@@ -268,7 +268,15 @@
     "subtitle": "確認好心意，就準備下一步吧。",
     "removeConfirmTitle": "移除商品？",
     "removeConfirmMessage": "確定要將「{name}」從購物車移除嗎？",
-    "shippingHint": "物流費用與收件方式於下一步確認。"
+    "shippingHint": "物流費用與收件方式於下一步確認。",
+    "selectAll": "全選",
+    "deselectAll": "取消全選",
+    "selectedCount": "已選 {count} 個活動",
+    "selectedActivities": "已選活動",
+    "selectToCheckout": "請先勾選要結帳的活動",
+    "nothingSelectable": "購物車裡的活動都已結束，目前沒有可以結帳的活動",
+    "endedBadge": "已結束",
+    "activityEndedHint": "活動已結束，無法結帳；不需要的商品可以自行刪除。"
   },
   "order": {
     "searchLabel": "搜尋訂單",
@@ -413,7 +421,8 @@
     "submitting": "送出中",
     "noAddressNeeded": "此物流方式不需填寫地址",
     "selectAddress": "請選擇或填寫收件地址",
-    "partialFailureMessage": "活動「{names}」因庫存或商品異常未能建立，已保留在購物車",
+    "partialFailureMessage": "活動「{names}」未能建立訂單，已保留在購物車",
+    "editSelection": "修改要結帳的活動",
     "subtitle": "選擇物流與收件資訊，送出後依活動建立訂單。"
   },
   "info": {

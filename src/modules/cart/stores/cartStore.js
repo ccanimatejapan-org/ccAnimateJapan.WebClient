@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { addCartItem, getCart, removeCartItem, updateCartItem } from '../api/cartApi';
 import { mapCartGroups, mapServerCart } from '../utils/cartMapper';
+import { pickGroups, pruneSelection, selectableActivityIds, summarizeGroups, toggleActivityId } from '../utils/cartSelection';
 import { MAX_ORDER_QUANTITY } from '@/shared/constants/quantity';
 import { createCartHydrationCoordinator } from './cartHydration';
 
@@ -27,8 +28,35 @@ export const useCartStore = defineStore('cart', () => {
 
   const groups = computed(() => mapCartGroups(items.value));
 
+  // 勾選要結帳的活動：只存在記憶體，離開購物車再回來會保留，重新開網站就清空（預設全部不勾）。
+  const selectedActivityIds = ref([]);
+  const selectableIds = computed(() => selectableActivityIds(groups.value));
+  const selectedGroups = computed(() => pickGroups(groups.value, selectedActivityIds.value));
+  const selection = computed(() => summarizeGroups(selectedGroups.value));
+  const isAllSelected = computed(() =>
+    selectableIds.value.length > 0 && selectableIds.value.every((id) => selectedActivityIds.value.includes(id))
+  );
+
+  function setSelection(ids) {
+    selectedActivityIds.value = pruneSelection(ids, groups.value);
+  }
+
+  function toggleActivity(activityId) {
+    setSelection(toggleActivityId(selectedActivityIds.value, activityId));
+  }
+
+  function setAllSelected(selected) {
+    selectedActivityIds.value = selected ? [...selectableIds.value] : [];
+  }
+
+  function clearSelection() {
+    selectedActivityIds.value = [];
+  }
+
   function applyServerCart(cart) {
     items.value = mapServerCart(cart);
+    // 活動的商品全刪光、或活動已不能結帳時，勾選一起拿掉
+    setSelection(selectedActivityIds.value);
   }
 
   // Pull the authoritative cart from the server.
@@ -118,6 +146,7 @@ export const useCartStore = defineStore('cart', () => {
     updateSeq += 1;
     hydration.clear();
     items.value = [];
+    clearSelection();
   }
 
   return {
@@ -125,6 +154,15 @@ export const useCartStore = defineStore('cart', () => {
     totalQuantity,
     subtotal,
     groups,
+    selectedActivityIds,
+    selectableIds,
+    selectedGroups,
+    selection,
+    isAllSelected,
+    setSelection,
+    toggleActivity,
+    setAllSelected,
+    clearSelection,
     addItem,
     updateQuantity,
     removeItem,

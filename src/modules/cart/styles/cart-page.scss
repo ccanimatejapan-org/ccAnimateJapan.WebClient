@@ -13,10 +13,32 @@
   min-width: 0;
 }
 
+.cart-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cart-toolbar__select-all:disabled {
+  color: $color-muted;
+  cursor: not-allowed;
+}
+
+.cart-toolbar__count {
+  color: $color-muted;
+  font-size: 0.8rem;
+}
+
 .cart-group {
   display: grid;
   gap: 12px;
   padding-bottom: 4px;
+}
+
+.cart-group.is-selected {
+  border-color: #b98f42;
+  box-shadow: 0 0 0 1px #b98f42;
 }
 
 .cart-group__header {
@@ -31,6 +53,60 @@
   margin: 0;
   font-size: 0.95rem;
   overflow-wrap: anywhere;
+}
+
+.cart-group__select {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.cart-group__checkbox {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: #b98f42;
+  cursor: pointer;
+}
+
+.cart-group.is-ended .cart-group__select,
+.cart-group.is-ended .cart-group__checkbox {
+  cursor: not-allowed;
+}
+
+// 已結束的活動整塊灰階：不能勾、不顯示官方出貨期間，商品仍可刪除
+.cart-group.is-ended {
+  border-color: #dedad2;
+  background: #f1efea;
+  box-shadow: none;
+}
+
+.cart-group.is-ended .cart-group__select span {
+  color: $color-muted;
+}
+
+.cart-group.is-ended :deep(.cart-item) {
+  border-top-color: #dedad2;
+}
+
+.cart-group__ended-badge {
+  flex: 0 0 auto;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: $color-danger;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cart-group__ended-hint {
+  margin: -4px 0 0;
+  color: $color-muted;
+  font-size: 0.78rem;
 }
 
 .cart-group__header .app-price {

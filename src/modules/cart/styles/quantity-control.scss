@@ -37,3 +37,18 @@
 .quantity-control button:hover {
   background: #f6f1e6;
 }
+
+.quantity-control.is-disabled {
+  border-color: #dedad2;
+  background: #e8e5de;
+}
+
+.quantity-control.is-disabled button,
+.quantity-control.is-disabled input {
+  color: $color-muted;
+  cursor: not-allowed;
+}
+
+.quantity-control.is-disabled button:hover {
+  background: transparent;
+}
